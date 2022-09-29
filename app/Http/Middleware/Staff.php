@@ -16,7 +16,7 @@ class Staff
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->user_role_id == 1)
+        if(auth()->user()->user_role_id <= 2)
         {
             return $next($request);
         }

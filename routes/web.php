@@ -27,7 +27,7 @@ Route::get('/', [LoginController::class, 'index'])->name('index');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
-
+Route::middleware('staff')->group(function () {
 // Dashboard Routes
 Route::get('/admin', [StaffController::class, 'index'])->name('admin.index');
 
@@ -37,7 +37,7 @@ Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user.in
 Route::get('/admin/user/store', [UserController::class, 'store'])->name('admin.user.store');
 Route::post('/admin/user/create', [UserController::class, 'create'])->name('admin.user.create');
 
-Route::middleware('staff')->group(function () {
+
 
 // Dashboard Destinations
 
