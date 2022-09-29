@@ -7,6 +7,9 @@ use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\staff\FlyClass\ClassesController;
+use App\Http\Controllers\staff\FlyClass\DestinationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,15 +29,33 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
 // Dashboard Routes
-
-Route::middleware('staff')->group(function () {
-Route::get('/admin', [StaffController::class, 'index'])->name('admin.index')->middleware('staff');
+Route::get('/admin', [StaffController::class, 'index'])->name('admin.index');
 
 // Dashboard Users/Agents
 
 Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user.index');
 Route::get('/admin/user/store', [UserController::class, 'store'])->name('admin.user.store');
 Route::post('/admin/user/create', [UserController::class, 'create'])->name('admin.user.create');
+
+Route::middleware('staff')->group(function () {
+
+// Dashboard Destinations
+
+Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
+Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');
+
+// Dashboard Destinations End Here
+
+// Dashboard Prices
+
+Route::get('/admin/prices', [ClassesController::class, 'index'])->name('admin.price.index');
+Route::post('/admin/prices/create/{id}', [ClassesController::class, 'create'])->name('admin.price.create');
+Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
+Route::post('/admin/prices/update/{id}', [ClassesController::class, 'update'])->name('admin.price.update');
+
+
+// Dashboard Prices End Here
+
 //Route::get('/dashboard/user', [UserController::class, 'Store'])->name('user.index');
 //Route::get('/dashboard/user', [UserController::class, 'Store'])->name('user.index');
 //Route::get('/dashboard/user', [UserController::class, 'Store'])->name('user.index');
@@ -54,3 +75,6 @@ Route::get('/dashboard/tables', function () {
 
 // Dashboard For Agent Start Here
 Route::get('/dashboard', [AgentPageController::class, 'index'])->name('agent.index')->middleware('agent');
+Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('agent.price')->middleware('agent');
+
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');

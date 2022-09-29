@@ -23,32 +23,24 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Created At</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Office</th>
-                            <th>Age</th>
-                            <th>Start date</th>
-                            <th>Salary</th>
-                        </tr>
-                    </tfoot>
                     <tbody>
+                        @forelse($users as $user)
                         <tr>
-                            <td>Donna Snider</td>
-                            <td>Customer Support</td>
-                            <td>New York</td>
-                            <td>27</td>
-                            <td>2011/01/25</td>
-                            <td>$112,000</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->username }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->created_at }}</td>
                         </tr>
+                        @empty
+                        <tr>
+                            <p>No users</p>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

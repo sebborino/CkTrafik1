@@ -23,7 +23,11 @@ class UserController extends Controller
     }
 
     public function store(){
-        return view('admin.page.user.store');
+        //$user_roles = User_role::all();
+        $users = User::with('user_role')->where('user_role_id', '!=', 1)->get();
+        return view('admin.page.user.store',[
+            'users' => $users
+        ]);
     }
 
     public function create(Request $request){

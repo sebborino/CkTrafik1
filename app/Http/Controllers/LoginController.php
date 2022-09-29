@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+ /*
     public function __construct()
     {
         if(Auth::check()){
@@ -23,7 +24,7 @@ class LoginController extends Controller
                     return redirect()->route('index');
                 }
     }
-
+*/
     public function index(){
         return view('index');
     }
@@ -40,12 +41,12 @@ class LoginController extends Controller
         }
         else{
             auth()->attempt($request->only('username','password'));
-            if(auth()->user()->user_role_id == 1)
+            if(auth()->user()->user_role_id <= 2)
             {
                 auth()->attempt($request->only('username','password'));
                 return redirect()->route('admin.index');
             }
-            elseif(auth()->user()->user_role_id == 2)
+            elseif(auth()->user()->user_role_id == 3)
             {
                 auth()->attempt($request->only('username','password'));
                 return redirect()->route('agent.index');
