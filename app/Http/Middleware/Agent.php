@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Agent
 {
@@ -17,9 +18,12 @@ class Agent
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->user_role_id == 3)
+        if(Auth::check())
         {
-            return $next($request);
+            if(auth()->user()->user_role_id == 3)
+            {
+                return $next($request);
+            }
         }
         
         return redirect('/');

@@ -32,19 +32,35 @@
                                     <th>CLASS</th>
                                     <th>PTC</th>
                                     <th>Price(DKK)</th>
+                                    @admin
+                                        <th>Delete</th>
+                                        <th>Edit</th>
+                                    @endadmin   
                                 </tr>
                             </thead>
                             <tbody>
                                 
                                 @forelse($destination->classes as $class)
                                 <tr>
-                                    <td><input type="text" class="form-control" name="fare[]" value="{{ $class->fare }}"/></td>
-                                    <td><input type="text" class="form-control" name="class[]" value="{{ $class->class }}"/></td>
-                                    <td><input type="text" class="form-control" name="ptc[]" value="{{ $class->ptc }}"/></td>
-                                    <td><input type="number" class="form-control" name="price[]" value="{{ $class->price }}"/></td>
-                                    <td><input type="hidden" class="form-control" name="id[]" value="{{ $class->id }}"/></td>
+                                    @admin
+                                        <td><input type="text" class="form-control" name="fare[]" value="{{ $class->fare }}"/></td>
+                                        <td><input type="text" class="form-control" name="class[]" value="{{ $class->class }}"/></td>
+                                        <td><input type="text" class="form-control" name="ptc[]" value="{{ $class->ptc }}"/></td>
+                                        <td><input type="number" class="form-control" name="price[]" value="{{ $class->price }}"/></td>
+                                        <input type="hidden" class="form-control" name="id[]" value="{{ $class->id }}"/>
+                                        <td><button class="btn btn-danger"><i class="fas fa-trash"></i></button></td>
+                                        <td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button></td>
+                                    @endadmin    
+                                    @staff
+                                        <td>{{ $class->fare }}</td>
+                                        <td>{{ $class->class }}</td>
+                                        <td>{{ $class->ptc }}</td>
+                                        <td><input type="number" class="form-control" name="price[]" value="{{ $class->price }}"/></td>
+                                        <input type="hidden" class="form-control" name="id[]" value="{{ $class->id }}"/>
+
+                                    @endstaff    
                                 </tr>
-                               
+                                
                                 @empty
                                     <p>Add price on the blue Green</p>
                                     
@@ -54,13 +70,18 @@
                         </table>
                         @if(count($destination->classes) > 0)
                             <p>
-                                <button type="submit" class="btn btn-primary" name="submit">Update</button>
+                                @staff
+                                    
+                                        <button type="submit" class="btn btn-primary" name="submit">Update</button>
+                                    
+                                @endstaff
+                                
                             </p>
                         @endif 
                     </form>
                     </div>
 
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{ $destination->id}}">
+                    <button type="button" class="btn custom" data-toggle="modal" data-target="#Modal{{ $destination->id}}">
                         Add Prices
                       </button>
                       

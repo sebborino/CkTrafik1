@@ -1,5 +1,14 @@
+:root {
+    --custom: #0a4505;
+}
+
+.custom{
+    background-color:var(--custom);
+    color:white;
+  }
 
 .bg-login-image{
     background: url(../img/flight.jpg);
     background-repeat: no-repeat;
 }
+

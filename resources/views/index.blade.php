@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Travel Trafic Login</title>
+    <title>Ck Trafik 1</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -18,11 +18,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="css/app.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-success">
+<body class="bg-gradient-light">
 
     <div class="container">
 
@@ -41,12 +41,9 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form action="{{ route('login')}}" class="user" method="post">
-                                        @csrf
-                                        
-                                        @if($errors->any())
+                                    @if($errors->any())
                                         @foreach($errors->all() as $error)
-    
+
                                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                             <strong>OPS!</strong>  {{ $error }}
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -54,25 +51,31 @@
                                             </button>
                                         </div>
                                         @endforeach
-                                    @elseif(Session::has('message'))
-                            
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <h4 class="alert-heading">Well done!</h4>
-                                        <p>{!! Session::get('message') !!}</p>
+                                    @elseif(session('message'))
+
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>OPS!</strong>  {{ session('message') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                        <span aria-hidden="true">&times;</span>
                                         </button>
-    
-                                    </div>   
+                                    </div>
+
                                     @endif
+                                    
+                                    <form action="{{ route('login')}}" class="user" method="post">
+                                        @csrf
+                                        
+                                        
 
                                         <div class="form-group">
-                                            <input type="text" name="username" class="form-control form-control-user"
+                                            <input type="text" name="username" class="form-control form-control-user
+                                            @error('username') border border-danger @enderror"
                                                
                                                 placeholder="Enter Username Address...">
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" class="form-control form-control-user"
+                                            <input type="password" name="password" class="form-control form-control-user 
+                                            @error('password') border border-danger @enderror"
                                              placeholder="Password">
                                         </div>
                                         <div class="form-group">
@@ -82,33 +85,43 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-success btn-user btn-block">
+                                        <button type="submit" class="btn custom btn-user btn-block">
                                             Login
                                         </button>
                                         
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
+                                        <a class="small" href="#">Forgot Password?</a>
                                     </div>
+                                    <!--
                                     <div class="text-center">
                                         <a class="small" href="register.html">Create an Account!</a>
                                     </div>
+                                -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
             </div>
 
         </div>
-
+        
     </div>
+    <footer
+    style="position: absolute; bottom:0;left:0; width:100%; mt-auto" 
+    class="sticky-footer text-black">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; 2022 Ck Trafik 1 ApS, All Rights Reserved</span>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap core JavaScript-->
     <script src="js/jquery/jquery.min.js"></script>
-    <script src="js/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="js/jquery-easing/jquery.easing.min.js"></script>

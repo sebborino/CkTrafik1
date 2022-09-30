@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\staff\Auth;
+namespace App\Http\Controllers\Staff\Auth;
 
 use App\Models\User;
 use App\Models\User_role;

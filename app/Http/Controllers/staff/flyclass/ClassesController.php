@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\staff\FlyClass;
+namespace App\Http\Controllers\Staff\flyclass;
 
 use App\Models\Destination;
 use Illuminate\Http\Request;

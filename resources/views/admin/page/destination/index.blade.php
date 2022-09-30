@@ -54,7 +54,7 @@
                                 </div>
                                 
                             </div>
-                            <button type="submit" class="btn btn-success btn-user btn-block">
+                            <button type="submit" class="btn custom btn-user btn-block">
                                 Create Destination
                             </button>
                         </form>

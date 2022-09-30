@@ -4,12 +4,12 @@ use App\Models\User_role;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Staff\StaffController;
-use App\Http\Controllers\staff\Auth\UserController;
+use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\staff\FlyClass\ClassesController;
-use App\Http\Controllers\staff\FlyClass\DestinationController;
+use App\Http\Controllers\Staff\flyclass\ClassesController;
+use App\Http\Controllers\Staff\flyclass\DestinationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,5 +76,6 @@ Route::get('/dashboard/tables', function () {
 // Dashboard For Agent Start Here
 Route::get('/dashboard', [AgentPageController::class, 'index'])->name('agent.index')->middleware('agent');
 Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('agent.price')->middleware('agent');
+
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');

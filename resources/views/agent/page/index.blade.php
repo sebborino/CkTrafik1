@@ -7,7 +7,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">The System is down right now. You can only check prices for destinations or logout! The System will be running soon!
+        <h1 class="h3 mb-0 text-gray-800">Welcome Back {{ auth()->user()->name }}
     </div>
 </div>
 

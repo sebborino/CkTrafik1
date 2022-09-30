@@ -37,7 +37,7 @@ class LoginController extends Controller
         ]);
         
         if(!auth()->attempt($request->only('username','password'))){
-            return back()->withErrors('message','Invalid details, try again.');
+            return back()->with('message','Invalid details, try again.');
         }
         else{
             auth()->attempt($request->only('username','password'));

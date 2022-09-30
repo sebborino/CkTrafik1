@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\staff\FlyClass;
+namespace App\Http\Controllers\Staff\flyclass;
 
 use App\Http\Controllers\Controller;
 use App\Models\Destination;

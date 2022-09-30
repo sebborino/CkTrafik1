@@ -37,11 +37,35 @@
                                 
                                 @forelse($destination->classes as $class)
                                 <tr>
-                                    <td>{{ $class->fare }}</td>
+                                    <td>
+                                        <a href="#" data-toggle="modal" data-target="#modal{{ $class->id }}">
+                                            {{ $class->fare }}
+                                        </a>
+                                    </td>
                                     <td>{{ $class->class }}</td>
                                     <td>{{ $class->ptc }}</td>
                                     <td>{{ $class->price }}</td>
-
+                                <!-- Button trigger modal -->
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="modal{{ $class->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Rules for {{ $class->class }} Class</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div class="modal-body">
+                                        ...
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>    
                                 </tr>
                                 @empty
                                 <p>No Prices for this destination</p>
