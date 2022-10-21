@@ -51,7 +51,9 @@ Route::post('/admin/destination/create', [DestinationController::class, 'create'
 Route::get('/admin/prices', [ClassesController::class, 'index'])->name('admin.price.index');
 Route::post('/admin/prices/create/{id}', [ClassesController::class, 'create'])->name('admin.price.create');
 Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
-Route::post('/admin/prices/update/{id}', [ClassesController::class, 'update'])->name('admin.price.update');
+Route::post('/admin/prices/delete/admin/{id}', [ClassesController::class, 'delete'])->name('admin.price.delete');
+Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');
+Route::post('/admin/prices/update/staff/{id}', [ClassesController::class, 'adminUpdate'])->name('admin.price.adminUpdate');
 
 
 // Dashboard Prices End Here

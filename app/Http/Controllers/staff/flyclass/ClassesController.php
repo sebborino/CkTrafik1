@@ -35,22 +35,37 @@ class ClassesController extends Controller
         return back();
     }
 
-    public function delete(){
-        
+    public function delete(Request $request){
+        Classes::where('id',$request->id)->delete();
+
+        return back();
     }
 
     public function edit(){
         
     }
     
-    public function update(Request $request, $id){
+    public function adminUpdate(Request $request, $id){
         $count = count($request->fare) - 1;
-
+        
         for($x = 0; $x <= $count; $x++){
             Classes::where('destination_id', $id)->where('id',$request->id[$x])->update([
                 'fare' => $request->fare[$x],
                 'class' => $request->class[$x],
                 'ptc' => $request->ptc[$x],
+                'price' => $request->price[$x]
+            ]);
+        }
+
+        return back();
+
+    }
+
+    public function staffUpdate(Request $request, $id){
+        $count = count($request->price) - 1;
+        
+        for($x = 0; $x <= $count; $x++){
+            Classes::where('destination_id', $id)->where('id',$request->id[$x])->update([
                 'price' => $request->price[$x]
             ]);
         }

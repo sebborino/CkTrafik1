@@ -23,7 +23,13 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form action="{{ route('admin.price.update', ['id' => $destination->id])}}" method="post">
+                        @admin
+                        <form action="{{ route('admin.price.adminUpdate', ['id' => $destination->id])}}" method="post">
+                        @endadmin
+
+                        @staff
+                        <form action="{{ route('admin.price.staffUpdate', ['id' => $destination->id])}}" method="post">
+                        @endstaff
                         @csrf
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
@@ -48,7 +54,12 @@
                                         <td><input type="text" class="form-control" name="ptc[]" value="{{ $class->ptc }}"/></td>
                                         <td><input type="number" class="form-control" name="price[]" value="{{ $class->price }}"/></td>
                                         <input type="hidden" class="form-control" name="id[]" value="{{ $class->id }}"/>
-                                        <td><button class="btn btn-danger"><i class="fas fa-trash"></i></button></td>
+                                        <td>
+                                            <a class="btn btn-danger" data-toggle="modal" data-target="#Modal{{ $class->id}}"><i class="fas fa-trash">
+                                                </i></i>
+                                            </a>
+                                        </td>
+
                                         <td><button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button></td>
                                     @endadmin    
                                     @staff
@@ -80,7 +91,36 @@
                         @endif 
                     </form>
                     </div>
+                    @forelse($destination->classes as $class)
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="Modal{{ $class->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Price {{ $destination->name }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want delete {{ $class->ptc }} {{ $class->class }} class</p>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <form action="{{route('admin.price.delete', ['id' =>  $class->id]) }}" method="post">
+                                @csrf
+                                <button href="" type="sumbmit" class="btn btn-danger">Delete</button>
+                            </form>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Delete Modal End here -->
 
+                    @empty
+
+                    @endforelse
                     <button type="button" class="btn custom" data-toggle="modal" data-target="#Modal{{ $destination->id}}">
                         Add Prices
                       </button>
