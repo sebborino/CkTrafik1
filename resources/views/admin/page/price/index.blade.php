@@ -4,6 +4,8 @@
 
 @push('dataTable-css')
     <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 @endpush
 
  <!-- Begin Page Content -->
@@ -38,6 +40,9 @@
                                     <th>CLASS</th>
                                     <th>PTC</th>
                                     <th>Price(DKK)</th>
+                                    <th>
+                                        Rules
+                                    </th>
                                     @admin
                                         <th>Delete</th>
                                         <th>Edit</th>
@@ -53,9 +58,14 @@
                                         <td><input type="text" class="form-control" name="class[]" value="{{ $class->class }}"/></td>
                                         <td><input type="text" class="form-control" name="ptc[]" value="{{ $class->ptc }}"/></td>
                                         <td><input type="number" class="form-control" name="price[]" value="{{ $class->price }}"/></td>
+                                        <td>
+                                            <a class="btn btn-light"data-toggle="modal" data-target="#Rules{{ $class->id}}">
+                                                Rules
+                                            </a>
+                                        </td>
                                         <input type="hidden" class="form-control" name="id[]" value="{{ $class->id }}"/>
                                         <td>
-                                            <a class="btn btn-danger" data-toggle="modal" data-target="#Modal{{ $class->id}}"><i class="fas fa-trash">
+                                            <a class="btn btn-danger" data-toggle="modal" data-target="#Delete{{ $class->id}}"><i class="fas fa-trash">
                                                 </i></i>
                                             </a>
                                         </td>
@@ -93,7 +103,7 @@
                     </div>
                     @forelse($destination->classes as $class)
                     <!-- Delete Modal -->
-                    <div class="modal fade" id="Modal{{ $class->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="Delete{{ $class->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -118,13 +128,37 @@
                     </div>
                     <!-- Delete Modal End here -->
 
+                     <!-- Rules Modal -->
+                     <div class="modal fade" id="Rules{{ $class->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Rules For {{ $class->ptc }} {{ $class->class }} class</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <textarea name="editor1"></textarea>
+                                        <p></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>
+                            </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Rules Modal End here -->
+
                     @empty
 
                     @endforelse
+                    @admin
                     <button type="button" class="btn custom" data-toggle="modal" data-target="#Modal{{ $destination->id}}">
                         Add Prices
                       </button>
-                      
+                     @endadmin 
                       <!-- Modal -->
                       <div class="modal fade" id="Modal{{ $destination->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -199,8 +233,11 @@
 
 
 @endsection
-
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>
 @push('dataTable-scripts')
+
         <script src="/js/datatables/jquery.dataTables.min.js"></script>
         <script src="/js/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="/js/demo/datatables-demo.js"></script>
