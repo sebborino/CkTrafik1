@@ -14,7 +14,7 @@ class AddPhotoUrlToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('photo_url')->nullable();
+            //$table->text('photo_url')->nullable();
         });
             
     }

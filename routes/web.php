@@ -47,6 +47,7 @@ Route::post('/admin/user/create', [UserController::class, 'create'])->name('admi
 Route::get('/admin/airport/store', [AirportController::class, 'store'])->name('admin.airport.store');
 Route::get('/admin/airport/{IATA}', [AirportController::class, 'index'])->name('admin.airport.index');
 Route::post('/admin/airport/create', [AirportController::class, 'create'])->name('admin.airport.create');
+Route::post('/admin/airport/update/{id}', [AirportController::class, 'update'])->name('admin.airport.update');
 
 // Dashboard Airlines
 
@@ -57,8 +58,8 @@ Route::post('/admin/airline/update/{id}', [AirlineController::class, 'update'])-
 // Dashboard Flights
 
 Route::get('/admin/airline/flight', [FlightController::class, 'index'])->name('admin.flight.index');
-Route::post('/admin/arline/create', [AirlineController::class, 'create'])->name('admin.airline.create');
-Route::post('/admin/arline/update/{id}', [AirlineController::class, 'update'])->name('admin.airline.update');
+Route::post('/admin/arline/flight/create', [FlightController::class, 'create'])->name('admin.flight.create');
+Route::post('/admin/arline/flight/update/{id}', [FlightController::class, 'update'])->name('admin.flight.update');
 
 Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
 Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');

@@ -56,11 +56,18 @@
                             
                             <div class="form-group row"> 
                             
-                                <div class="col-md-12">
+                                <div class="col-md-9">
                                     <label for="name">Airline</label>
                                     <input type="text" name="name" class="form-control form-control-user
                                         @error('name') border border-danger @enderror"  id="name"
                                         placeholder="Airline Name" value="{{ old('name')}}">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="airline_code">Airline IATA</label>
+                                    <input type="text" name="airline_code" class="form-control form-control-user
+                                        @error('name') border border-danger @enderror"  id="airline_code"
+                                        placeholder="Airline IATA Code" value="{{ old('airline_code')}}">
                                 </div>
                                 
                             </div>
@@ -87,6 +94,7 @@
                                 <thead>
                                     <tr>
                                         <th>Airline Name</th>
+                                        <th>Airline IATA Code</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
@@ -95,6 +103,7 @@
                                     @forelse($airlines as $airline)
                                     <tr>
                                         <td>{{ $airline->name }}</td>
+                                        <td>{{ $airline->airline_code }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $airline->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -125,7 +134,13 @@
                                                 <label for="name">Airline Name</label>
                                                 <input type="text" name="name" class="form-control form-control-user"  id="name"
                                                     placeholder="Airline Name" value="{{ $airline->name }}">
-                                            </div>                              
+                                            </div>   
+                                            
+                                            <div class="form-group">
+                                                <label for="name">Airline IATA Code</label>
+                                                <input type="text" name="airline_code" class="form-control form-control-user"  id="airline_code"
+                                                    placeholder="Airline IATA Code" value="{{ $airline->airline_code }}">
+                                            </div>   
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

@@ -41,7 +41,17 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
 
-                            </div>   
+                            </div>
+                            
+                            @elseif(Session::has('update'))
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                <h4 class="alert-heading">Well done!</h4>
+                                <p>{!! Session::get('update') !!}</p>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+
+                            </div>
                             @endif
                             
                             <div class="form-group row"> 
@@ -111,6 +121,7 @@
                                         <th>Location</th>
                                         <th>Country Code</th>
                                         <th>Timezone</th>
+                                        <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
@@ -122,6 +133,11 @@
                                         <td>{{ $airport->country_code }}</td>
                                         <td>{{ $airport->location }}</td>
                                         <td>{{ $airport->timezone }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $airport->id}}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
                                         <td>{{ $airport->created_at }}</td>
                                     </tr>
                                     @empty
@@ -129,6 +145,62 @@
                                     @endforelse
                                 </tbody>
                             </table>
+                            @forelse($airports as $airport)
+                            <!-- Modal -->
+                            <div class="modal fade" id="Modal{{ $airport->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Change {{ $airport->name }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <form action="{{route('admin.airport.update', ['id' =>  $airport->id]) }}" method="post">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="name">Airport Name</label>
+                                                <input type="text" name="name" class="form-control form-control-user"  id="name"
+                                                    placeholder="Airport Name" value="{{ $airport->name }}">
+                                            </div>   
+                                            
+                                            <div class="form-group">
+                                                <label for="IATA">Airport IATA</label>
+                                                <input type="text" name="IATA" class="form-control form-control-user"  id="IATA"
+                                                    placeholder="Airport IATA" value="{{ $airport->IATA }}">
+                                            </div>   
+                                            <div class="form-group">
+                                                <label for="location">Airport Location</label>
+                                                <input type="text" name="location" class="form-control form-control-user"  id="location"
+                                                    placeholder="Airport Location" value="{{ $airport->location }}">
+                                            </div>   
+
+                                            <div class="form-group">
+                                                <label for="country_code">Airport Country Code</label>
+                                                <input type="text" name="country_code" class="form-control form-control-user"  id="country_code"
+                                                    placeholder="Airport Country Code" value="{{ $airport->country_code }}">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="timezone">Timezone</label>
+                                                <input type="text" name="timezone" class="form-control form-control-user"  id="timezone"
+                                                    placeholder="Timezone" value="{{ $airport->timezone }}">
+                                            </div>
+
+                                        </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>
+                                    <button type="sumbmit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                    </form>
+                                </div>
+                                </div>
+                            </div>
+                            @empty
+                            
+                            @endforelse
+                            <!-- /Modal end here -->
                         </div>
                     </div>
                 </div>

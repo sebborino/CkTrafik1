@@ -20,7 +20,7 @@
                 </div>
                     <div class="card-body">
                        @if($check_airline > 0)
-                        <form action="{{ route('admin.airline.create')}}" class="user" method="post">
+                        <form action="{{ route('admin.flight.create')}}" class="user" method="post">
                             @csrf
                             @if($errors->any())
                                 @foreach($errors->all() as $error)
@@ -56,11 +56,41 @@
                             
                             <div class="form-group row"> 
                             
-                                <div class="col-md-12">
-                                    <label for="name">Flights</label>
-                                    <input type="text" name="name" class="form-control form-control-user
-                                        @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Airline Name" value="{{ old('name')}}">
+                                <div class="col-md-6">
+                                    <label for="number">Flights Number</label>
+                                    <input type="text" name="number" class="form-control form-control-user
+                                        @error('number') border border-danger @enderror"  id="number"
+                                        placeholder="Flight Number" value="{{ old('number')}}">
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="boeing">Boeing</label>
+                                    <input type="text" name="boeing" class="form-control form-control-user
+                                        @error('boeing') border border-danger @enderror"  id="boeing"
+                                        placeholder="Boeing" value="{{ old('boeing')}}">
+                                </div>
+                                
+                            </div>
+
+                            <div class="form-group row"> 
+                            
+                                <div class="col-md-6">
+                                    <label for="name">Airline</label>
+                                    <select name="airline_id" class="form-control
+                                    @error('airline_id') border border-danger @enderror" id="airline">
+                                        <option value="0">Choose Airline</option>
+                                        @foreach($airlines as $airline)
+                                            <option value="{{ $airline->id}}">{{ $airline->name}}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="seats_capacity">Seats Capacity</label>
+                                    <input type="number" name="seats_capacity" class="form-control form-control-user
+                                        @error('seats_capacity') border border-danger @enderror"  id="seats_capacity"
+                                        placeholder="Seats Capacity" value="{{ old('seats_capacity')}}">
                                 </div>
                                 
                             </div>

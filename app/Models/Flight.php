@@ -13,7 +13,8 @@ class Flight extends Model
     protected $fillable = [
         'number',
         'seats_capacity',
-        'boeing'
+        'boeing',
+        'airline_id'
     ];
 
     public function airline()

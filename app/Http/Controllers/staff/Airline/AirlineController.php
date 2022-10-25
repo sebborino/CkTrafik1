@@ -17,10 +17,12 @@ class AirlineController extends Controller
     public function create(Request $request){
         $this->validate($request, [
             'name' => 'required|unique:airlines|max:255',
+            'airline_code' => 'required|unique:airlines|min:2|max:2',
         ]);
 
         Airline::create([
             'name' => $request->name,
+            'airline_code' => $request->airline_code
         ]);
         return back()->with('message', 'Nice! A new Airline has been added to the system');
     }
@@ -28,10 +30,12 @@ class AirlineController extends Controller
     public function update(Request $request){
         $this->validate($request, [
             'name' => 'required|unique:airlines|max:255',
+            'airline_code' => 'required|unique:airlines|min:2|max:2',
         ]);
 
         Airline::where('id',$request->id)->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'airline_code' => $request->airline_code
         ]);
 
         return back()->with('update', 'The Airline its up to date! Great!');
