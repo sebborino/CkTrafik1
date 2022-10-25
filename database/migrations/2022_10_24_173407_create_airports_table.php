@@ -15,11 +15,12 @@ class CreateAirportsTable extends Migration
     {
         Schema::create('airports', function (Blueprint $table) {
             $table->bigIncrements('id');
-                $table->string('IATA', 4);
-                $table->string('location');
-                $table->string('country_code');
-                $table->string('timezone');
-                $table->timestamps();
+            $table->string('name');
+            $table->string('IATA', 4);
+            $table->string('location');
+            $table->string('country_code');
+            $table->string('timezone');
+            $table->timestamps();
         });
     }
 

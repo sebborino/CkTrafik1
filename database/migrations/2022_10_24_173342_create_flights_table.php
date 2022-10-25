@@ -17,6 +17,7 @@ class CreateFlightsTable extends Migration
             $table->bigIncrements('id');
             $table->char('number', 7);
             $table->integer('seats_capacity')->default(165);
+            $table->string('boeing');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPhotoUrlToUsers extends Migration
+class CreateAirlinesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class AddPhotoUrlToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('photo_url')->nullable();
+        Schema::create('airlines', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
         });
-            
     }
 
     /**
@@ -26,8 +27,6 @@ class AddPhotoUrlToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('photo_url')->nullable();
-        });
+        Schema::dropIfExists('airlines');
     }
 }

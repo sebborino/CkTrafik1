@@ -60,18 +60,53 @@
             <!-- Nav Item - Pages Collapse Menu -->
             @admin
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menu-users"
+                    aria-expanded="true" aria-controls="menu-users">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Users</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="menu-users" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Users:</h6>
                         <a class="collapse-item" href="{{ route('admin.user.index')}}">Create User</a>
                         <a class="collapse-item" href="{{ route('admin.user.store')}}">All User</a>
                     </div>
                 </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-building"></i>
+                    <span>Airports</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Airports:</h6>
+                        <a class="collapse-item" href="{{ route('admin.airport.store')}}">Airports</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#airline"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-plane"></i>
+                    <span>Airlines & Flights</span>
+                </a>
+                <div id="airline" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Airlines:</h6>
+                        <a class="collapse-item" href="{{ route('admin.airline.index') }}">Airlines</a>
+                        <a class="collapse-item" href="{{ route('admin.flight.index') }}">Flights</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="">
+                    <i class="fas fa-plane"></i>
+                    <span>Airlines</span></a>
             </li>
             @endadmin
 
@@ -368,7 +403,6 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->

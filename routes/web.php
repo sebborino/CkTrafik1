@@ -8,8 +8,12 @@ use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Staff\Airline\AirlineController;
+use App\Http\Controllers\Staff\Airline\FlightController;
+use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
 use App\Http\Controllers\Staff\flyclass\DestinationController;
+use App\Models\Airport;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +41,24 @@ Route::get('/admin/user', [UserController::class, 'index'])->name('admin.user.in
 Route::get('/admin/user/store', [UserController::class, 'store'])->name('admin.user.store');
 Route::post('/admin/user/create', [UserController::class, 'create'])->name('admin.user.create');
 
+// Dashboard Airports
 
 
-// Dashboard Destinations
+Route::get('/admin/airport/store', [AirportController::class, 'store'])->name('admin.airport.store');
+Route::get('/admin/airport/{IATA}', [AirportController::class, 'index'])->name('admin.airport.index');
+Route::post('/admin/airport/create', [AirportController::class, 'create'])->name('admin.airport.create');
+
+// Dashboard Airlines
+
+Route::get('/admin/airline', [AirlineController::class, 'index'])->name('admin.airline.index');
+Route::post('/admin/airline/create', [AirlineController::class, 'create'])->name('admin.airline.create');
+Route::post('/admin/airline/update/{id}', [AirlineController::class, 'update'])->name('admin.airline.update');
+
+// Dashboard Flights
+
+Route::get('/admin/airline/flight', [FlightController::class, 'index'])->name('admin.flight.index');
+Route::post('/admin/arline/create', [AirlineController::class, 'create'])->name('admin.airline.create');
+Route::post('/admin/arline/update/{id}', [AirlineController::class, 'update'])->name('admin.airline.update');
 
 Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
 Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');
