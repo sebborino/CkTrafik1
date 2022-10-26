@@ -132,13 +132,13 @@
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label for="name">Airline Name</label>
-                                                <input type="text" name="name" class="form-control form-control-user"  id="name"
+                                                <input type="text" name="update_name" class="form-control form-control-user"  id="name"
                                                     placeholder="Airline Name" value="{{ $airline->name }}">
                                             </div>   
                                             
                                             <div class="form-group">
                                                 <label for="name">Airline IATA Code</label>
-                                                <input type="text" name="airline_code" class="form-control form-control-user"  id="airline_code"
+                                                <input type="text" name="update_airline_code" class="form-control form-control-user"  id="airline_code"
                                                     placeholder="Airline IATA Code" value="{{ $airline->airline_code }}">
                                             </div>   
                                         </div>

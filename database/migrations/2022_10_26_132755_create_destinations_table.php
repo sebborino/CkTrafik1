@@ -14,8 +14,18 @@ class CreateDestinationsTable extends Migration
     public function up()
     {
         Schema::create('destinations', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->bigIncrements('id');
+
+            $table->foreignId('from_id')->constrained('airports');  
+            $table->foreignId('to_id')->constrained('airports');
+            
+            $table->unsignedBigInteger('flight_id');
+            $table->foreign('flight_id')
+            ->references('id')
+            ->on('flights')
+            ->onDelete('cascade');
+
+            $table->softDeletes('cancelled_at');    
             $table->timestamps();
         });
     }

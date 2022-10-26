@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Airports</h1>
+    <h1 class="h3 mb-2 text-gray-800">Create Aircraft</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -19,8 +19,8 @@
                     <h6 class="m-0 font-weight-bold text-primary">Table</h6>
                 </div>
                     <div class="card-body">
-
-                        <form action="{{ route('admin.airport.create')}}" class="user" method="post">
+                       @if($check_airline > 0)
+                        <form action="{{ route('admin.aircraft.create')}}" class="user" method="post">
                             @csrf
                             @if($errors->any())
                                 @foreach($errors->all() as $error)
@@ -57,47 +57,52 @@
                             <div class="form-group row"> 
                             
                                 <div class="col-md-6">
-                                    <label for="name">Airports</label>
-                                    <input type="text" name="name" class="form-control form-control-user
-                                        @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Airport Name" value="{{ old('name')}}">
+                                    <label for="registration">Aircraft Registration</label>
+                                    <input type="text" name="registration" class="form-control form-control-user
+                                        @error('number') border border-danger @enderror"  id="registration"
+                                        placeholder="Aircraft Registration" value="{{ old('registration')}}">
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="IATA">IATA</label>
-                                    <input type="text" name="IATA" class="form-control form-control-user
-                                        @error('IATA') border border-danger @enderror"  id="IATA"
-                                        placeholder="IATA Code" value="{{ old('IATA')}}">
+                                    <label for="boeing">Aircraft Type</label>
+                                    <input type="text" name="boeing" class="form-control form-control-user
+                                        @error('boeing') border border-danger @enderror"  id="boeing"
+                                        placeholder="Aircraft Type" value="{{ old('boeing')}}">
                                 </div>
+                                
                             </div>
+
                             <div class="form-group row"> 
+                            
+                                <div class="col-md-6">
+                                    <label for="name">Airline</label>
+                                    <select name="airline_id" class="form-control
+                                    @error('airline_id') border border-danger @enderror" id="airline">
+                                        <option value="0">Choose Airline</option>
+                                        @foreach($airlines as $airline)
+                                            <option value="{{ $airline->id}}">{{ $airline->name}}</option>
+                                        @endforeach
+                                    </select>
 
-                                <div class="col-md-4">
-                                    <label for="location">location</label>
-                                    <input type="text" name="location" class="form-control form-control-user
-                                        @error('location') border border-danger @enderror"  id="location"
-                                        placeholder="Location" value="{{ old('location')}}">
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="country_code">Country Code</label>
-                                    <input type="text" name="country_code" class="form-control form-control-user
-                                        @error('country_code') border border-danger @enderror"  id="country_code"
-                                        placeholder="Contry Code" value="{{ old('country_code')}}">
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="timezone">Timezone</label>
-                                    <input type="text" name="timezone" class="form-control form-control-user
-                                        @error('timezone') border border-danger @enderror"  id="timezone"
-                                        placeholder="Full Name" value="{{ old('timezone')}}">
+                                <div class="col-md-6">
+                                    <label for="seats_capacity">Seats Capacity</label>
+                                    <input type="number" name="seats_capacity" class="form-control form-control-user
+                                        @error('seats_capacity') border border-danger @enderror"  id="seats_capacity"
+                                        placeholder="Seats Capacity" value="{{ old('seats_capacity')}}">
                                 </div>
                                 
                             </div>
                             <button type="submit" class="btn custom btn-user btn-block">
-                                Create Airport
+                                Create Aircraft
                             </button>
                         </form>
+                        @else
+                            <h5 class="text">Before you can make any flights, you have to make aleast a airline, you can connect your flights with! Go to Create
+                                <a href="{{ route('admin.airline.index')}}">Airline Here</a>
+                            </h5>
+                        @endif
 
                         
                     </div>
@@ -109,85 +114,84 @@
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Created Airports</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Created Aircraft</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Airport Name</th>
-                                        <th>IATA</th>
-                                        <th>Location</th>
-                                        <th>Country Code</th>
-                                        <th>Timezone</th>
+                                        <th>Aircraft Registration</th>
+                                        <th>Aircraft Type</th>
+                                        <th>Airline</th>
+                                        <th>Seats Capacity</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($airports as $airport)
+                                    
+                                    @forelse($aircrafts as $aircraft)
                                     <tr>
-                                        <td><a href="{{ route('admin.airport.index', ['IATA' => $airport->IATA, 'id' => $airport->id])}}">{{ $airport->name }}</a></td>
-                                        <td>{{ $airport->IATA }} IATA</td>
-                                        <td>{{ $airport->country_code }}</td>
-                                        <td>{{ $airport->location }}</td>
-                                        <td>{{ $airport->timezone }}</td>
+                                        
+                                        <td>{{ $aircraft->registration }}</td>
+                                        <td>{{ $aircraft->boeing }}</td>
+                                        <td>{{ $aircraft->airline->name }}</td>
+                                        <td>{{ $aircraft->seats_capacity }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $airport->id}}">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $aircraft->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </button>
                                         </td>
-                                        <td>{{ $airport->created_at }}</td>
+                                        <td>{{ $aircraft->created_at }}</td>
                                     </tr>
                                     @empty
-                                        <p>No Airports in the system!</p>
+                                        <p>No Aircrafts</p>
                                     @endforelse
                                 </tbody>
                             </table>
-                            @forelse($airports as $airport)
+                            @forelse($aircrafts as $aircraft)
                             <!-- Modal -->
-                            <div class="modal fade" id="Modal{{ $airport->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="Modal{{ $aircraft->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Change {{ $airport->name }}</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Change Aircraft {{ $aircraft->registration }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     </div>
-                                    <form action="{{route('admin.airport.update', ['id' =>  $airport->id]) }}" method="post">
+                                    <form action="{{route('admin.aircraft.update', ['id' =>  $aircraft->id]) }}" method="post">
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="name">Airport Name</label>
-                                                <input type="text" name="update_name" class="form-control form-control-user"  id="name"
-                                                    placeholder="Airport Name" value="{{ $airport->name }}">
-                                            </div>   
+                                                <label for="registration">Aircraft Registration</label>
+                                                <input type="text" name="update_registration" class="form-control form-control-user"  id="registration"
+                                                    placeholder="Aircraft Registration" value="{{ $aircraft->registration }}">
+                                            </div> 
                                             
                                             <div class="form-group">
-                                                <label for="IATA">Airport IATA</label>
-                                                <input type="text" name="update_IATA" class="form-control form-control-user"  id="IATA"
-                                                    placeholder="Airport IATA" value="{{ $airport->IATA }}">
-                                            </div>   
-                                            <div class="form-group">
-                                                <label for="location">Airport Location</label>
-                                                <input type="text" name="update_location" class="form-control form-control-user"  id="location"
-                                                    placeholder="Airport Location" value="{{ $airport->location }}">
-                                            </div>   
+                                                <label for="boeing">Boeing</label>
+                                                <input type="text" name="update_boeing" class="form-control form-control-user"  id="boeing"
+                                                    placeholder="Boeing" value="{{ $aircraft->boeing }}">
+                                            </div> 
 
                                             <div class="form-group">
-                                                <label for="country_code">Airport Country Code</label>
-                                                <input type="text" name="update_country_code" class="form-control form-control-user"  id="country_code"
-                                                    placeholder="Airport Country Code" value="{{ $airport->country_code }}">
-                                            </div>
-                                            
-                                            <div class="form-group">
-                                                <label for="timezone">Timezone</label>
-                                                <input type="text" name="update_timezone" class="form-control form-control-user"  id="timezone"
-                                                    placeholder="Timezone" value="{{ $airport->timezone }}">
+                                                <label for="airline">Airlines</label>
+                                            <select name="update_airline_id" class="form-control" id="airline">
+                                                    <option value="{{ $aircraft->airline->id}}">{{ $aircraft->airline->name}}</option>
+                                                    @foreach($airlines as $airline)
+                                                        @continue($airline == $aircraft->airline)
+                                                        <option value="{{ $airline->id}}">{{ $airline->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="seats_capacity">Seats Capacity</label>
+                                                <input type="text" name="update_seats_capacity" class="form-control form-control-user"  id="seats_capacity"
+                                                    placeholder="Airline Name" value="{{ $aircraft->seats_capacity }}">
+                                            </div> 
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

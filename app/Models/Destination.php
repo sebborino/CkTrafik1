@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Flight;
+use App\Models\Airport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Destination extends Model
@@ -12,12 +15,25 @@ class Destination extends Model
     protected $table = 'destinations';
 
     protected $fillable = [
-        'name'
+        'from_id',
+        'to_id',
+        'flight_id',  
     ];
 
-    public function classes()
+    protected $dates = ['cancelled_at'];
+
+    public function flight()
     {
-        return $this->hasMany(Classes::class);
+        return $this->belongsTo(Flight::class);
     }
 
+    public function from()
+    {
+        return $this->belongsTo(Airport::class, 'from_id', 'id');
+    }
+
+    public function to()
+    {
+        return $this->belongsTo(Airport::class, 'to_id', 'id');
+    }
 }

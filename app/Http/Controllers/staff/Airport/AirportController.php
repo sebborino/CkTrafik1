@@ -42,21 +42,22 @@ class AirportController extends Controller
         return back()->with('message', 'Nice! A new Aiport has been added to the system');
     }
 
-    public function update(Request $request){
-        $this->validate($request, [
-            'name' => 'required|unique:airports|max:255',
-            'IATA' => 'required|unique:airports|max:255',
-            'location' => 'required',
-            'country_code' => 'required',
-            'timezone' => 'required',
-        ]);
+    public function update(Request $request, Airport $airport){
 
+        $this->validate($request, [
+            'update_name' => 'required|unique:airports,name,'. $request->id .'|max:255',
+            'update_IATA' => 'required|unique:airports,IATA,'. $request->id .'|max:255',
+            'update_location' => 'required',
+            'update_country_code' => 'required',
+            'update_timezone' => 'required',
+        ]);
+        
         Airport::where('id',$request->id)->update([
-            'name' => $request->name,
-            'IATA' => $request->IATA,
-            'location' => $request->location,
-            'country_code' => $request->country_code,
-            'timezone' => $request->timezone
+            'name' => $request->update_name,
+            'IATA' => $request->update_IATA,
+            'location' => $request->update_location,
+            'country_code' => $request->update_country_code,
+            'timezone' => $request->update_timezone
         ]);
         return back()->with('update', 'Nice! The Airport Details is up to date! Great!');
     }

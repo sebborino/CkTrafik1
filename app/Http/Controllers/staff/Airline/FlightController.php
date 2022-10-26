@@ -2,54 +2,44 @@
 
 namespace App\Http\Controllers\Staff\Airline;
 
-use App\Models\Flight;
 use App\Models\Airline;
+use App\Models\Flight;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class FlightController extends Controller
 {
     public function index(){
         $flights = Flight::all();
-        $check_airline = Airline::count();
-        $airlines = Airline::all();
 
         return view('admin.page.airline.flight.index',[
             'flights' => $flights,
-            'check_airline' => $check_airline,
-            'airlines' => $airlines,
         ]);
     }
 
     public function create(Request $request){
-        
+       
         $this->validate($request, [
-            'number' => 'required|unique:airlines|max:255',
-            'boeing' => 'required|max:255',
-            'airline_id' =>'required|numeric|min:0|not_in:0',
-            'seats_capacity' => 'required|numeric',
-
+            'route' => 'required|unique:flights|max:255',
         ]);
 
         Flight::create([
-            'number' => $request->number,
-            'boeing' => $request->boeing,
-            'seats_capacity' => $request->seats_capacity,
-            'airline_id' => $request->airline_id
-        ])->dd();
+            'route' => $request->route,
+        ]);
 
-        return back()->with('message', 'Nice! A new Airline has been added to the system');
+        return back()->with('message', 'Nice! A new Flight has been added to the system');
     }
 
     public function update(Request $request){
         $this->validate($request, [
-            'name' => 'required|unique:airlines|max:255',
+            'update_route' => 'required|unique:flights,route,'. $request->id . '|max:255',
         ]);
 
         Flight::where('id',$request->id)->update([
-            'name' => $request->name
+            'route' => $request->update_route
         ]);
 
-        return back()->with('update', 'The Airline its up to date! Great!');
+        return back()->with('update', 'The Flight its up to date! Great!');
     }
 }

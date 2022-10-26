@@ -14,10 +14,8 @@ class CreateFlightsTable extends Migration
     public function up()
     {
         Schema::create('flights', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->char('number', 7);
-            $table->integer('seats_capacity')->default(165);
-            $table->string('boeing');
+            $table->id();
+            $table->string('route');
             $table->timestamps();
         });
     }

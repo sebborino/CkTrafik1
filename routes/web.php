@@ -8,6 +8,7 @@ use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Staff\Airline\AircraftController;
 use App\Http\Controllers\Staff\Airline\AirlineController;
 use App\Http\Controllers\Staff\Airline\FlightController;
 use App\Http\Controllers\Staff\Airport\AirportController;
@@ -55,6 +56,13 @@ Route::get('/admin/airline', [AirlineController::class, 'index'])->name('admin.a
 Route::post('/admin/airline/create', [AirlineController::class, 'create'])->name('admin.airline.create');
 Route::post('/admin/airline/update/{id}', [AirlineController::class, 'update'])->name('admin.airline.update');
 
+// Dashboard Aircraft
+
+Route::get('/admin/airline/aircraft', [AircraftController::class, 'index'])->name('admin.aircraft.index');
+Route::post('/admin/arline/aircraft/create', [AircraftController::class, 'create'])->name('admin.aircraft.create');
+Route::post('/admin/arline/aircraft/update/{id}', [AircraftController::class, 'update'])->name('admin.aircraft.update');
+
+
 // Dashboard Flights
 
 Route::get('/admin/airline/flight', [FlightController::class, 'index'])->name('admin.flight.index');
@@ -63,6 +71,7 @@ Route::post('/admin/arline/flight/update/{id}', [FlightController::class, 'updat
 
 Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
 Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');
+Route::post('/admin/destination/update/{id}', [DestinationController::class, 'update'])->name('admin.destination.update');
 
 // Dashboard Destinations End Here
 
