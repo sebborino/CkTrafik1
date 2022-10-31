@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Airline;
+namespace App\Http\Controllers\Staff\Flight;
 
-use App\Models\Airline;
 use App\Models\Flight;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class FlightController extends Controller
 {
     public function index(){
         $flights = Flight::all();
 
-        return view('admin.page.airline.flight.index',[
+        return view('admin.page.flight.index',[
             'flights' => $flights,
         ]);
     }

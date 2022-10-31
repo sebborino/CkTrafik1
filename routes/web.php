@@ -10,10 +10,11 @@ use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\Staff\Airline\AircraftController;
 use App\Http\Controllers\Staff\Airline\AirlineController;
-use App\Http\Controllers\Staff\Airline\FlightController;
+use App\Http\Controllers\Staff\Flight\FlightController;
 use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
-use App\Http\Controllers\Staff\flyclass\DestinationController;
+use App\Http\Controllers\Staff\Destination\DestinationController;
+use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
 
 /*
@@ -65,16 +66,22 @@ Route::post('/admin/arline/aircraft/update/{id}', [AircraftController::class, 'u
 
 // Dashboard Flights
 
-Route::get('/admin/airline/flight', [FlightController::class, 'index'])->name('admin.flight.index');
-Route::post('/admin/arline/flight/create', [FlightController::class, 'create'])->name('admin.flight.create');
-Route::post('/admin/arline/flight/update/{id}', [FlightController::class, 'update'])->name('admin.flight.update');
+Route::get('/admin/flight', [FlightController::class, 'index'])->name('admin.flight.index');
+Route::post('/admin/flight/create', [FlightController::class, 'create'])->name('admin.flight.create');
+Route::post('/admin/flight/update/{id}', [FlightController::class, 'update'])->name('admin.flight.update');
+
+// Dashboard Destinations
 
 Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
 Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');
 Route::post('/admin/destination/update/{id}', [DestinationController::class, 'update'])->name('admin.destination.update');
 
 // Dashboard Destinations End Here
+// Dashboard Travels Start Here
 
+Route::get('/admin/travels', [TravelController::class, 'index'])->name('admin.travels.index');
+Route::get('/admin/travels/calender/{route}', [TravelController::class, 'calender'])->name('admin.travels.calender');
+// Dashboard Travels End Here
 // Dashboard Prices
 
 Route::get('/admin/prices', [ClassesController::class, 'index'])->name('admin.price.index');

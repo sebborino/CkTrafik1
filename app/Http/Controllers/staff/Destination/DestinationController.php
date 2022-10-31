@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Staff\flyclass;
+namespace App\Http\Controllers\Staff\Destination;
 
-use App\Models\Airport;
+
 use App\Models\Flight;
-use App\Http\Controllers\Controller;
+use App\Models\Airport;
 use App\Models\Destination;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DestinationController extends Controller
 {
@@ -75,6 +76,5 @@ class DestinationController extends Controller
 
     public function delete(){
         
-    }    
-
+    }
 }
