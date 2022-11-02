@@ -29,7 +29,7 @@ class CreateTravelsTable extends Migration
             ->on('aircrafts')
             ->onDelete('cascade');
             
-            $table->unsignedBigInteger('seat_id');
+            $table->unsignedBigInteger('seat_id')->nullable();
             $table->foreign('seats_id')
             ->references('id')
             ->on('seats')
@@ -41,7 +41,6 @@ class CreateTravelsTable extends Migration
             $table->date('arrival_date');
             $table->time('arrival_time');
             $table->foreignId('stopover_id')->constrained('airports')->nullable();  
-            $table->date('stopover_date')->nullable();
             $table->time('stopover_departure_datetime')->nullable();
             $table->time('stopover_arrival_datetime')->nullable();              
             $table->timestamp('cancelled_at')->nullable();

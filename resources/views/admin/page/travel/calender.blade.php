@@ -2,6 +2,12 @@
 
 @section('content')
 
+@push('datepicker-css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="/datepicker/css/bootstrap.css" />
+@endpush
+
 @push('dataTable-css')
     <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 @endpush
@@ -10,14 +16,80 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Route {{ $route }}</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{ $destination->from->IATA}}-{{ $destination->to->IATA}}</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Table</h6>
+            <div class="card shadow mb-4">  
+                <div class="card-header">
+
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex">
+                            <form method="post" action="{{ route('admin.travel.calender', ['id' => $destination->id])}}">
+                                @csrf
+                                <button type="submit" name="subDate" value="{{ $startOfCalendar->copy()->endOfWeek()->subMonths() }}" class="nav-link btn btn-success">
+                                    <i class="fas fa-arrow-left mr-1"></i>
+                                    
+                                    {{ $startOfCalendar->copy()->endOfWeek()->subMonth()->monthName }}
+                                </button>
+                            </form>
+                        </div>
+                        <div class="d-flex">
+                            <button type="button" class="nav-link btn btn-primary" data-toggle="modal" data-target="#ModalDatetimepicker" >
+                                Choose Date
+                                <i class="fas fa-calendar ml-1"></i>
+                            </button>
+                        </div>
+                        <div class="d-flex">
+                            <form method="post" action="{{ route('admin.travel.calender', ['id' => $destination->id])}}">
+                                @csrf
+                                <button type="submit" name="addDate" value="{{ $startOfCalendar->copy()->endOfWeek()->addMonths() }}" class="nav-link btn btn-success">
+                                    {{ $startOfCalendar->copy()->endOfWeek()->addMonth()->monthName }}
+                                    <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                  <!-- Modal -->
+                <div class="modal fade" id="ModalDatetimepicker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Choose Date</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <form action="{{ route('admin.travel.calender',['id' => $destination->id])}}" method="post">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="container">
+                                        <div class="input-group">
+                                            <div class='input-group date' id='datetimepicker'>
+                                                <input type='text' name="date" class="form-control" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-primary" type="button">
+                                                    <i class="fas fa-calendar"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                     </div>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>
+                        <button type="sumbmit" class="btn btn-primary">Show Calender</button>
+                        </div>
+                        </form>
+                    </div>
+                z</div>
                 </div>
+                <!-- /Modal end here -->
+                </form>
                     <div class="card-body">
 
                             @if($errors->any())
@@ -42,18 +114,6 @@
                             </div>   
                             @endif
                             
-                            <div class="row mb-4">
-                                <ul class="nav nav-tabs">
-                                    <li class="nav-item">
-                                      <a class="nav-link active" aria-current="page" href="{{ route('admin.travels.calender', ['route' => $route ])}}">All</a>
-                                    </li>
-                                    @foreach($destinations as $destination)
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">{{ $destination->from->IATA}} - {{ $destination->to->IATA}}</a>
-                                        </li>
-                                    @endforeach
-                                  </ul> 
-                                </div>
                         <div class="calendar">
 
                             <div class="month-year">
@@ -72,12 +132,12 @@
                                             $extraClass = $startOfCalendar->format('m') != $date->format('m') ? 'dull' : '';
                                             $extraClass .= $startOfCalendar->isToday() ? ' today' : ''; 
                                         @endphp
-                                        <div  class="day {{$extraClass}}">
+                                        <a href="{{ route('admin.travel.store', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $destination->id])}}" class="day {{$extraClass}}">
                                             <div class="calender-box">
 
                                             </div>
-                                            <span class="content">{{ $startOfCalendar->format('d') }}</span>
-                                        </div>
+                                            <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                        </a>
                                     {{ $startOfCalendar->addDay()->format('') }}
                                     @endwhile
                                 </div>
@@ -94,8 +154,25 @@
 
 @endsection
 
+@push('datepicker-js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker').datetimepicker({
+                viewMode: 'years',
+                format: '01-MM-YYYY'
+            })
+        });
+        </script>
+@endpush
+
+
+
 @push('dataTable-scripts')
-        <script src="/js/datatables/jquery.dataTables.min.js"></script>
-        <script src="/js/datatables/dataTables.bootstrap4.min.js"></script>
-        <script src="/js/demo/datatables-demo.js"></script>
+    <script src="/js/datatables/jquery.dataTables.min.js"></script>
+    <script src="/js/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/js/demo/datatables-demo.js"></script>
 @endpush

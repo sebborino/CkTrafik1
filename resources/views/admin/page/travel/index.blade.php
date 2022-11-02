@@ -2,6 +2,9 @@
 
 @section('content')
     
+@push('dataTable-css')
+    <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+@endpush
 
 <div class="container-fluid">
 
@@ -127,36 +130,35 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <table class="table table-borderless">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Destinations</th>
-                                <th>Route</th>
-                                <th>Show Travel Calender</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($destinations as $destination)
-                            <tr>
-                                <td>{{ $loop->index }}</td>
-                                <td>
-                                    {{ $destination->from->IATA }} - {{ $destination->to->IATA }}
-                                </td>
-                                <td>
-                                    {{ $destination->flight->route }}
-                                </td>
-                                <td>
-                                  <a href="">
-                                    <i class="fas fa-calendar"></i>
-                                </a>  
-                                </td>
-                            </tr>
-                            @empty
-                            0 Destinations!! Create Destinations <a href="{{ route('admin.destination.index')}}">here</a> 
-                            @endforelse
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Destination</th>
+                                    <th>Flight Route</th>
+                                    <th>Calender</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                @forelse($destinations as $destination)
+                                <tr>
+                                    <td>{{ $destination->from->IATA}}-{{ $destination->to->IATA}}</td>
+                                    <td>{{ $destination->flight->route }}</td>
+                                    <td>
+                                        <a href="{{ route('admin.travel.calender', ['id' => $destination->id])}}">
+                                        Go To
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                @empty
+                                    <p>No Destinations! Create Destinations <a href="{{ route('admin.destination.index')}}">Here</a> </p>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -365,3 +367,9 @@
     <script src="/js/demo/chart-area-demo.js"></script>
     <script src="/js/demo/chart-pie-demo.js"></script>
 @endpush    
+
+@push('dataTable-scripts')
+        <script src="/js/datatables/jquery.dataTables.min.js"></script>
+        <script src="/js/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="/js/demo/datatables-demo.js"></script>
+@endpush

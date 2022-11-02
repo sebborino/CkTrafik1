@@ -93,7 +93,7 @@
                                     @forelse($flights as $flight)
                                     <tr>
                                         
-                                        <td><a href="{{ route('admin.travels.calender', ['route' => $flight->route ])}}">{{ $flight->route }} </a></td>
+                                        <td>{{ $flight->route }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $flight->id}}">
                                                 <i class="fas fa-pencil-alt"></i>

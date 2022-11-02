@@ -79,8 +79,10 @@ Route::post('/admin/destination/update/{id}', [DestinationController::class, 'up
 // Dashboard Destinations End Here
 // Dashboard Travels Start Here
 
-Route::get('/admin/travels', [TravelController::class, 'index'])->name('admin.travels.index');
-Route::get('/admin/travels/calender/{route}', [TravelController::class, 'calender'])->name('admin.travels.calender');
+Route::get('/admin/travel', [TravelController::class, 'index'])->name('admin.travel.index');
+Route::any('/admin/travel/calender/{id}', [TravelController::class, 'calender'])->name('admin.travel.calender');
+Route::get('/admin/travel/calender/{id}/{date}', [TravelController::class, 'store'])->name('admin.travel.store');
+Route::post('/admin/travel/create/{id}/{date}', [TravelController::class, 'create'])->name('admin.travel.create');
 // Dashboard Travels End Here
 // Dashboard Prices
 

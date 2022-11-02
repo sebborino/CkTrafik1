@@ -10,6 +10,7 @@ class Airport extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'IATA',
         'location',

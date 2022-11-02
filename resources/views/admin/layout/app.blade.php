@@ -17,6 +17,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
+    @stack('datepicker-css')
     @stack('dataTable-css')    
 
     <!-- Custom styles for this template-->
@@ -463,7 +464,7 @@
 </div>
 
 
-    @stack('dataTable-scripts')
+    
 
     <!-- Bootstrap core JavaScript-->
     <script src="/js/jquery/jquery.min.js"></script>
@@ -471,6 +472,9 @@
 
     <!-- Core plugin JavaScript-->
     <script src="/js/jquery-easing/jquery.easing.min.js"></script>
+
+    @stack('datepicker-js')
+    @stack('dataTable-scripts')
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>

@@ -23,7 +23,7 @@
 
 .month-year {
     position: absolute;
-    top:50%;
+    top:300px;
     right: -27px;
     font-size: 2rem;
     line-height: 1;
@@ -104,4 +104,8 @@
     width: auto;
     border-left:solid 0.5px #626c79;
     border-bottom:solid 0.5px #626c79;
+}
+
+.bootstrap-datetimepicker-wigdet{
+    display:block;
 }
