@@ -16,10 +16,11 @@ class CreateSeatsTable extends Migration
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
             $table->integer('seats_total');
-            $table->integer('seats_remaning');
-            $table->integer('seats_occupied');
-            $table->integer('add_seats');
-            $table->integer('close_seats');
+            $table->foreignId('travel_id')->constrained('travels');  
+            $table->integer('seats_remaning')->default(0);
+            $table->integer('seats_occupied')->default(0);
+            $table->integer('add_seats')->default(0);
+            $table->integer('close_seats')->default(0);
             $table->timestamps();
         });
     }

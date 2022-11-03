@@ -51,7 +51,6 @@
                         </div>
                     </div>
 
-
                   <!-- Modal -->
                 <div class="modal fade" id="ModalDatetimepicker" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -132,12 +131,24 @@
                                             $extraClass = $startOfCalendar->format('m') != $date->format('m') ? 'dull' : '';
                                             $extraClass .= $startOfCalendar->isToday() ? ' today' : ''; 
                                         @endphp
+                                        @foreach($travels as $travel)
+                                        @if(Carbon\Carbon::createFromDate($travel->departure_date)->format('d-m-Y') == $startOfCalendar->format('d-m-Y'))
+                                        <a href="{{ route('admin.travel.edit', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $travel->id])}}" class="day {{$extraClass}}">
+                                            <div class="calender-box text-center pt-3">                              
+                                                <i class="fas fa-plane" style="font-size:40px"></i>
+                                                <h6>{{ $travel->destination->from->IATA}} - {{ $travel->stopover->IATA}} - {{ $travel->destination->to->IATA}}</h6>
+                                            </div>
+                                            <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                        </a>
+                                        @else
                                         <a href="{{ route('admin.travel.store', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $destination->id])}}" class="day {{$extraClass}}">
-                                            <div class="calender-box">
+                                            <div class="calender-box text-center pt-3">                              
 
                                             </div>
                                             <span class="content">{{ $startOfCalendar->format('d M') }} </span>
                                         </a>
+                                        @endif
+                                        @endforeach
                                     {{ $startOfCalendar->addDay()->format('') }}
                                     @endwhile
                                 </div>

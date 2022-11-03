@@ -29,8 +29,8 @@
                         <div class="p-5">
                             <div class="text-center">
                             </div>
-                           
-                            <form action="{{ route('admin.travel.create', ['id' => $destination->id , 'date' => $date])}}" class="user" method="post">
+                           @dd($travel->destination_id)
+                            <form action="{{ route('admin.travel.create', ['id' => $travel->id , 'date' => $date])}}" class="user" method="post">
                                 @csrf
                                 @if($errors->any())
                                     @foreach($errors->all() as $error)

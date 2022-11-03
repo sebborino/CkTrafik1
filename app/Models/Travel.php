@@ -16,12 +16,11 @@ class Travel extends Model
         'aircraft_id',
         'seat_id',
         'departure_date',
-        'depature_time',
+        'departure_time',
         'duration',
         'arrival_date',
         'arrival_time',
         'stopover_id',
-        'stopover_time',
         'stopover_departure_datetime',
         'stopover_arrival_datetime',
         'cancelled_at'
