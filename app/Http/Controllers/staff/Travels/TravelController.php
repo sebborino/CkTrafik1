@@ -23,12 +23,119 @@ class TravelController extends Controller
         ]);
     }
 
+    public function period(){
+        $destinations = Destination::with('from','to','flight')->get();
+        $stopovers = Airport::all();
+        $aircrafts = Aircraft::with('airline')->get();
+
+        $dayLabels = [ 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat','Sun'];
+        
+        return view('admin.page.travel.period',[
+            'destinations' => $destinations,
+            'stopovers' => $stopovers,
+            'aircrafts' => $aircrafts,
+            'dayLabels' => $dayLabels
+        ]);
+    }
+
+    public function create_period(Request $request){
+
+            dd($request->days->firstWeekDay );
+            //$startOfCalendar = $date->copy()->firstOfMonth()->startOfWeek(Carbon::MONDAY);
+            
+       
+            $this->validate($request, [
+                'departure_time' => 'required|date_format:H:i',
+                'duration' => 'required|date_format:H:i',
+                'arrival_date' => 'required|date|date_format:d-m-Y|after_or_equal:date',
+                'arrival_time' => 'required|date_format:H:i',
+                
+                // Stopover validation
+                'stopover_id' => 'required_with:stop_arrival_date,stop_arrival_time,stop_departure_date,stop_departure_time|',
+    
+                'stop_arrival_date' => 'required_with:stopover_id,stop_arrival_time,stop_departure_date,stop_departure_time|',
+    
+                'stop_arrival_time' => 'required_with:stopover_id,stop_arrival_date,stop_departure_date,stop_departure_time|',
+    
+                'stop_departure_date' => 'required_with:stopover_id,stop_arrival_date,stop_arrival_time,stop_departure_time|',
+    
+                'stop_departure_time' => 'required_with:stopover_id,stop_arrival_date,stop_arrival_time,stop_departure_date|',
+    
+                // Aircraft validation
+                'aircraft_id' => 'required|exists:aircrafts,id|numeric|min:0|not_in:0',
+            ]);
+    
+            $seats_total = Aircraft::find($request->aircraft_id)->pluck('seats_capacity');
+    
+            $arrival_datetime = Carbon::createFromDate($request->arrival_date . ' ' . $request->arrival_time);
+            $departure_datetime = Carbon::createFromDate($request->date . ' ' . $request->departure_time);
+    
+            $seats_total = Aircraft::find($request->aircraft_id)->value('seats_capacity');
+    
+            $departure_date = Carbon::createFromDate($request->date);
+            $arrival_date = Carbon::createFromDate($request->arrival_date);
+           
+        if($request->stop_arrival_date  != null && $request->stop_arrival_time != null)
+        {
+            $stopover_arrival_datetime = Carbon::createFromDate($request->stop_arrival_date . ' ' . $request->stop_arrival_time);
+            
+            if($request->stop_departure_date != null && $request->stop_departure_time != null)
+            {
+                $stopover_departure_datetime =  Carbon::createFromDate($request->stop_departure_date . ' ' . $request->stop_departure_time);
+            
+    
+            if(!$stopover_arrival_datetime->gt($departure_datetime))
+            {
+                    return back()->withErrors(['errors' => "Failed! Stopover have to be after Departure"]);
+            }
+            else{
+    
+    
+                    if(!$stopover_departure_datetime->gt($stopover_arrival_datetime))
+                    {
+                        return back()->withErrors(['errors' => "Failed! Stopover Arrival have to be before Stopover Departure"]);
+                    }
+                    else{
+                        if(!$arrival_datetime->gt($stopover_departure_datetime))
+                        {
+                            return back()->withErrors(['errors' => "Failed! Stopover Departure have to be after Arrival"]);
+                        }
+                        else{
+                            Travel::create([
+                                'destination_id' => $request->id,
+                                'open_until' => $departure_datetime->subHours(12),
+                                'aircraft_id' => $request->aircraft_id,
+                                'departure_date' => $departure_date->format('Y-m-d'),
+                                'departure_time' => $request->departure_time,
+                                'duration' => $request->duration,
+                                'arrival_date' => $arrival_date->format('Y-m-d'),
+                                'arrival_time' => $request->arrival_time,
+                                'stopover_id' => $request->stopover_id,
+                                'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
+                                'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
+                            ]);
+    
+                                $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');
+    
+                                Seat::create([
+                                    'seats_total' => $seats_total,
+                                    'travel_id' => $travel,
+                                ]);
+    
+                                return redirect()->route('admin.travel.edit',['id' => $travel, 'date'=> $request->date])
+                                    ->with('message', 'Nice! A Travel Has been created!!');
+                           
+                        }
+                    }
+                }
+            }
+        }
+    }
     public function calender(Request $request){
         
          if(isset($request->subDate))
          {
             $date = $request->subDate;
-           
          }
          elseif(isset($request->addDate))
          {
@@ -69,6 +176,29 @@ class TravelController extends Controller
         ]);
     }
 
+    public function store(Request $request){
+
+        $date = Carbon::createFromDate($request->date);
+        $dateWM = $date->copy()->format('d M Y');
+        $nameOfWeek = $date->copy()->shortLocaleDayOfWeek;
+        $date = $date->copy()->format('d-m-Y');
+
+        $destination = Destination::with('from','to','flight')->where('id',$request->id)->first();
+        
+        $aircrafts = Aircraft::with('airline')->get();
+
+        $stopovers =  Airport::whereNotIn('id',[$destination->from->id,$destination->to->id])->get();
+
+        return view('admin.page.travel.store',[
+            'date' => $date,
+            'aircrafts' => $aircrafts,
+            'destination' => $destination,
+            'dateWM' => $dateWM,
+            'stopovers' => $stopovers,
+            'nameOfWeek' => $nameOfWeek
+        ]);
+    }
+
     public function create(Request $request){
        
         $this->validate($request, [
@@ -94,99 +224,226 @@ class TravelController extends Controller
 
         $seats_total = Aircraft::find($request->aircraft_id)->pluck('seats_capacity');
 
-       $arrival_datetime = Carbon::createFromDate($request->arrival_date . ' ' . $request->arrival_time);
-       $departure_datetime = Carbon::createFromDate($request->date . ' ' . $request->departure_time);
-       $stopover_departure_datetime = Carbon::createFromDate($request->stop_departure_date . ' ' . $request->stop_departure_time);
-       $stopover_arrival_datetime = Carbon::createFromDate($request->stop_arrival_date . ' ' . $request->stop_arrival_time);
+        $arrival_datetime = Carbon::createFromDate($request->arrival_date . ' ' . $request->arrival_time);
+        $departure_datetime = Carbon::createFromDate($request->date . ' ' . $request->departure_time);
 
-       if(!$stopover_arrival_datetime->gt($departure_datetime))
-       {
-            return back()->withErrors(['errors' => "Failed! Stopover have to be after Departure"]);
-       }
-       else{
+        $seats_total = Aircraft::find($request->aircraft_id)->value('seats_capacity');
 
-            if(!$stopover_departure_datetime->gt($stopover_arrival_datetime))
-            {
-                return back()->withErrors(['errors' => "Failed! Stopover Arrival to be before Stopover Departure"]);
-            }
-            else{
-                if(!$arrival_datetime->gt($stopover_departure_datetime))
+        $departure_date = Carbon::createFromDate($request->date);
+        $arrival_date = Carbon::createFromDate($request->arrival_date);
+       
+    if($request->stop_arrival_date  != null && $request->stop_arrival_time != null)
+    {
+        $stopover_arrival_datetime = Carbon::createFromDate($request->stop_arrival_date . ' ' . $request->stop_arrival_time);
+        
+        if($request->stop_departure_date != null && $request->stop_departure_time != null)
+        {
+            $stopover_departure_datetime =  Carbon::createFromDate($request->stop_departure_date . ' ' . $request->stop_departure_time);
+        
+
+        if(!$stopover_arrival_datetime->gt($departure_datetime))
+        {
+                return back()->withErrors(['errors' => "Failed! Stopover have to be after Departure"]);
+        }
+        else{
+
+
+                if(!$stopover_departure_datetime->gt($stopover_arrival_datetime))
                 {
-                    return back()->withErrors(['errors' => "Failed! Stopover Departure to be after Arrival"]);
+                    return back()->withErrors(['errors' => "Failed! Stopover Arrival have to be before Stopover Departure"]);
                 }
                 else{
-                    
-                    $seats_total = Aircraft::find($request->aircraft_id)->value('seats_capacity');
-                    
-                    $departure_date = Carbon::createFromDate($request->date);
-                    $arrival_date = Carbon::createFromDate($request->arrival_date);
-                   
+                    if(!$arrival_datetime->gt($stopover_departure_datetime))
+                    {
+                        return back()->withErrors(['errors' => "Failed! Stopover Departure have to be after Arrival"]);
+                    }
+                    else{
+                        Travel::create([
+                            'destination_id' => $request->id,
+                            'open_until' => $departure_datetime->subHours(12),
+                            'aircraft_id' => $request->aircraft_id,
+                            'departure_date' => $departure_date->format('Y-m-d'),
+                            'departure_time' => $request->departure_time,
+                            'duration' => $request->duration,
+                            'arrival_date' => $arrival_date->format('Y-m-d'),
+                            'arrival_time' => $request->arrival_time,
+                            'stopover_id' => $request->stopover_id,
+                            'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
+                            'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
+                        ]);
 
-                    Travel::create([
-                        'destination_id' => $request->id,
-                        'open_until' => $departure_datetime->subHours(12),
-                        'aircraft_id' => $request->aircraft_id,
-                        'departure_date' => $departure_date->format('Y-m-d'),
-                        'departure_time' => $request->departure_time,
-                        'duration' => $request->duration,
-                        'arrival_date' => $arrival_date->format('Y-m-d'),
-                        'arrival_time' => $request->arrival_time,
-                        'stopover_id' => $request->stopover_id,
-                        'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
-                        'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
-                    ]);
+                            $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');
 
-                   $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');
+                            Seat::create([
+                                'seats_total' => $seats_total,
+                                'travel_id' => $travel,
+                            ]);
 
-                    Seat::create([
-                        'seats_total' => $seats_total,
-                        'travel_id' => $travel,
-                    ]);
-
-                    return redirect()->route('admin.travel.edit')->with('message', 'Nice! A Travel Has been created!!');
+                            return redirect()->route('admin.travel.edit',['id' => $travel, 'date'=> $request->date])
+                                ->with('message', 'Nice! A Travel Has been created!!');
+                       
+                    }
                 }
             }
-       }
-
-       
-    }
-
-    public function edit(Request $request){
-
-        $travel = Travel::with(
-                'stopover',
-                'aircraft','aircraft.airline',
-                'destination','destination.from','destination.to','destination.flight')
-                ->where('id',$request->id)->get();
-
-                return view('admin.page.travel.edit', [
-                    'travel' => $travel,
-                ]);
+        }
     }
     
+    Travel::create([
+        'destination_id' => $request->id,
+        'open_until' => $departure_datetime->subHours(12),
+        'aircraft_id' => $request->aircraft_id,
+        'departure_date' => $departure_date->format('Y-m-d'),
+        'departure_time' => $request->departure_time,
+        'duration' => $request->duration,
+        'arrival_date' => $arrival_date->format('Y-m-d'),
+        'arrival_time' => $request->arrival_time,
+        'stopover_id' => null,
+        'stopover_departure_datetime' => null,
+        'stopover_arrival_datetime' => null,
+    ]);
+    
+    $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');
 
-    public function store(Request $request){
-
-        $date = Carbon::createFromDate($request->date);
-        $dateWM = $date->copy()->format('d M Y');
-        $nameOfWeek = $date->copy()->shortLocaleDayOfWeek;
-        $date = $date->copy()->format('d-m-Y');
-
-        $destination = Destination::with('from','to','flight')->where('id',$request->id)->first();
-        
-        $aircrafts = Aircraft::with('airline')->get();
-
-        $stopovers =  Airport::whereNotIn('id',[$destination->from->id,$destination->to->id])->get();
-
-        return view('admin.page.travel.store',[
-            'date' => $date,
-            'aircrafts' => $aircrafts,
-            'destination' => $destination,
-            'dateWM' => $dateWM,
-            'stopovers' => $stopovers,
-            'nameOfWeek' => $nameOfWeek
+        Seat::create([
+            'seats_total' => $seats_total,
+            'travel_id' => $travel,
         ]);
-    }
+        
+    return redirect()->route('admin.travel.edit',['id' => $travel, 'date'=> $request->date])
+    ->with('message', 'Nice! A Travel Has been created!!');
+                 
+}
 
+    public function edit(Request $request){
+        
+        $travel = Travel::with(
+            'stopover',
+            'aircraft','aircraft.airline',
+            'destination','destination.from','destination.to','destination.flight')
+            ->find($request->id);
+
+        
+
+            $destinations = Destination::where('id','!=',$travel->destination->id)
+                ->when($travel->stopover_id, function($query, $stopover_id){
+                    $query->where('from_id','!=',[$stopover_id]);
+                    $query->Where('to_id','!=',[$stopover_id]);
+                })->get();
+            
+            $airports = Airport::whereNotIn('id',[
+                $travel->destination->from->id,
+                $travel->destination->to->id
+                ])->when($travel->stopover_id, function($query, $stopover_id){
+                    $query->where('id','!=',$stopover_id);
+                })->get();
+
+                
+            $stopovers = Airport::whereNotIn('id',[$travel->destination->from->id,$travel->destination->to->id])->get();
+            $aircrafts = Aircraft::where('id','!=',$travel->aircraft->id)->get();
+
+            if($travel->stopover_id != null)
+            {
+                $stopover_dt = (object)array(
+                'stop_arrival_date' => Carbon::createFromFormat('Y-m-d H:i:s',$travel->stopover_arrival_datetime)->format('d-m-Y'),
+                'stop_arrival_time' => Carbon::createFromFormat('Y-m-d H:i:s',$travel->stopover_arrival_datetime)->format('H:i'),
+                'stop_departure_date' => Carbon::createFromFormat('Y-m-d H:i:s',$travel->stopover_departure_datetime)->format('d-m-Y'),
+                'stop_departure_time' => Carbon::createFromFormat('Y-m-d H:i:s',$travel->stopover_departure_datetime)->format('H:i'),
+                );
+            }
+            else{
+                $stopover_dt = null;
+            }
+
+            return view('admin.page.travel.edit', [
+                'travel' => $travel,    
+                'date' => $request->date,
+                'destinations' => $destinations,
+                'airports' => $airports,
+                'stopovers' => $stopovers,
+                'aircrafts' => $aircrafts,
+                'stopover_dt' => $stopover_dt
+            ]);
+    }
+    
+    public function update(Request $request){
+        $this->validate($request, [
+            'departure_date' => 'required|date|date_format:d-m-Y|before_or_equal:arrival_date',
+            'departure_time' => 'required|date_format:H:i',
+            'duration' => 'required|date_format:H:i',
+            'arrival_date' => 'required|date|date_format:d-m-Y|after_or_equal:date',
+            'arrival_time' => 'required|date_format:H:i',
+            
+            // Stopover validation
+            'stopover_id' => 'required_with:stop_arrival_date,stop_arrival_time,stop_departure_date,stop_departure_time|',
+
+            'stop_arrival_date' => 'required_with:stopover_id,stop_arrival_time,stop_departure_date,stop_departure_time|',
+
+            'stop_arrival_time' => 'required_with:stopover_id,stop_arrival_date,stop_departure_date,stop_departure_time|',
+
+            'stop_departure_date' => 'required_with:stopover_id,stop_arrival_date,stop_arrival_time,stop_departure_time|',
+
+            'stop_departure_time' => 'required_with:stopover_id,stop_arrival_date,stop_arrival_time,stop_departure_date|',
+
+            // Aircraft validation
+            //'aircraft_id' => 'required|exists:aircrafts,id|numeric|min:0|not_in:0',
+        ]);
+
+        $seats_total = Aircraft::find($request->aircraft_id)->pluck('seats_capacity');
+
+        $arrival_datetime = Carbon::createFromDate($request->arrival_date . ' ' . $request->arrival_time);
+        $departure_datetime = Carbon::createFromDate($request->departure_date . ' ' . $request->departure_time);
+
+        $seats_total = Aircraft::find($request->aircraft_id)->value('seats_capacity');
+
+        $departure_date = Carbon::createFromDate($request->date);
+        $arrival_date = Carbon::createFromDate($request->arrival_date);
+        
+        if($request->stop_arrival_date  != null && $request->stop_arrival_time != null)
+        {
+            $stopover_arrival_datetime = Carbon::createFromDate($request->stop_arrival_date . ' ' . $request->stop_arrival_time);
+           
+            if($request->stop_departure_date != null && $request->stop_departure_time != null)
+            {
+                $stopover_departure_datetime =  Carbon::createFromDate($request->stop_departure_date . ' ' . $request->stop_departure_time);
+            
+
+            if(!$stopover_arrival_datetime->gt($departure_datetime))
+            {
+                    return back()->withErrors(['errors' => "Failed! Stopover have to be after Departure"]);
+            }
+            else{
+
+                    if(!$stopover_departure_datetime->gt($stopover_arrival_datetime))
+                    {
+                        return back()->withErrors(['errors' => "Failed! Stopover Arrival have to be before Stopover Departure"]);
+                    }
+                    else{
+                        if(!$arrival_datetime->gt($stopover_departure_datetime))
+                        {
+                            return back()->withErrors(['errors' => "Failed! Stopover Departure have to be before Arrival"]);
+                        }
+                        else{
+                            Travel::where('id',$request->id)->update([
+                                'destination_id' => $request->destination,
+                                'open_until' => $departure_datetime->subHours(12),
+                                'departure_date' => $departure_date->format('Y-m-d'),
+                                'departure_time' => $request->departure_time,
+                                'duration' => $request->duration,
+                                'arrival_date' => $arrival_date->format('Y-m-d'),
+                                'arrival_time' => $request->arrival_time,
+                                'stopover_id' => $request->stopover_id,
+                                'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
+                                'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
+                            ]);
+
+                            return redirect()->route('admin.travel.edit',['id' => $request->id, 'date'=> $request->departure_date])
+                             ->with('message', 'Nice! A Travel Has been Updated!!');
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
 }
 
