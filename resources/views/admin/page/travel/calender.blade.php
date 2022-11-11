@@ -132,33 +132,39 @@
                                             $extraClass .= $startOfCalendar->isToday() ? ' today' : ''; 
                                         @endphp
                                         @foreach($travels as $travel)
-                                        @if(Carbon\Carbon::createFromDate($travel->departure_date)->format('d-m-Y') == $startOfCalendar->format('d-m-Y'))
-                                        <a href="{{ route('admin.travel.edit', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $travel->id])}}" class="day {{$extraClass}}">
-                                            <div class="calender-box text-center pt-3">                              
-                                                <i class="fas fa-plane" style="font-size:40px"></i>
-                                                <h6>{{ $travel->destination->from->IATA}} - {{ $travel->stopover->IATA}} - {{ $travel->destination->to->IATA}}</h6>
-                                            </div>
-                                            <span class="content">{{ $startOfCalendar->format('d M') }} </span>
-                                        </a>
-                                        @else
-                                        <a href="{{ route('admin.travel.store', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $destination->id])}}" class="day {{$extraClass}}">
-                                            <div class="calender-box text-center pt-3">                              
-
-                                            </div>
-                                            <span class="content">{{ $startOfCalendar->format('d M') }} </span>
-                                        </a>
-                                        @endif
+                                            @if($startOfCalendar->format('d-m-Y') == Carbon\Carbon::createFromDate($travel->departure_date)->format('d-m-Y'))
+                                                <a href="{{ route('admin.travel.edit', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $travel->id])}}" class="day {{$extraClass}}">
+                                                    <div class="calender-box text-center pt-3">                              
+                                                        <i class="fas fa-plane" style="font-size:40px"></i>
+                                                        <h6>{{ $travel->destination->from->IATA}} - 
+                                                            @if(isset($travel->stopover_id))
+                                                            {{ $travel->stopover->IATA}}
+                                                            - 
+                                                            @endif
+                                                            {{ $travel->destination->to->IATA}}</h6>
+                                                    </div>
+                                                    <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                                </a>
+                                            @endif 
                                         @endforeach
-                                    {{ $startOfCalendar->addDay()->format('') }}
+                                            @if(!isset($travel->departure_date) || $startOfCalendar->format('d-m-Y') != Carbon\Carbon::createFromDate($travel->departure_date)->format('d-m-Y'))
+                                                <a href="{{ route('admin.travel.store', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $destination->id])}}" class="day {{$extraClass}}">
+                                                    <div class="calender-box text-center pt-3">                              
+
+                                                    </div>
+                                                    <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                                </a>
+                                            @endif             
+                                        {{ $startOfCalendar->addDay()->format('') }}
                                     @endwhile
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 

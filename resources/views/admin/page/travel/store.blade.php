@@ -157,7 +157,7 @@
                                             <label for="stop_arrival_date">Stopover Arrival Date</label>
                                             <div class='input-group mt-1 datetimepicker'>
                                                 <input type="text" id="stop_arrival_date" name="stop_arrival_date" class="form-control
-                                                @error('stop_arrival_date') border border-danger @enderror" value="{{ old('stop_arrival_date')}}" placeholder="Arrival Date">
+                                                @error('stop_arrival_date') border border-danger @enderror" value="" placeholder="Arrival Date">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary" type="button">
                                                         <i class="fas fa-calendar"></i>
@@ -171,7 +171,7 @@
                                             <label for="stop_arrival_time">Stopover Arrival Time</label>
                                             <div class='input-group mt-1 timepicker'>
                                                 <input type='text' id="stop_arrival_time" name="stop_arrival_time" class="form-control 
-                                                @error('stop_arrival_time') border border-danger @enderror" value="{{ old('stop_arrival_time')}}" />
+                                                @error('stop_arrival_time') border border-danger @enderror" value="" />
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary" type="button">
                                                         <i class="fas fa-clock"></i>
@@ -187,7 +187,7 @@
                                             <label for="stop_departure_date">Stopover Departure Date</label>
                                             <div class='input-group mt-1 datetimepicker'>
                                                 <input type="text" id="stop_departure_date" name="stop_departure_date" value="" class="form-control
-                                                @error('stop_departure_date') border border-danger @enderror" value="{{ old('stop_departure_date')}}" placeholder="Arrival Date">
+                                                @error('stop_departure_date') border border-danger @enderror" value="" placeholder="Arrival Date">
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary" type="button">
                                                         <i class="fas fa-calendar"></i>
@@ -201,7 +201,7 @@
                                             <label for="stop_arrival_time">Stopover Departure Time</label>
                                             <div class='input-group mt-1 timepicker'>
                                                 <input type='text' id="stop_departure_time" name="stop_departure_time" class="form-control 
-                                                @error('stop_departure_time') border border-danger @enderror" value="{{ old('stop_departure_time')}}" />
+                                                @error('stop_departure_time') border border-danger @enderror" value="" />
                                                 <div class="input-group-append">
                                                     <button class="btn btn-primary" type="button">
                                                         <i class="fas fa-clock"></i>
@@ -234,7 +234,7 @@
                                 <div class="form-group row">
                                 </div>
                                 <button type="submit" class="btn btn-success btn-user btn-block">
-                                    Register User
+                                    Create Travel
                                 </button>
                             </form>
                         </div>
@@ -254,7 +254,9 @@
     <script type="text/javascript">
         $(function () {
             $('.datetimepicker').datetimepicker({
-                format: 'DD-MM-YYYY'
+                format: 'DD-MM-YYYY',
+                defaultDate: null,
+                
             })
         });
         </script>
@@ -263,7 +265,6 @@
             $(function () {
                 $('.timepicker').datetimepicker({
                     format: 'HH:mm',
-
                 })
             });
             </script>

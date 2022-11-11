@@ -80,10 +80,14 @@ Route::post('/admin/destination/update/{id}', [DestinationController::class, 'up
 // Dashboard Travels Start Here
 
 Route::get('/admin/travel', [TravelController::class, 'index'])->name('admin.travel.index');
+Route::get('/admin/travel/period', [TravelController::class, 'period'])->name('admin.travel.period');
+Route::post('/admin/travel/period/create', [TravelController::class, 'create_period'])->name('admin.travel.period.create');
 Route::any('/admin/travel/calender/{id}', [TravelController::class, 'calender'])->name('admin.travel.calender');
-Route::get('/admin/travel/calender/{id}/{date}', [TravelController::class, 'store'])->name('admin.travel.store');
+Route::get('/admin/travel/store/{id}/{date}', [TravelController::class, 'store'])->name('admin.travel.store');
 Route::post('/admin/travel/create/{id}/{date}', [TravelController::class, 'create'])->name('admin.travel.create');
 Route::get('/admin/travel/edit/{id}/{date}', [TravelController::class, 'edit'])->name('admin.travel.edit');
+Route::post('/admin/travel/updfate/{id}', [TravelController::class, 'update'])->name('admin.travel.update');
+
 // Dashboard Travels End Here
 // Dashboard Prices
 

@@ -34,7 +34,7 @@ class CreateTravelsTable extends Migration
             $table->time('duration');
             $table->date('arrival_date')->format('d-m-Y');
             $table->time('arrival_time');
-            $table->foreignId('stopover_id')->constrained('airports')->nullable();  
+            $table->foreignId('stopover_id')->nullable()->constrained('airports');  
             $table->datetime('stopover_departure_datetime')->format('d-m-Y H:i')->nullable();
             $table->datetime('stopover_arrival_datetime')->format('d-m-Y H:i')->nullable();              
             $table->timestamp('cancelled_at')->nullable();
