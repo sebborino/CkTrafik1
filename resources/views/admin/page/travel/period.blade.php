@@ -87,12 +87,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row"> 
-                                    @foreach($dayLabels as $key => $daylabel)
-                                        <input type="checkbox" class="btn-check" value="{{ $key}}" name="days[]" id="{{ $daylabel}}" autocomplete="off">
-                                            <label class="btn btn-primary" for="{{ $daylabel}}">{{ $daylabel}}</label>
-                                    @endforeach
-                                </div>
                                 <hr>
                                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                     <h2 class="h3 mb-0 text-gray-800">Travel Details</h2>
@@ -100,7 +94,7 @@
                                 <div class="form-group row"> 
                                     <div class="col-sm-4 mb-4 mb-sm-0">
                                             <label for="destination_id">Destination</label>
-                                            <select class="form-control" name="stopover_id" id="destination_id">
+                                            <select class="form-control" name="destination_id" id="destination_id">
                                                 <option value="{{ old('destination_id')}}">Choose a Destination</option>    
                                                 @forelse($destinations as $destination)
                                                     <option value="{{ $destination->id}}">{{ $destination->from->IATA}} - {{ $destination->to->IATA}}</option>   
@@ -111,17 +105,16 @@
                                         </div>
                                     
                                         <div class="col-sm-4 mb-4 mb-sm-0">
-                                            <div class="input-group">
-                                                <label for="departure_date">Departure Date</label>
-                                                <div class='input-group mt-1 datetimepicker'>
-                                                    <input type="text" id="departure_date" name="departure_date" value="" class="form-control
-                                                    @error('departure_date') border border-danger @enderror" value="{{ old('departure_date')}}" placeholder="Arrival Date">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-primary" type="button">
-                                                            <i class="fas fa-calendar"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                            <div class="form-group">
+                                                <label for="departure_day">Departure Day</label>
+                                                <select class="form-control" name="departure_day" id="departure_day">
+                                                    <option value="{{ old('departure_day')}}">Choose a Day</option>    
+                                                    @forelse($dayLabels as $key => $dayLabel)
+                                                        <option value="{{ $key}}">{{ $dayLabel}}</option>   
+                                                    @empty
+    
+                                                    @endforelse
+                                                </select>      
                                             </div>
                                         </div>
                                     <div class="col-sm-4 mb-4 mb-sm-0">
@@ -155,17 +148,16 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4 mb-4 mb-sm-0">
-                                        <div class="input-group">
-                                            <label for="arrival_date">Arrival Date</label>
-                                            <div class='input-group mt-1 datetimepicker'>
-                                                <input type="text" id="arrival_date" name="arrival_date" value="" class="form-control
-                                                @error('arrival_date') border border-danger @enderror" value="{{ old('arrival_date')}}" placeholder="Arrival Date">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-primary" type="button">
-                                                        <i class="fas fa-calendar"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="arrival_day">Arrival Day</label>
+                                            <select class="form-control" name="arrival_day" id="arrival_day">
+                                                <option value="{{ old('arrival_day')}}">Choose a Day</option>    
+                                                @forelse($dayLabels as $key => $dayLabel)
+                                                    <option value="{{ $key}}">{{ $dayLabel}}</option>   
+                                                @empty
+
+                                                @endforelse
+                                            </select>      
                                         </div>
                                     </div>
                                     <div class="col-sm-4 mb-4 mb-sm-0">
@@ -204,17 +196,16 @@
                                </div>
                                <div class="form-group row"> 
                                     <div class="col-sm-3 mb-3 mb-sm-0">
-                                        <div class="input-group">
-                                            <label for="stop_arrival_date">Stopover Arrival Date</label>
-                                            <div class='input-group mt-1 datetimepicker'>
-                                                <input type="text" id="stop_arrival_date" name="stop_arrival_date" class="form-control
-                                                @error('stop_arrival_date') border border-danger @enderror" value="" placeholder="Arrival Date">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-primary" type="button">
-                                                        <i class="fas fa-calendar"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="stop_arrival_day">Stopover Arrival Day</label>
+                                            <select class="form-control" name="stop_arrival_day" id="stop_arrival_day">
+                                                <option value="{{ old('stop_arrival_day')}}">Choose a Day</option>    
+                                                @forelse($dayLabels as $key => $dayLabel)
+                                                    <option value="{{ $key}}">{{ $dayLabel}}</option>   
+                                                @empty
+
+                                                @endforelse
+                                            </select>      
                                         </div>
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-sm-0">
@@ -234,17 +225,16 @@
                                </div>
                                <div class="form-group row"> 
                                     <div class="col-sm-3 mb-3 mb-sm-0">
-                                        <div class="input-group">
-                                            <label for="stop_departure_date">Stopover Departure Date</label>
-                                            <div class='input-group mt-1 datetimepicker'>
-                                                <input type="text" id="stop_departure_date" name="stop_departure_date" value="" class="form-control
-                                                @error('stop_departure_date') border border-danger @enderror" value="" placeholder="Arrival Date">
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-primary" type="button">
-                                                        <i class="fas fa-calendar"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                        <div class="form-group">
+                                            <label for="stop_departure_day">Stopover Departure Day</label>
+                                            <select class="form-control" name="stop_departure_day" id="stop_departure_day">
+                                                <option value="{{ old('stop_departure_day')}}">Choose a Day</option>    
+                                                @forelse($dayLabels as $key => $dayLabel)
+                                                    <option value="{{ $key}}">{{ $dayLabel}}</option>   
+                                                @empty
+
+                                                @endforelse
+                                            </select>      
                                         </div>
                                     </div>
                                     <div class="col-sm-3 mb-3 mb-sm-0">
