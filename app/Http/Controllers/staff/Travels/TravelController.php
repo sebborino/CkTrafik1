@@ -51,15 +51,15 @@ class TravelController extends Controller
                 'arrival_time' => 'required|date_format:H:i',
                 
                 // Stopover validation
-                'stopover_id' => 'required_with:stop_arrival_day,stop_arrival_time,stop_departure_day,stop_departure_time|',
+                'stopover_id' => 'required_with:stop_arrival_day,stop_arrival_time,stop_departure_day,stop_departure_time',
     
-                'stop_arrival_day' => 'required_with:stopover_id,stop_arrival_time,stop_departure_day,stop_departure_time|',
+                'stop_arrival_day' => 'required_with:stopover_id,stop_arrival_time,stop_departure_day,stop_departure_time',
     
-                'stop_arrival_time' => 'required_with:stopover_id,stop_arrival_day,stop_departure_day,stop_departure_time|',
+                'stop_arrival_time' => 'required_with:stopover_id,stop_arrival_day,stop_departure_day,stop_departure_time',
     
-                'stop_departure_day' => 'required_with:stopover_id,stop_arrival_day,stop_arrival_time,stop_departure_time|',
+                'stop_departure_day' => 'required_with:stopover_id,stop_arrival_day,stop_arrival_time,stop_departure_time',
     
-                'stop_departure_time' => 'required_with:stopover_id,stop_arrival_day,stop_arrival_time,stop_departure_day|',
+                'stop_departure_time' => 'required_with:stopover_id,stop_arrival_day,stop_arrival_time,stop_departure_day',
     
                 // Aircraft validation
                 'aircraft_id' => 'required|exists:aircrafts,id|numeric|min:0|not_in:0',
@@ -67,14 +67,22 @@ class TravelController extends Controller
             
             $period_start = Carbon::createFromDate($request->period_from);
             $period_end = Carbon::createFromDate($request->period_to);
+            $StartOfPeriod = $period_start->copy()->startOfWeek(Carbon::MONDAY);
+            $EndOfPeriod = $period_end->copy()->endOfWeek(Carbon::SUNDAY);
             
-            $StartOfPeriod = $period_start->copy()->startOfWeek(Carbon::SUNDAY);
-            $EndOfPeriod = $period_end->copy()->endOfWeek(Carbon::SATURDAY);
             $weeks = $StartOfPeriod->diffInWeeks($EndOfPeriod);
             $StartOfPeriod->copy()->addDays($request->departure_day);
 
             $seats_total = Aircraft::find($request->aircraft_id)->value('seats_capacity');
             
+            if($request->departure_day > $request->arrival_day)
+            {
+                $addDays = 7;
+            }
+            else{
+                $addDays = 0;
+            }
+
             $departure_datetime = Carbon::createFromDate($StartOfPeriod->copy()->addDays($request->departure_day)->format('Y-m-d') . '' . $request->departure_time);
             $arrival_datetime = Carbon::createFromDate($StartOfPeriod->copy()->addDays($request->arrival_day)->format('Y-m-d') . '' . $request->arrival_time);
 
@@ -87,6 +95,7 @@ class TravelController extends Controller
                 $stopover_departure_datetime = Carbon::createFromDate($StartOfPeriod->copy()->addDays($request->stop_departure_day)->format('Y-m-d') . '' . $request->stop_departure_time);
             }
         }        
+       
         
         for($x = 0; $x <= $weeks; $x++)
         {
@@ -97,7 +106,7 @@ class TravelController extends Controller
                 'departure_date' => $departure_datetime->copy()->addWeeks($x)->format('Y-m-d'),
                 'departure_time' => $request->departure_time,
                 'duration' => $request->duration,
-                'arrival_date' => $arrival_datetime->copy()->addWeeks($x)->format('Y-m-d'),
+                'arrival_date' => $arrival_datetime->copy()->addWeeks($x)->addDays($addDays)->format('Y-m-d'),
                 'arrival_time' => $request->arrival_time,
                 'stopover_id' => $request->stopover_id,
                 'stopover_departure_datetime' => empty($stopover_departure_datetime) ? null : $stopover_departure_datetime->copy()->addWeeks($x)->format('Y-m-d H:i'),
@@ -178,7 +187,8 @@ class TravelController extends Controller
             'destination' => $destination,
             'dateWM' => $dateWM,
             'stopovers' => $stopovers,
-            'nameOfWeek' => $nameOfWeek
+            'nameOfWeek' => $nameOfWeek,
+            
         ]);
     }
 

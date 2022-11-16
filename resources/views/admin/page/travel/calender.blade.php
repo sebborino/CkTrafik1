@@ -144,8 +144,19 @@
                                                             {{ $travel->destination->to->IATA}}</h6>
                                                     </div>
                                                     <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                                    
                                                 </a>
+                                              
+                                                @if(!$travel->departure_date == $endOfCalendar->format('Y-m-d'))
+                                                {
+                                                    hey
+                                                }
+                                                @endif
+                                                    {{ $startOfCalendar->addDay()->format('') }}
+                                                
+                                                
                                             @endif 
+                                           
                                         @endforeach
                                             @if(!isset($travel->departure_date) || $startOfCalendar->format('d-m-Y') != Carbon\Carbon::createFromDate($travel->departure_date)->format('d-m-Y'))
                                                 <a href="{{ route('admin.travel.store', ['date' => $startOfCalendar->format('d-m-Y'), 'id' => $destination->id])}}" class="day {{$extraClass}}">
@@ -153,9 +164,11 @@
 
                                                     </div>
                                                     <span class="content">{{ $startOfCalendar->format('d M') }} </span>
+                                                    
                                                 </a>
-                                            @endif             
-                                        {{ $startOfCalendar->addDay()->format('') }}
+                                               
+                                                {{ $startOfCalendar->addDay()->format('') }}
+                                            @endif       
                                     @endwhile
                                 </div>
                             </div>

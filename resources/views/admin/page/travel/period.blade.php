@@ -290,8 +290,10 @@
     <script type="text/javascript">
         $(function () {
             $('.datetimepicker').datetimepicker({
+                
                 format: 'DD-MM-YYYY',
                 defaultDate: null,
+                
                 
             })
         });
