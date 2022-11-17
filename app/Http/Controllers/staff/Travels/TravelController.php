@@ -28,7 +28,7 @@ class TravelController extends Controller
         $stopovers = Airport::all();
         $aircrafts = Aircraft::with('airline')->get();
 
-        $dayLabels = [ 'Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Saturday','Sunday'];
+        $dayLabels = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Saturday'];
         
         return view('admin.page.travel.period',[
             'destinations' => $destinations,
@@ -67,8 +67,11 @@ class TravelController extends Controller
             
             $period_start = Carbon::createFromDate($request->period_from);
             $period_end = Carbon::createFromDate($request->period_to);
-            $StartOfPeriod = $period_start->copy()->startOfWeek(Carbon::MONDAY);
-            $EndOfPeriod = $period_end->copy()->endOfWeek(Carbon::SUNDAY);
+
+            $weeks = $period_start->diffInWeeks($period_end);
+
+            $StartOfPeriod = $period_start->copy()->startOfWeek(Carbon::SUNDAY);
+            $EndOfPeriod = $period_end->copy()->endOfWeek(Carbon::MONDAY);
             
             $weeks = $StartOfPeriod->diffInWeeks($EndOfPeriod);
             $StartOfPeriod->copy()->addDays($request->departure_day);
@@ -82,6 +85,24 @@ class TravelController extends Controller
             else{
                 $addDays = 0;
             }
+
+            if($request->departure_day > $request->stop_arrival_day)
+            {
+                $stopArrivalDay = 7;
+            }
+            else{
+                $stopArrivalDay = 0;
+            }
+
+            if($request->stop_arrival_day > $request->stop_departure_day)
+            {
+                $stopDepartureDay = 7;
+            }
+            else{
+                $stopDepartureDay = 0;
+            }
+
+
 
             $departure_datetime = Carbon::createFromDate($StartOfPeriod->copy()->addDays($request->departure_day)->format('Y-m-d') . '' . $request->departure_time);
             $arrival_datetime = Carbon::createFromDate($StartOfPeriod->copy()->addDays($request->arrival_day)->format('Y-m-d') . '' . $request->arrival_time);
@@ -109,8 +130,8 @@ class TravelController extends Controller
                 'arrival_date' => $arrival_datetime->copy()->addWeeks($x)->addDays($addDays)->format('Y-m-d'),
                 'arrival_time' => $request->arrival_time,
                 'stopover_id' => $request->stopover_id,
-                'stopover_departure_datetime' => empty($stopover_departure_datetime) ? null : $stopover_departure_datetime->copy()->addWeeks($x)->format('Y-m-d H:i'),
-                'stopover_arrival_datetime' => empty($stopover_arrival_datetime) ? null : $stopover_arrival_datetime->copy()->addWeeks($x)->format('Y-m-d H:i'),
+                'stopover_departure_datetime' => empty($stopover_departure_datetime) ? null : $stopover_departure_datetime->copy()->addWeeks($x)->addDays($stopDepartureDay)->format('Y-m-d H:i'),
+                'stopover_arrival_datetime' => empty($stopover_arrival_datetime) ? null : $stopover_arrival_datetime->copy()->addWeeks($x)->addDays($stopArrivalDay)->format('Y-m-d H:i'),
             ]);
 
             $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');

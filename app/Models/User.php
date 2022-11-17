@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User_role::class);
     }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class,'id','user_id');
+    }
 }

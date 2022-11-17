@@ -19,7 +19,7 @@ class Staff
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            if(auth()->user()->user_role_id <= 2)
+            if(auth()->user()->user_role_id <= 3)
             {
                 return $next($request);
             }

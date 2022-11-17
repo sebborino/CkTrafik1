@@ -41,12 +41,12 @@ class LoginController extends Controller
         }
         else{
             auth()->attempt($request->only('username','password'));
-            if(auth()->user()->user_role_id <= 2)
+            if(auth()->user()->user_role_id <= 3)
             {
                 auth()->attempt($request->only('username','password'));
                 return redirect()->route('admin.index');
             }
-            elseif(auth()->user()->user_role_id == 3)
+            elseif(auth()->user()->user_role_id == 4)
             {
                 auth()->attempt($request->only('username','password'));
                 return redirect()->route('agent.index');

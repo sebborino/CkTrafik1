@@ -8,6 +8,8 @@ use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Staff\Agent\AgentController;
+use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
 use App\Http\Controllers\Staff\Airline\AircraftController;
 use App\Http\Controllers\Staff\Airline\AirlineController;
 use App\Http\Controllers\Staff\Flight\FlightController;
@@ -71,6 +73,17 @@ Route::post('/admin/flight/create', [FlightController::class, 'create'])->name('
 Route::post('/admin/flight/update/{id}', [FlightController::class, 'update'])->name('admin.flight.update');
 
 // Dashboard Destinations
+
+// Dashboard Agent Tables
+
+Route::get('/admin/agent', [AgentController::class, 'index'])->name('admin.agent.index');
+
+// Wallet Controller
+Route::post('/admin/agent/wallet/open/{id}', [WalletController::class, 'SendWalletRequest'])->name('admin.wallet.open');
+
+// Wallet Controller End Here
+
+// Dashboard Agent Tables End Here
 
 Route::get('/admin/destination', [DestinationController::class, 'index'])->name('admin.destination.index');
 Route::post('/admin/destination/create', [DestinationController::class, 'create'])->name('admin.destination.create');

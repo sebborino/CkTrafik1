@@ -73,6 +73,7 @@
                         <h6 class="collapse-header">Custom Users:</h6>
                         <a class="collapse-item" href="{{ route('admin.user.index')}}">Create User</a>
                         <a class="collapse-item" href="{{ route('admin.user.store')}}">All User</a>
+                        <a class="collapse-item" href="{{ route('admin.agent.index')}}">Agents</a>
                     </div>
                 </div>
             </li>

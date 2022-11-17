@@ -20,7 +20,7 @@ class Agent
     {
         if(Auth::check())
         {
-            if(auth()->user()->user_role_id == 3)
+            if(auth()->user()->user_role_id == 4)
             {
                 return $next($request);
             }
