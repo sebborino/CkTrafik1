@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use App\Models\User;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Notification extends Model
 {
@@ -13,13 +14,18 @@ class Notification extends Model
 
     protected $fillable = [
         'type',
-        'data'
+        'data',
+        'user_id'
     ];
+    
+    protected $casts = ['data' => 'array'];
 
-    public static function send($type,array $data = []){
+    public static function send($type,array $data,$user){
+        
         Notification::create([
             'type' => $type,
-            'data' =>  json_encode($data),
+            'data' =>  $data,
+            'user_id' => $user,   
         ]);
     }
 
