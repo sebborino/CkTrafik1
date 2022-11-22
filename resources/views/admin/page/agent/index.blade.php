@@ -93,17 +93,26 @@
                                     
                                     @forelse($agents as $agent)
                                     <tr>
-                                        <td>{{ $agent->username}}</td>
+                                        <td><a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}</a></td>
                                         @if(isset($agent->bank))
-                                        <td>
-                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
-                                                <i class="fas fa-wallet"></i>
-                                                Close Wallet
-                                            </button>
-                                        </td>
+                                            @if($agent->bank->accept == true)
+                                            <td>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
+                                                    <i class="fas fa-wallet"></i>
+                                                    Close Wallet
+                                                </button>
+                                            </td>
+                                            @elseif($agent->bank->accept == false)
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
+                                                    <i class="fas fa-wallet"></i>
+                                                    Waiting for Confirm
+                                                </button>
+                                            </td>
+                                            @endif
                                         @else
                                         <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{$agent->id}}">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{$agent->id}}">
                                                 <i class="fas fa-wallet"></i>
                                                 Open Wallet
                                             </button>

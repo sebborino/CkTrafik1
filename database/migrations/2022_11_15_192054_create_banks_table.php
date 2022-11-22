@@ -21,7 +21,7 @@ class CreateBanksTable extends Migration
             ->on('users');
             $table->decimal('balance',8,2)->default(0);
             $table->decimal('coverdraft',8,2)->default(0);
-            $table->timestamp('closed_at');
+            $table->timestamp('closed_at')->nullable();
             $table->timestamps();
         });
     }

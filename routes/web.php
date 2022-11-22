@@ -77,6 +77,7 @@ Route::post('/admin/flight/update/{id}', [FlightController::class, 'update'])->n
 // Dashboard Agent Tables
 
 Route::get('/admin/agent', [AgentController::class, 'index'])->name('admin.agent.index');
+Route::get('/admin/agent/details/{id}', [AgentController::class, 'details'])->name('admin.agent.details');
 
 // Wallet Controller
 Route::post('/admin/agent/wallet/open/{id}', [WalletController::class, 'SendWalletRequest'])->name('admin.wallet.open');

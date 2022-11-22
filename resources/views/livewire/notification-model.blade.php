@@ -5,7 +5,7 @@
         <i class="fas fa-bell fa-fw"></i>
         <!-- Counter - Alerts -->
         <span class="badge badge-danger badge-counter">
-            
+            {{ $count}}
         </span>
     </a>
     <!-- Dropdown - Alerts -->
