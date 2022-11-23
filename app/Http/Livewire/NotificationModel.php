@@ -12,7 +12,7 @@ class NotificationModel extends Component
     public function render()
     {
         $query = Notification::where('user_id',auth()->user()->id);
-        $notifications = $query->select('data')->orderBy('created_at','DESC')->take(3)->get();
+        $notifications = $query->select('id','data')->orderBy('created_at','DESC')->take(3)->get();
         $count = $query->whereNull('read_at')->count();
 
         $notificationCount = $notifications->count();

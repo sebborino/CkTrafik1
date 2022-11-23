@@ -1,5 +1,5 @@
 <!-- Nav Item - Alerts -->
-<li wire:poll class="nav-item dropdown no-arrow mx-1">
+<li class="nav-item dropdown no-arrow mx-1">
     <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell fa-fw"></i>
@@ -16,7 +16,8 @@
         </h6>
        
         @forelse($notifications as $notification)
-        <a class="dropdown-item d-flex align-items-center" href="#">
+
+        <a class="dropdown-item d-flex align-items-center" href="{{ route($notification->data['view'],['id' => $notification->id])}}">
             <div class="mr-3">
                 
                 <div class="{{ $notification->data["icon"] }}">
@@ -31,6 +32,6 @@
         @empty
             <p class="font-weight-bold"></p>
         @endforelse
-        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+        <a class="dropdown-item text-center small text-gray-500" href="{{ route('agent.notification.store')}}">Show All Notifications</a>
     </div>
 </li>

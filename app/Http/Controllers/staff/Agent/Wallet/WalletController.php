@@ -25,4 +25,27 @@ class WalletController extends Controller
 
         return back()->with('message', 'Good! The Request have been send to the Agent');
     }
+
+    public function walletOpen(Request $request){
+        
+        Bank::where('user_id',$request->id)->update([
+            'close_at' => null 
+        ]);
+        
+        Notification::send(NotificationType::WALLETREQUEST, NotificationController::WalletRequest(), $request->id);
+
+        return back()->with('message', 'Good! The Request have been send to the Agent');
+    }
+
+    public function walletClose(Request $request){
+        
+        Bank::where('user_id',$request->id)->update([
+            'close_at' => now() 
+        ]);
+        
+        
+        Notification::send(NotificationType::WALLETREQUEST, NotificationController::WalletRequest(), $request->id);
+
+        return back()->with('message', 'Good! The Request have been send to the Agent');
+    }
 }

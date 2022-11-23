@@ -268,6 +268,8 @@
         </div>
     </div>
 
+    @livewireScripts 
+
     <!-- Bootstrap core JavaScript-->
     <script src="/js/jquery/jquery.min.js"></script>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -14,7 +14,7 @@ class AddAcceptToBanks extends Migration
     public function up()
     {
         Schema::table('banks', function (Blueprint $table) {
-            $table->boolean('accecpt')->default(0);
+            $table->boolean('accept')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddAcceptToBanks extends Migration
     public function down()
     {
         Schema::table('banks', function (Blueprint $table) {
-            $table->dropColumn('accecpt');
+            $table->dropColumn('accept');
         });
     }
 }

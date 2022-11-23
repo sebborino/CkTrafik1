@@ -12,4 +12,6 @@ use BenSampo\Enum\Enum;
 final class NotificationType extends Enum
 {
     const WALLETREQUEST =   'Wallet Request';
+    const WALLETCLOSE =   'Wallet Closed';
+    const WALLETOPEN =   'Wallet Open';
 }

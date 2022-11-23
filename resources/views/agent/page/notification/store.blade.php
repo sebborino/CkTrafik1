@@ -1,4 +1,4 @@
-@extends('admin.layout.app')
+@extends('agent.layout.app')
 
 @section('content')
 
@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Agents Table</h1>
+    <h1 class="h3 mb-2 text-gray-800">Notifications</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -84,97 +84,47 @@
                                 <thead>
                                     <tr>
                                         <th>Username</th>
-                                        <th>Wallet Status</th>
-                                        <th>Close/Open Wallet</th>
+                                        <th>Balance</th>
+                                        <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     
                                     @forelse($agents as $agent)
+                                    <tr>
+                                        <td><a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}</a></td>
                                         @if(isset($agent->bank))
                                             @if($agent->bank->accept == true)
-                                                @if(is_null($agent->bank->closed_at))
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-pill badge-success">Open</span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
-                                                            <i class="fas fa-wallet"></i>
-                                                            Close
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        {{ $agent->created_at }}
-                                                    </td>
-                                                </tr>
-                                                @else
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-pill badge-danger">Close</span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Open{{$agent->bank->id}}">
-                                                            <i class="fas fa-wallet"></i>
-                                                            Close
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        {{ $agent->created_at }}
-                                                    </td>
-                                                </tr>
-                                                @endif
-                                            @elseif($agent->bank->accept == false)
-                                            <tr>
-                                                <td>
-                                                    <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-pill badge-info">Waiting for Confirm</span>
-                                                </td>
-                                                <td>
-                                                    <button disabled class="btn btn-primary">
-                                                        <i class="fas fa-wallet"></i>
-                                                        Waiting
-                                                    </button>
-                                                </td>
-                                                <td>
-                                                    {{ $agent->created_at }}
-                                                </td>
-                                            </tr>
-                                            @endif
-                                        @else
-                                        <tr>
                                             <td>
-                                                <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-pill badge-warning">No wallet</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{$agent->id}}">
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
                                                     <i class="fas fa-wallet"></i>
-                                                    Open Wallet
+                                                    Close Wallet
                                                 </button>
                                             </td>
+                                            @elseif($agent->bank->accept == false)
                                             <td>
-                                                {{ $agent->created_at }}
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
+                                                    <i class="fas fa-wallet"></i>
+                                                    Waiting for Confirm
+                                                </button>
                                             </td>
-                                        </tr>
+                                            @endif
+                                        @else
+                                        <td>
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{$agent->id}}">
+                                                <i class="fas fa-wallet"></i>
+                                                Open Wallet
+                                            </button>
+                                        </td>
                                         @endif
+                                        <td>
+
+                                        </td>
+                                        <td></td>
+                                    </tr>
                                     @empty
-                                        <p>No Agents</p>
+                                        <p>No Flights</p>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -191,7 +141,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     </div>
-                                    <form action="{{ route('admin.wallet.close',['id' => $agent->id])}}" method="post">
+                                    <form action="{{ route('admin.wallet.open',['id' => $agent->id])}}" method="post">
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">

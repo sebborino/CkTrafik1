@@ -16,9 +16,15 @@
     <div class="row">
 
         <!-- Earnings (Monthly) Card Example -->
- 
-        <livewire:custom-wallet-model :agent="$agent" />
-        
+        @if(is_null($agent->bank))
+            <livewire:open-wallet-model :agent="$agent" />
+        @else
+            @if($agent->bank->accept == true)
+                <livewire:custom-wallet-model :agent="$agent" />
+            @elseif($agent->bank->accept == false)
+                <livewire:not-confirm-wallet-model />
+            @endif
+        @endif
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-success shadow h-100 py-2">
