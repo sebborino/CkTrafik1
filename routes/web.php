@@ -7,6 +7,7 @@ use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
+use App\Http\Controllers\FaktureGenerateController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ShowNotificationWallet;
@@ -56,6 +57,12 @@ Route::post('/admin/airport/create', [AirportController::class, 'create'])->name
 Route::post('/admin/airport/update/{id}', [AirportController::class, 'update'])->name('admin.airport.update');
 
 // Dashboard Airlines
+
+// Dashboard Fakture
+
+
+
+Route::get('/admin/economy',[FaktureGenerateController::class,'index'])->name('admin.economy.fakture');
 
 Route::get('/admin/airline', [AirlineController::class, 'index'])->name('admin.airline.index');
 Route::post('/admin/airline/create', [AirlineController::class, 'create'])->name('admin.airline.create');

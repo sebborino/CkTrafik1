@@ -65,21 +65,14 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             @admin
+            <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menu-users"
-                    aria-expanded="true" aria-controls="menu-users">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Users</span>
-                </a>
-                <div id="menu-users" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Users:</h6>
-                        <a class="collapse-item" href="{{ route('admin.user.index')}}">Create User</a>
-                        <a class="collapse-item" href="{{ route('admin.user.store')}}">All User</a>
-                        <a class="collapse-item" href="{{ route('admin.agent.index')}}">Agents</a>
-                    </div>
-                </div>
+                <a class="nav-link" href="{{ route('admin.economy.fakture')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Fakture Generate</span></a>
             </li>
+
+            
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
