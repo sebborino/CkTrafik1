@@ -82,9 +82,12 @@ Route::get('/admin/agent', [AgentController::class, 'index'])->name('admin.agent
 Route::get('/admin/agent/details/{id}', [AgentController::class, 'details'])->name('admin.agent.details');
 
 // Wallet Controller
+
+Route::get('/admin/agent/wallet/{id}', [WalletController::class, 'store'])->name('admin.wallet.store');
+Route::post('/admin/agent/wallet/settings/{id}', [WalletController::class, 'update'])->name('admin.wallet.update');
 Route::post('/admin/agent/wallet/request/{id}', [WalletController::class, 'SendWalletRequest'])->name('admin.wallet.request');
-Route::post('/admin/agent/wallet/close/{id}', [WalletController::class, 'CloseWallet'])->name('admin.wallet.close');
-Route::post('/admin/agent/wallet/open/{id}', [WalletController::class, 'OpenWallet'])->name('admin.wallet.open');
+Route::post('/admin/agent/wallet/close/{id}', [WalletController::class, 'walletClose'])->name('admin.wallet.close');
+Route::post('/admin/agent/wallet/open/{id}', [WalletController::class, 'walletOpen'])->name('admin.wallet.open');
 
 // Wallet Controller End Here
 

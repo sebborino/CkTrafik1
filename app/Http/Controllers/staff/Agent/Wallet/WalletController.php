@@ -16,6 +16,14 @@ use Illuminate\Http\Request;
 
 class WalletController extends Controller
 {
+
+    public function store($id){
+
+        return view('admin.page.agent.wallet.store',[
+            'bank' => Bank::with('user','transfers')->find($id)
+        ]);
+    }
+
     public function SendWalletRequest(Request $request){
         
         Bank::firstOrCreate(
@@ -27,12 +35,11 @@ class WalletController extends Controller
     }
 
     public function walletOpen(Request $request){
-        
         Bank::where('user_id',$request->id)->update([
-            'close_at' => null 
+            'closed_at' => null 
         ]);
         
-        Notification::send(NotificationType::WALLETREQUEST, NotificationController::WalletRequest(), $request->id);
+        Notification::send(NotificationType::WALLETOPEN, NotificationController::WalletOpen(), $request->id);
 
         return back()->with('message', 'Good! The Request have been send to the Agent');
     }
@@ -40,12 +47,21 @@ class WalletController extends Controller
     public function walletClose(Request $request){
         
         Bank::where('user_id',$request->id)->update([
-            'close_at' => now() 
+            'closed_at' => now() 
         ]);
         
         
-        Notification::send(NotificationType::WALLETREQUEST, NotificationController::WalletRequest(), $request->id);
+        Notification::send(NotificationType::WALLETCLOSE, NotificationController::WalletClose(), $request->id);
 
         return back()->with('message', 'Good! The Request have been send to the Agent');
+    }
+
+    public function update(Request $request){
+
+        Bank::where('id',$request->id)->update([
+            'coverdraft' => $request->coverdraft
+        ]);
+
+        return back()->with('message', 'Great! Coverdraft is now updated');
     }
 }

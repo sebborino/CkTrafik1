@@ -92,155 +92,184 @@
                                 <tbody>
                                     
                                     @forelse($agents as $agent)
-                                        @if(isset($agent->bank))
-                                            @if($agent->bank->accept == true)
-                                                @if(is_null($agent->bank->closed_at))
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-pill badge-success">Open</span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
-                                                            <i class="fas fa-wallet"></i>
-                                                            Close
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        {{ $agent->created_at }}
-                                                    </td>
-                                                </tr>
-                                                @else
-                                                <tr>
-                                                    <td>
-                                                        <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge badge-pill badge-danger">Close</span>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Open{{$agent->bank->id}}">
-                                                            <i class="fas fa-wallet"></i>
-                                                            Close
-                                                        </button>
-                                                    </td>
-                                                    <td>
-                                                        {{ $agent->created_at }}
-                                                    </td>
-                                                </tr>
-                                                @endif
-                                            @elseif($agent->bank->accept == false)
+                                    <!-- No Wallet Here -->
+                                        @if(!isset($agent->bank))
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <span class="badge badge-pill badge-info">Waiting for Confirm</span>
+                                                    <span class="badge badge-pill badge-warning">No wallet</span>
                                                 </td>
                                                 <td>
-                                                    <button disabled class="btn btn-primary">
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{$agent->id}}">
                                                         <i class="fas fa-wallet"></i>
-                                                        Waiting
+                                                        Open Wallet
                                                     </button>
                                                 </td>
                                                 <td>
                                                     {{ $agent->created_at }}
                                                 </td>
                                             </tr>
-                                            @endif
+                                            <!-- Modal for No Wallet-->
+                                            <div class="modal fade" id="Modal{{$agent->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Open Wallet</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                    <form action="{{ route('admin.wallet.request',['id' => $agent->id])}}" method="post">
+                                                        @csrf
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <p>
+                                                                    Are you sure you want to send a request for open a wallet to {{$agent->username}}
+                                                                </p>
+                                                            </div> 
+                                                        </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                    <button type="sumbmit" class="btn btn-success">Yes! Send Request</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        <!-- No Wallet End here --> 
+
                                         @else
-                                        <tr>
-                                            <td>
-                                                <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <span class="badge badge-pill badge-warning">No wallet</span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Modal{{$agent->id}}">
-                                                    <i class="fas fa-wallet"></i>
-                                                    Open Wallet
-                                                </button>
-                                            </td>
-                                            <td>
-                                                {{ $agent->created_at }}
-                                            </td>
-                                        </tr>
+                                            @if($agent->bank->accept != true)
+                                                <tr>
+                                                    <td>
+                                                        <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge badge-pill badge-info">Waiting for Confirm</span>
+                                                    </td>
+                                                    <td>
+                                                        <button disabled class="btn btn-primary">
+                                                            <i class="fas fa-wallet"></i>
+                                                            Waiting
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        {{ $agent->created_at }}
+                                                    </td>
+                                                </tr>
+                                            @else
+                                            <!-- Wallet is open -->
+                                                @if(is_null($agent->bank->closed_at))
+
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge badge-pill badge-success">Open</span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
+                                                                <i class="fas fa-wallet"></i>
+                                                                Close
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            {{ $agent->created_at }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- Modal for Close Wallet-->
+                                                        <div class="modal fade" id="Close{{$agent->bank->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Close Wallet</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            </div>
+                                                            <form action="{{ route('admin.wallet.close',['id' => $agent->id])}}" method="post">
+                                                                @csrf
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <p>
+                                                                            Are you sure you want to Close the Wallet for Agent {{$agent->username}}
+                                                                        </p>
+                                                                    </div> 
+                                                                </div>
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                            <button type="sumbmit" class="btn btn-success">Yes! Close Wallet</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Wallet is open end here -->
+                                                @else
+                                                    <!-- the wallet is closed -->
+                                                    <tr>
+                                                        <td>
+                                                            <a href="{{ route('admin.agent.details', ['id' => $agent->id])}}">{{$agent->username}}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge badge-pill badge-danger">Closed</span>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#Open{{$agent->bank->id}}">
+                                                                <i class="fas fa-wallet"></i>
+                                                                Open
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            {{ $agent->created_at }}
+                                                        </td>
+                                                    </tr>
+
+                                                     <!-- Modal for Open Wallet-->
+                                                     <div class="modal fade" id="Open{{$agent->bank->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Close Wallet</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            </div>
+                                                            <form action="{{ route('admin.wallet.open',['id' => $agent->id])}}" method="post">
+                                                                @csrf
+                                                                
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <p>
+                                                                            Are you sure Open up the Wallet For the Agent ({{$agent->username}})
+                                                                        </p>
+                                                                    </div> 
+                                                                </div>
+                                                            <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                                                            <button type="sumbmit" class="btn btn-success">Yes! Open Wallet</button>
+                                                            </div>
+                                                            </form>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                <!-- Wallet is Closed end here -->
+                                                @endif
+                                            @endif
                                         @endif
                                     @empty
                                         <p>No Agents</p>
                                     @endforelse
                                 </tbody>
                             </table>
-                            
-                            @forelse($agents as $agent)
-                            @if(isset($agent->bank))
-                            <!-- Modal -->
-                            <div class="modal fade" id="Close{{$agent->bank->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Close Wallet</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <form action="{{ route('admin.wallet.close',['id' => $agent->id])}}" method="post">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <p>
-                                                    Are you sure you want Close the Wallet for {{$agent->username}}
-                                                </p>
-                                            </div> 
-                                        </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                                    <button type="sumbmit" class="btn btn-primary">Yes</button>
-                                    </div>
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                            @else
-                            <!-- Modal -->
-                            <div class="modal fade" id="Modal{{$agent->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Open Wallet</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                    </div>
-                                    <form action="{{ route('admin.wallet.open',['id' => $agent->id])}}" method="post">
-                                        @csrf
-                                        <div class="modal-body">
-                                            <div class="form-group">
-                                                <p>
-                                                    Are you sure you want to send a request for open a wallet to {{$agent->username}}
-                                                </p>
-                                            </div> 
-                                        </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
-                                    <button type="sumbmit" class="btn btn-success">Yes! Send Request</button>
-                                    </div>
-                                    </form>
-                                </div>
-                                </div>
-                            </div>
-                            @endif
-                            @empty
-
-                            @endforelse
-                            <!-- /Modal end here -->
                         </div>
                     </div>
                 </div>

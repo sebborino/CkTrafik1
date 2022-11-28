@@ -3,8 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+
+use function PHPUnit\Framework\returnCallback;
 
 class Bank extends Model
 {
@@ -19,7 +22,10 @@ class Bank extends Model
     ];
 
     public function user(){
-        $this->belongsTo(User::class);
+       return $this->belongsTo(User::class,'user_id','id');
     }
 
+    public function transfers(){
+       return $this->hasMany(Transfer::class,'bank_id','id');
+    }
 }
