@@ -4,13 +4,14 @@
 
 @push('dataTable-css')
     <link href="/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
 @endpush
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Flights</h1>
+    <h1 class="h3 mb-2 text-gray-800">Generate Fakture</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -20,7 +21,7 @@
                 </div>
                     <div class="card-body">
                        
-                        <form action="{{ route('admin.flight.create')}}" class="user" method="post">
+                        <form action="{{ route('admin.economy.fakture.create')}}" class="user" enctype="multipart/form-data" method="post">
                             @csrf
                             @if($errors->any())
                                 @foreach($errors->all() as $error)
@@ -54,17 +55,24 @@
                             </div>
                             @endif
                             
-                            <div class="form-group row"> 
-                            
-                                <div class="col-md-12">
-                                    <label for="route">Flight Route</label>
-                                    <input type="text" name="route" class="form-control form-control-user
-                                        @error('route') border border-danger @enderror"  id="route"
-                                        placeholder="fx. IA281" value="{{ old('route')}}">
-                                </div>
+                            <div class="form-group"> 
+                                
+                                    <div class="custom-file">
+                                      <input type="file" name="fakture" class="custom-file-input" id="customFile">
+                                      <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>
+                               
+                                  <script>
+                                  // Add the following code if you want the name of the file appear on select
+                                  $(".custom-file-input").on("change", function() {
+                                    var fileName = $(this).val().split("\\").pop();
+                                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                  });
+                                  </script>
                             </div>
+                        
                             <button type="submit" class="btn custom btn-user btn-block">
-                                Create Flights
+                                Generate
                             </button>
                         </form>
                     </div>
@@ -76,7 +84,7 @@
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Created Flights</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Save columns</h6>
                     </div>
                     <div class="card-body">
                         

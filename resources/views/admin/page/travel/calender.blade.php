@@ -113,7 +113,7 @@
                             </div>   
                             @endif
                             
-                        <div class="calendar">
+                        <div class="calendar" style="background:#f8f9fc">
 
                             <div class="month-year">
                                 <span class="month">{{ $date->format('M') }}</span>

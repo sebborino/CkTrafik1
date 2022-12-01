@@ -1,3 +1,7 @@
+@extends('notification.app')
+
+@section('notification')
+
 <div class="card-body">
     @if(Session::has('error'))
 
@@ -26,10 +30,9 @@
         <li>Ck Trafik 1 Have permission to close the Wallet, in the system, if we think the balance is incorrect.</li>
         <li>Ck Trafik 1 Have permission to close the Wallet, in the system, if we need some payments.</li>
     </ul>
-    <div class="form-check">
-        <input wire:click="toggle_term" type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Accept Term</label>
-        
-    </div>
-    <button wire:click="accept" @if($term == false) disabled @endif class="btn btn-primary">Accept</button>
+    <livewire:notification.read-at :notification="$notification" />
+    <livewire:notification.wallet-request-form :notification="$notification" />
 </div>
+
+@endsection
+

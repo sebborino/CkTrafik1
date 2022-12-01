@@ -18,6 +18,11 @@ class FaktureGenerate extends Model
         'traveler_name',
         'pnr',
         'agent',
-        'dato'
+        'dato',
+        'cvr',
+        'fak_nr',
+        'kundenr',
+        'adresse',
     ];
+
 }

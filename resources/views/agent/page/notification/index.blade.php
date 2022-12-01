@@ -20,23 +20,30 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr class="text-center">
-                                    <th>Notifications</th>
+                                    <th>Notification Status</th>
+                                    <th>Notification</th>
+                                    <th>Notification Sent At</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($notifications as $notification)
                                     <tr class="text-center">
                                         <td>
+                                            <i class="fas {{ is_null($notification->read_at) ? 'fa-folder' : 'fa-folder-open'}}"></i>
+                                        </td>
+                                        <td>
                                             <a href="{{ route($notification->data['view'],['id' => $notification->id])}}">
                                                 {{ $notification->data['text']}}
-                                                <h6 class="text-xs">
-                                                    {{ $notification->created_at}}
-                                                </h6>
+                                                
                                             </a>    
                                         </td>
+                                        <td class="text-xs">
+                                            {{ $notification->created_at}}
+                                        </td>
+                                        
                                     </tr>
                                 @empty
 

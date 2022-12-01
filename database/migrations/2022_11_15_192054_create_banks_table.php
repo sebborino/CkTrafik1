@@ -19,8 +19,8 @@ class CreateBanksTable extends Migration
             $table->foreign('user_id')
             ->references('id')
             ->on('users');
-            $table->decimal('balance',8,2)->default(0);
-            $table->decimal('coverdraft',8,2)->default(0);
+            $table->decimal('balance',14,2)->default(0);
+            $table->decimal('coverdraft',14,2)->default(0);
             $table->timestamp('closed_at')->nullable();
             $table->timestamps();
         });

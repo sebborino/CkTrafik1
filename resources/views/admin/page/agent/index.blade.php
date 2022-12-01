@@ -86,6 +86,7 @@
                                         <th>Username</th>
                                         <th>Wallet Status</th>
                                         <th>Close/Open Wallet</th>
+                                        <th>Wallet Settings</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
@@ -107,6 +108,9 @@
                                                         <i class="fas fa-wallet"></i>
                                                         Open Wallet
                                                     </button>
+                                                </td>
+                                                <td>
+                                                    
                                                 </td>
                                                 <td>
                                                     {{ $agent->created_at }}
@@ -158,6 +162,9 @@
                                                         </button>
                                                     </td>
                                                     <td>
+                                                        
+                                                    </td>
+                                                    <td>
                                                         {{ $agent->created_at }}
                                                     </td>
                                                 </tr>
@@ -172,12 +179,18 @@
                                                         </td>
                                                         <td>
                                                             <span class="badge badge-pill badge-success">Open</span>
-                                                        </td>
+                                                        </td>   
                                                         <td>
                                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Close{{$agent->bank->id}}">
                                                                 <i class="fas fa-wallet"></i>
-                                                                Close
+                                                                Close Wallet
                                                             </button>
+                                                        </td>
+                                                        <td>
+                                                            <a type="button" class="btn btn-primary" href="{{ route('admin.wallet.store',['id' => $agent->bank->id]) }}">
+                                                                <i class="fas fa-gear"></i>
+                                                                Settings
+                                                            </a>
                                                         </td>
                                                         <td>
                                                             {{ $agent->created_at }}
@@ -227,6 +240,12 @@
                                                                 <i class="fas fa-wallet"></i>
                                                                 Open
                                                             </button>
+                                                        </td>
+                                                        <td>
+                                                            <a type="button" class="btn btn-primary" href="{{ route('admin.wallet.store',['id' => $agent->bank->id]) }}">
+                                                                <i class="fas fa-gear"></i>
+                                                                Settings
+                                                            </a>
                                                         </td>
                                                         <td>
                                                             {{ $agent->created_at }}

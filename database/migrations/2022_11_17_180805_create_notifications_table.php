@@ -19,6 +19,10 @@ class CreateNotificationsTable extends Migration
             $table->id();
             $table->enum('type',NotificationType::getValues());
             $table->text('data');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users');
             $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });

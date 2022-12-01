@@ -44,9 +44,9 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('agent.price')}}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
-                    <span>Prices</span></a>
+                <a class="nav-link" href="{{ route('agent.index')}}">
+                    <i class="fas fa-fw fa-dashboard"></i>
+                    <span>Dashboard</span></a>
             </li>
         </ul>
 
@@ -105,7 +105,7 @@
                             </div>
                         </li>
 
-                        <livewire:notification-model />
+                        <livewire:notification.model />
 
                         <!-- Nav Item - Messages -->
                         <li class="nav-item dropdown no-arrow mx-1">

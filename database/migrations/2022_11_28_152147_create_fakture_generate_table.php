@@ -20,8 +20,12 @@ class CreateFaktureGenerateTable extends Migration
             $table->decimal('tax',8,2);
             $table->text('traveler_name');
             $table->string('pnr',6);
-            $table->string('agent');
-            $table->date('dato');
+            $table->string('agent')->nullable();
+            $table->string('dato');
+            $table->char('cvr',8)->nullable();
+            $table->char('fak_nr');
+            $table->string('adresse')->nullable();
+            $table->integer('kundenr')->nullable();
             $table->timestamps();
         });
     }

@@ -72,6 +72,22 @@
                     <span>Fakture Generate</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#users"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-users"></i>
+                    <span>User</span>
+                </a>
+                <div id="users" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Users:</h6>
+                        <a class="collapse-item" href="{{ route('admin.user.index') }}">Create User</a>
+                        <a class="collapse-item" href="{{ route('admin.user.store') }}">All Users</a>
+                        <a class="collapse-item" href="{{ route('admin.agent.index') }}">Agents</a>
+                    </div>
+                </div>
+            </li>
+
             
 
             <li class="nav-item">
@@ -478,8 +494,7 @@
     </div>
 </div>
 
-
-<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>    
+ 
     
     @livewireScripts 
 

@@ -16,12 +16,13 @@ class Notification extends Model
         'id',
         'type',
         'data',
-        'user_id'
+        'user_id',
+        'read_at'
     ];
     
     protected $casts = ['data' => 'array'];
 
-    public static function send($type,array $data,$user){
+    public static function send($type, array $data, $user){
         
         Notification::create([
             'type' => $type,

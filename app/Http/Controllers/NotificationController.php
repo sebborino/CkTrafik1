@@ -12,6 +12,11 @@ class NotificationController extends Controller
             'notifications' => Notification::where('user_id',auth()->user()->id)->orderBy('created_at','DESC')->get(),
         ]);
     }
+    public function agent($id){
+        return view('agent.page.notification.show',[
+            'notification' => Notification::find($id)
+        ]);
+    }
 
     public static function WalletRequest(){
         return [

@@ -10,6 +10,7 @@ use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\FaktureGenerateController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ShowNotificationController;
 use App\Http\Controllers\ShowNotificationWallet;
 use App\Http\Controllers\Staff\Agent\AgentController;
 use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
@@ -63,6 +64,7 @@ Route::post('/admin/airport/update/{id}', [AirportController::class, 'update'])-
 
 
 Route::get('/admin/economy',[FaktureGenerateController::class,'index'])->name('admin.economy.fakture');
+Route::post('/admin/economy/create',[FaktureGenerateController::class,'store'])->name('admin.economy.fakture.create');
 
 Route::get('/admin/airline', [AirlineController::class, 'index'])->name('admin.airline.index');
 Route::post('/admin/airline/create', [AirlineController::class, 'create'])->name('admin.airline.create');
@@ -151,10 +153,11 @@ Route::get('/dashboard', [AgentPageController::class, 'index'])->name('agent.ind
 Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('agent.price')->middleware('agent');
 
 // Agent Notifications Start Here
-Route::get('/dasboard/notification', [NotificationController::class, 'index'])->name('agent.notification.store')->middleware('agent');
-Route::get('/dasboard/notification/wallet/{id}', [ShowNotificationWallet::class, 'wallet'])->name('agent.notification.wallet.request')->middleware('agent');
-Route::get('/dasboard/notification/close/wallet/{id}', [ShowNotificationWallet::class, 'close'])->name('agent.notification.wallet.close')->middleware('agent');
-Route::get('/dasboard/notification/open/wallet/{id}', [ShowNotificationWallet::class, 'close'])->name('agent.notification.wallet.open')->middleware('agent');
+Route::get('/dasboard/notification', [NotificationController::class, 'index'])->name('agent.notification.index')->middleware('agent');
+Route::get('/dasboard/notification/{id}', [NotificationController::class, 'show'])->name('agent.notification.store')->middleware('agent');
 
+Route::get('/dasboard/notification/{id}/request', [ShowNotificationController::class, 'wallet_request'])->name('agent.notification.wallet.request')->middleware('agent');
+Route::get('/dasboard/notification/{id}/close', [ShowNotificationController::class, 'wallet_close'])->name('agent.notification.wallet.close')->middleware('agent');
+Route::get('/dasboard/notification/{id}/open', [ShowNotificationController::class, 'wallet_open'])->name('agent.notification.wallet.open')->middleware('agent');
 
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
