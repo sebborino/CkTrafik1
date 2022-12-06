@@ -161,10 +161,10 @@
                             1 stk.
                         </td>
                         <td class="right">
-                            {{ $fare_price}}
+                            {{ number_format($fare_price , 2 , ',' , '.' )}}
                         </td>
                         <td class="right">
-                            {{ $fare_price}}
+                            {{ number_format($fare_price , 2 , ',' , '.' )}}
                         </td>
                     </tr>
                     <tr>
@@ -180,42 +180,37 @@
                 </tbody>
             </table>
             <table class="underline">
-                <thead class="lines">
-                    <tr>
-                        <th class="left" style="margin-left:25px;">Tax</th>
-                        <th class="right" >{{ $tax }}</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr>
-                        <td class="right"></td>
+                        <th class="left" style="margin-left:25px;">Tax</th>
+                        <th class="right" >{{ number_format($tax , 2 , ',' , '.' )}}</th>
                     </tr>
                 </tbody>
             </table>
             <table>
-                <thead style="font-size:10px">
+                <tbody style="font-size:10px">
                     <tr>
-                        <th class="left">(Momsfrit beløb: {{ $total }} - Momspligtigt beløb: 0.00)</th>
-                        <th class="right">Subtotal:</th>
-                        <th class="right">{{$total}}</th>
+                        <td class="left">(Momsfrit beløb: {{ number_format($total , 2 , ',' , '.' )}} - Momspligtigt beløb: 0,00)</td>
+                        <td class="right">Subtotal:</td>
+                        <td class="right">{{ number_format($total , 2 , ',' , '.' )}}</td>
                         
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td class="right">0.00% moms</td>
-                        <td class="right">0.00</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="right">Total DDK:</td>
-                        <td class="right">{{$total}}</td>
-                    </tr>
                 </tbody>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td class="right">0,00% moms</td>
+                        <td class="right">0,00</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th class="right font-weight-bold">Total DDK:</th>
+                        <th class="right  font-weight-bold">{{ number_format($total , 2 , ',' , '.' )}}</th>
+                    </tr>
+                </thead>
             </table>
             <div class="boxes">
-                <div class="box">
+                <div class="box" style="margin-top:3cm">
                     <p>Betingsbetingelser: Netto 8 dage</p>
                     <p>Beløbet indbetales til vores bank
                     <p>Mypos</p>

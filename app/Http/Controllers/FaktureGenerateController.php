@@ -57,7 +57,7 @@ class FaktureGenerateController extends Controller
          {
 
          FaktureGenerate::create([
-               'e-ticket' => $rows[$x][0],
+               'e_ticket' => $rows[$x][0],
                'total' => $rows[$x][1],
                'fare_price' => $rows[$x][2],
                'tax' => $rows[$x][3],
@@ -85,7 +85,7 @@ class FaktureGenerateController extends Controller
             'adresse' => $rows[$x][10],
             'kundenr' => $rows[$x][11],
             
-         ])->save(base_path('/public/storage/PDFs/'.$rows[$x][0].'.pdf'));
+         ])->save(base_path('/public/storage/PDFs/Faktura-'.$rows[$x][9].'.pdf'));
 
       }
 

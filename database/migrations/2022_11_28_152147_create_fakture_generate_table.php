@@ -15,7 +15,7 @@ class CreateFaktureGenerateTable extends Migration
     {
         Schema::create('fakture_generate', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('e-ticket')->unique();
+            $table->bigInteger('e_ticket')->unique();
             $table->decimal('fare_price',8,2);
             $table->decimal('tax',8,2);
             $table->text('traveler_name');

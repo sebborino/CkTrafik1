@@ -12,7 +12,7 @@ class FaktureGenerate extends Model
     protected $table = 'fakture_generate';
 
     protected $fillable = [
-        'e-ticket',
+        'e_ticket',
         'fare_price',
         'tax',
         'traveler_name',
