@@ -84,10 +84,10 @@
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Save columns</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Faktura Table</h6>
                     </div>
                     <div class="card-body">
-                        
+                        <livewire:staff.economy.faktura-table />
                     </div>
                 </div>
             </div>

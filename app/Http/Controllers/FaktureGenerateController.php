@@ -7,6 +7,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class FaktureGenerateController extends Controller
 {
@@ -41,6 +42,10 @@ class FaktureGenerateController extends Controller
          }
 
          $file = file_get_contents(base_path('/public/storage/fakture/generate_'.$number.'.xls'), true);
+         
+         if(!File::exists(base_path('/public/storage/PDFs'))){
+            File::makeDirectory(base_path('/public/storage/PDFs'), 0755, true, true);
+        }
        
 
          $rows = array_map("str_getcsv", explode("\n", $file));

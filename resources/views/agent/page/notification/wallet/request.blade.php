@@ -30,8 +30,12 @@
         <li>Ck Trafik 1 Have permission to close the Wallet, in the system, if we think the balance is incorrect.</li>
         <li>Ck Trafik 1 Have permission to close the Wallet, in the system, if we need some payments.</li>
     </ul>
-    <livewire:notification.read-at :notification="$notification" />
-    <livewire:notification.wallet-request-form :notification="$notification" />
+    @if(!is_null($notification->read_at))
+        <livewire:notification.read-at :notification="$notification" />
+    @endif
+    @if(!is_null($notification->accept))
+        <livewire:notification.wallet-request-form :notification="$notification" />
+    @endif
 </div>
 
 @endsection
