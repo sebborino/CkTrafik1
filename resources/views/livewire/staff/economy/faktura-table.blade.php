@@ -25,7 +25,7 @@
             <table class="table table-bordered" width="100%" cellspacing="0">
                 <thead>
                     <tr>
-                        <th><input wire:click="all" type="checkbox"/> All</th>
+                        <th><input @if(empty($checked)) wire:click="all" @else checked wire:click="resetCheckBox" @endif type="checkbox"/> All</th>
                         <th>Faktura Nr.</th>
                         <th>E ticket</th>
                         <th>PNR</th>
@@ -40,8 +40,11 @@
                 <tbody>
                     @forelse($fakturas as $index => $faktura)
                         <tr>
-                            
-                            <th><input type="checkbox"/></th>
+                            <th><input type="checkbox" @if(!empty($checked))
+                                    @if($checked[$index]['id'] == $faktura->id)
+                                    checked
+                                    @endif 
+                                @endif/></th>
                             <td>{{ $faktura->fak_nr}}</td>
                             <td>{{ $faktura->e_ticket}}</td>
                             <td>{{ $faktura->pnr}}</td>
@@ -56,9 +59,7 @@
                                 </a>
                             </td>
                         </tr>
-                        @if(!empty($checked))
-                        hey
-                        @endif
+                        
                        
                     @empty    
                         No PDF's have been uploaded

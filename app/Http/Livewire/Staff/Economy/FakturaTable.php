@@ -50,15 +50,19 @@ class FakturaTable extends Component
 
     public function all(){
        
-        $checked = $this->checked;
+        
         $columns = Schema::getColumnListing('fakture_generate');
         $checked = FaktureGenerate::where(function($query)use($columns)
         {
             foreach($columns as $column){
                 $query->OrWhere($column, 'LIKE', '%' . $this->search . '%');
             }
-        })->orderBy('fak_nr')->paginate($this->paginate);
+        })->orderBy('fak_nr')->paginate($this->paginate)->toArray();
 
-        return $checked;
+        $this->checked = $checked['data'];
+    }
+
+    public function resetCheckBox(){
+        $this->checked = [];
     }
 }
