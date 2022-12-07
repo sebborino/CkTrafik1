@@ -114,7 +114,7 @@
                 
             </div>
             <div class="box" style="width:30%;margin-left:5%;height:100px;">
-            <!--<img src="{{ asset('/img/cktrafik.jpg')}}" />-->
+            <img src="{{ asset('/img/cktrafik.jpg')}}" />
         </div>
             
         </div>
