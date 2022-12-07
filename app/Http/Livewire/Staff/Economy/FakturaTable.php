@@ -90,7 +90,7 @@ class FakturaTable extends Component
             touch(base_path('/public/files/'.$fileName));
         }
         else{
-            chmod(base_path('/public/files/'.$fileName), 0777);
+            chmod(base_path('/public/files/'.$fileName),775);
             unlink(base_path('/public/files/'.$fileName));
             touch(base_path('/public/files/'.$fileName));
         }
