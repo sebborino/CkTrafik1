@@ -70,7 +70,7 @@
                                   });
                                   </script>
                             </div>
-                        
+                            
                             <button type="submit" class="btn custom btn-user btn-block">
                                 Generate
                             </button>
