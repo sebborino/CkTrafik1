@@ -7,6 +7,7 @@ use App\Http\Controllers\Staff\StaffController;
 use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
+use App\Http\Controllers\Api\ExchangeRatesController;
 use App\Http\Controllers\FaktureGenerateController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NotificationController;
@@ -34,7 +35,7 @@ use App\Models\Airport;
 |
 */
 
-
+Route::get('/test/api', [ExchangeRatesController::class, 'test']);
 Route::get('/', [LoginController::class, 'index'])->name('index');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
