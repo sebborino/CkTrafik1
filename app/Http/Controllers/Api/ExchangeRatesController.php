@@ -14,7 +14,7 @@ class ExchangeRatesController extends Controller
 {
     public static function exchange(){
         
-        $data = Currency::index('EUR','DKK',1000);
+        $data = Currency::index('USD','USD',559);
         
         return view('admin.api.test', compact('data'));
     }

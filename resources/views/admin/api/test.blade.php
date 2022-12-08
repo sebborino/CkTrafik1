@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-   
-    de skal betale 
-    {{ json_decode($data)->query->amount }}
+    <pre>
+   {{$data}}
+    </pre>
     
 </body>
 </html>

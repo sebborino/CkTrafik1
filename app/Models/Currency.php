@@ -15,7 +15,7 @@ class Currency extends Model
         curl_setopt_array($curl, array(
         CURLOPT_URL => "https://api.apilayer.com/exchangerates_data/convert?to={$to}&from={$from}&amount={$amount}",
         CURLOPT_HTTPHEADER => array(
-            "Content-Type: application/json",
+            "Content-Type: text/plain",
             "apikey: GZNmR4BI1cXEnhlbntpJgolNwosj2BUr"
         ),
         CURLOPT_RETURNTRANSFER => true,
