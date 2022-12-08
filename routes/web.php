@@ -21,8 +21,10 @@ use App\Http\Controllers\Staff\Flight\FlightController;
 use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
+use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
+use App\Models\FlightCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,8 +124,8 @@ Route::post('/admin/travel/updfate/{id}', [TravelController::class, 'update'])->
 // Dashboard Travels End Here
 // Dashboard Prices
 
-Route::get('/admin/prices', [ClassesController::class, 'index'])->name('admin.price.index');
-Route::post('/admin/prices/create/{id}', [ClassesController::class, 'create'])->name('admin.price.create');
+Route::get('/admin/sesson', [FlightCategoryController::class, 'index'])->name('admin.price.sesson');
+Route::post('/admin/sesson/create', [FlightCategoryController::class, 'create'])->name('admin.price.sesson.create');
 Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
 Route::post('/admin/prices/delete/admin/{id}', [ClassesController::class, 'delete'])->name('admin.price.delete');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFlightCategoriesTable extends Migration
+class CreateFlightClassTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,17 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('flight_categories', function (Blueprint $table) {
+        Schema::create('flight_class', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('flight_id');
-            $table->foreign('flight_id')
+            $table->string('class_code');
+            $table->decimal('price',14,2);
+            $table->decimal('more_price',14,2);
+            $table->decimal('more_rate',14,2);
+            $table->unsignedBigInteger('destination_id');
+            $table->foreign('destination_id')
             ->references('id')
-            ->on('flights');
+            ->on('destinations');
             $table->timestamps();
         });
     }
@@ -31,6 +35,6 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flight_categories');
+        Schema::dropIfExists('flight_class');
     }
 }

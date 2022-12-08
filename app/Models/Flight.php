@@ -11,7 +11,13 @@ class Flight extends Model
     use HasFactory;
 
     protected $fillable = [
-        'route'
+        'route',
+        'airline_id'
     ];
+
+    public function airline(){
+        return $this->belongsTo(Airline::class);
+    }
+
 
 }

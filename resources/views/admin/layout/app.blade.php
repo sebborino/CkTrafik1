@@ -145,9 +145,25 @@
                     </div>
                 </div>
             </li>
+            
 
             @endadmin
 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#flight_categories"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Prices</span>
+                </a>
+                <div id="flight_categories" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Prices:</h6>
+                        <a class="collapse-item" href="{{ route('admin.price.sesson')}}">Class Category</a>
+                        <a class="collapse-item" href="{{ route('admin.airport.store')}}">Currency</a>
+                        <a class="collapse-item" href="{{ route('admin.airport.store')}}">Class & Price</a>
+                    </div>
+                </div>
+            </li>
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
@@ -198,11 +214,6 @@
             </li>
             -->
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.price.index')}}">
-                    <i class="fas fa-fw fa-dollar-sign"></i>
-                    <span>Prices</span></a>
-            </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">

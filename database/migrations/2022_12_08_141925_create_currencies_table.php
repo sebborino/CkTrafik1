@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFlightCategoriesTable extends Migration
+class CreateCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('flight_categories', function (Blueprint $table) {
+        Schema::create('currencies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('flight_id');
-            $table->foreign('flight_id')
-            ->references('id')
-            ->on('flights');
+            $table->char('currency_code',3);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flight_categories');
+        Schema::dropIfExists('currencies');
     }
 }

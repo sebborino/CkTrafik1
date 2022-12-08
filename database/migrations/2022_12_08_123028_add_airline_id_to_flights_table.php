@@ -14,7 +14,10 @@ class AddAirlineIdToFlightsTable extends Migration
     public function up()
     {
         Schema::table('flights', function (Blueprint $table) {
-            $table->foreign('airline_id')->constrained('airlines');
+            $table->unsignedBigInteger('airline_id');
+            $table->foreign('airline_id')
+            ->references('id')
+            ->on('airlines');
         });
     }
 
