@@ -126,10 +126,11 @@ Route::post('/admin/travel/updfate/{id}', [TravelController::class, 'update'])->
 
 Route::get('/admin/sesson', [FlightCategoryController::class, 'index'])->name('admin.price.sesson');
 Route::post('/admin/sesson/create', [FlightCategoryController::class, 'create'])->name('admin.price.sesson.create');
+Route::post('/admin/sesson/update/{id}', [FlightCategoryController::class, 'update'])->name('admin.sesson.update');
 Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
 Route::post('/admin/prices/delete/admin/{id}', [ClassesController::class, 'delete'])->name('admin.price.delete');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');
-Route::post('/admin/prices/update/staff/{id}', [ClassesController::class, 'adminUpdate'])->name('admin.price.adminUpdate');
+
 
 
 // Dashboard Prices End Here

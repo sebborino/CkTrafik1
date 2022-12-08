@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Airline</h1>
+    <h1 class="h3 mb-2 text-gray-800">Create Sesson</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -64,14 +64,14 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label for="airline">Flight Route</label>
-                                    <select name="airline" class="form-control
-                                        @error('airline') border border-danger @enderror"  id="airline"
-                                        placeholder="fx. IA281" value="{{ old('airline')}}">
-                                        <option value="" selected>Choose Airline</option>
+                                    <label for="session">Sesson/Category Name</label>
+                                    <select name="flight" class="form-control
+                                        @error('flight') border border-danger @enderror"  id="flight"
+                                        placeholder="ex. High" value="{{ old('flight')}}">
+                                        <option value="" selected>Choose Flight Route</option>
 
-                                        @forelse($airlines as $airline)
-                                        <option value="{{$airline->id}}">{{$airline->name}}</option>
+                                        @forelse($flights as $flight)
+                                        <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
                                         @empty
                                         
                                         <option value="">No Airlines</option>
@@ -83,7 +83,7 @@
                                 
                             </div>
                             <button type="submit" class="btn custom btn-user btn-block">
-                                Create Airline
+                                Create Sesson
                             </button>
                         </form>
 
@@ -97,24 +97,26 @@
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Created Destinations</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Created Sessons</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Airline Name</th>
-                                        <th>Airline IATA Code</th>
+                                        <th>Sessons Name</th>
+                                        <th>Route Name</th>
+                                        <th>Airline</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($sessons as $sessons)
+                                    @forelse($sessons as $sesson)
                                     <tr>
                                         <td>{{ $sesson->name }}</td>
-                                        <td>{{ $sesson->airline_code }}</td>
+                                        <td>{{ $sesson->flight->route }}</td>
+                                        <td>{{ $sesson->flight->airline->name }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $sesson->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -123,11 +125,11 @@
                                         <td>{{ $sesson->created_at }}</td>
                                     </tr>
                                     @empty
-                                        <p>No Airlines</p>
+                                        <p>No Sessons</p>
                                     @endforelse
                                 </tbody>
                             </table>
-                            @forelse($airlines as $sesson)
+                            @forelse($sessons as $sesson)
                             <!-- Modal -->
                             <div class="modal fade" id="Modal{{ $sesson->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -142,16 +144,24 @@
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="name">Airline Name</label>
+                                                <label for="name">Sesson Name</label>
                                                 <input type="text" name="update_name" class="form-control form-control-user"  id="name"
-                                                    placeholder="Airline Name" value="{{ $sesson->name }}">
+                                                    placeholder="Sesson Name" value="{{ $sesson->name }}">
                                             </div>   
                                             
-                                            <div class="form-group">
-                                                <label for="name">Airline IATA Code</label>
-                                                <input type="text" name="update_airline_code" class="form-control form-control-user"  id="airline_code"
-                                                    placeholder="Airline IATA Code" value="{{ $sesson->airline_code }}">
-                                            </div>   
+                                            <label for="session">Sesson/Category Name</label>
+                                            <select name="update_flight" class="form-control
+                                                @error('update_flight') border border-danger @enderror"  id="update_flight"
+                                                value="{{ old('update_flight')}}">
+                                                <option value="{{$sesson->flight->id}}" selected>{{$sesson->flight->route}} ({{$sesson->flight->airline->name}})</option>
+                                                @foreach($flights as $flight)
+                                                @if($flight->id != $sesson->flight->id)
+                                                <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
+                                                @endif
+                                                
+                                                @endforeach
+                                                
+                                            </select>  
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

@@ -21,7 +21,7 @@ class FlightController extends Controller
     public function create(Request $request){
 
         $this->validate($request, [
-            'route' => 'required|unique:flights|max:255',
+            'route' => 'required|unique:flights,route|max:255',
             'airline' => 'required|exists:airlines,id|',
         ]);
 
@@ -34,12 +34,15 @@ class FlightController extends Controller
     }
 
     public function update(Request $request){
+        
         $this->validate($request, [
             'update_route' => 'required|unique:flights,route,'. $request->id . '|max:255',
+            'update_airline' => 'required|exists:airlines,id'
         ]);
 
         Flight::where('id',$request->id)->update([
-            'route' => $request->update_route
+            'route' => $request->update_route,
+            'airline_id' => $request->update_airline
         ]);
 
         return back()->with('update', 'The Flight its up to date! Great!');

@@ -13,4 +13,8 @@ class FlightCategory extends Model
         'name',
         'flight_id'
     ];
+
+    public function flight(){
+        return $this->belongsTo(Flight::class);
+    }
 }
