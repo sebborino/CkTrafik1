@@ -7,9 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    <pre>
-   {{$data}}
-    </pre>
-    
+
+    {{ $data }}
+
 </body>
 </html>

@@ -17,6 +17,8 @@ class CreateCurrenciesTable extends Migration
             $table->id();
             $table->string('name');
             $table->char('currency_code',3);
+            $table->decimal('rate',8,2);
+            $table->decimal('more_rate',8,2);
             $table->timestamps();
         });
     }

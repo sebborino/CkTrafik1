@@ -21,6 +21,7 @@ use App\Http\Controllers\Staff\Flight\FlightController;
 use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
+use App\Http\Controllers\Staff\Price\CurrencyController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
@@ -127,6 +128,14 @@ Route::post('/admin/travel/updfate/{id}', [TravelController::class, 'update'])->
 Route::get('/admin/sesson', [FlightCategoryController::class, 'index'])->name('admin.price.sesson');
 Route::post('/admin/sesson/create', [FlightCategoryController::class, 'create'])->name('admin.price.sesson.create');
 Route::post('/admin/sesson/update/{id}', [FlightCategoryController::class, 'update'])->name('admin.sesson.update');
+
+// currencies
+
+Route::get('/admin/currencies', [CurrencyController::class, 'index'])->name('admin.price.currency');
+Route::post('/admin/currencies/create', [CurrencyController::class, 'create'])->name('admin.price.currency.create');
+Route::post('/admin/currencies/update/{id}', [CurrencyController::class, 'update'])->name('admin.sesson.currency.update');
+
+
 Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
 Route::post('/admin/prices/delete/admin/{id}', [ClassesController::class, 'delete'])->name('admin.price.delete');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');

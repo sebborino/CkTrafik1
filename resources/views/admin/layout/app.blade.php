@@ -146,7 +146,6 @@
                 </div>
             </li>
             
-
             @endadmin
 
             <li class="nav-item">
@@ -159,7 +158,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Prices:</h6>
                         <a class="collapse-item" href="{{ route('admin.price.sesson')}}">Class Category</a>
-                        <a class="collapse-item" href="{{ route('admin.airport.store')}}">Currency</a>
+                        <a class="collapse-item" href="{{ route('admin.price.currency')}}">Currency</a>
                         <a class="collapse-item" href="{{ route('admin.airport.store')}}">Class & Price</a>
                     </div>
                 </div>
