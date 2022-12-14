@@ -19,5 +19,27 @@ class CurrencyController extends Controller
             'name' => ['required','max:255','unique:currencies,name'],
             'code' => ['required','max:255','unique:currencies,currency_code'],
         ]);
+
+        Currency::create([
+            'name' => $request->name,
+            'currency_code' => $request->code 
+        ]);
+
+        return back()->with('message', 'Nice! A new Currency for has been added to the system');
+    }
+
+    public function update(Request $request){
+        $this->validate($request,[
+            'update_name' => ['required','max:255','unique:currencies,name,'. $request->id.''],
+            'update_code' => ['required','max:255','unique:currencies,currency_code,'. $request->id.''],
+        ]);
+
+        Currency::find($request->id)->update([
+            'name' => $request->update_name,
+            'currency_code' => $request->update_code 
+        ]);
+
+        return back()->with('update', 'Nice! The Currency is up to date! Great!');
     }
 }
+

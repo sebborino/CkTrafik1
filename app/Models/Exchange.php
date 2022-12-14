@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Exchange extends Model
 {
-    public static function index($from,$to,$amount){
+    public static function convert($from,$to,$amount){
         $curl = curl_init();
 
         curl_setopt_array($curl, array(

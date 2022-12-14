@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCurrenciesTable extends Migration
+class AddTaxPriceToFlightClassTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCurrenciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('currencies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->char('currency_code',3);
-            $table->timestamps();
+        Schema::table('flight_class', function (Blueprint $table) {
+            $table->decimal('tax_price',8,2);
         });
     }
 
@@ -28,6 +25,8 @@ class CreateCurrenciesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('currencies');
+        Schema::table('flight_class', function (Blueprint $table) {
+            $table->dropColumn('tax_price',8,2);
+        });
     }
 }

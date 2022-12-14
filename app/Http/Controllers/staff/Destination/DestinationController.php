@@ -43,8 +43,8 @@ class DestinationController extends Controller
             'to_id' => $request->to,
             'flight_id' => $request->flight
         ]);
-        return back()->with('message', 'Nice! A new Destination has been added to the system');
 
+        return back()->with('message', 'Nice! A new Destination has been added to the system');
     }
 
     public function update(Request $request, $id){

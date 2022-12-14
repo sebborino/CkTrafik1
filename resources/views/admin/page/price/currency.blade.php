@@ -48,6 +48,15 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
 
+                                </div>
+                                @elseif(Session::has('update'))
+                                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    <h4 class="alert-heading">Well done!</h4>
+                                    <p>{!! Session::get('update') !!}</p>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+
                                 </div>   
                                 @endif
                                 
@@ -64,20 +73,6 @@
                                         <input type="code" class="form-control form-control-user
                                             @error('username') border border-danger @enderror" name="code" required id="code"
                                             placeholder="Currency Code" value="{{ old('code')}}">
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <label for="rate">Currency Rate</label>
-                                        <input type="number" class="form-control form-control-user
-                                            @error('rate') border border-danger @enderror" required name="rate"
-                                            id="rate" placeholder="Currency Rate" value="{{ old('rate')}}">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="more_rate">More Rate</label>
-                                        <input type="number" class="form-control form-control-user @error('more_rate') border border-danger @enderror" name="more_rate" required
-                                            id="more_rate" placeholder="More Rate" value="{{ old('more_rate')}}">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-user btn-block">
@@ -116,15 +111,21 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>Created</th>
+                                    <th>Currency</th>
+                                    <th>Code</th>
+                                    <th>Edit</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($currencies as $currency)
                                     <tr>
                                         <td>{{ $currency->name }}</td>
-                                        <td>{{ $currency->rate }}</td>
+                                        <td>{{ $currency->currency_code }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $currency->id}}">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
                                     </tr>
                                 @empty
                                     <p>No users</p>
@@ -132,6 +133,44 @@
 
                             </tbody>
                         </table>
+                        @forelse($currencies as $currency)
+                        <!-- Modal -->
+                        <div class="modal fade" id="Modal{{ $currency->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Change Name For {{ $currency->name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <form action="{{route('admin.price.currency.update', ['id' =>  $currency->id]) }}" method="post">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="update_name">Sesson Name</label>
+                                            <input type="text" name="update_name" class="form-control form-control-user"  id="update_name"
+                                                placeholder="Currency" value="{{ $currency->name }}">
+                                        </div>   
+                                        
+                                        <label for="session">Currency Code</label>
+
+                                        <input type="text" name="update_code" class="form-control form-control-user"  id="update_code"
+                                            placeholder="Currency Code" value="{{ $currency->currency_code }}">
+
+                                    </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>
+                                <button type="sumbmit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                        @empty
+                        
+                        @endforelse
+                        <!-- /Modal end here -->
                     </div>
                 </div>
             </div>

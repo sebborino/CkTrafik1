@@ -23,6 +23,8 @@ use App\Http\Controllers\Staff\flyclass\ClassesController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
 use App\Http\Controllers\Staff\Price\CurrencyController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
+use App\Http\Controllers\Staff\Price\CurrencyRateController;
+use App\Http\Controllers\Staff\Price\FlightClassController;
 use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
 use App\Models\FlightCategory;
@@ -133,11 +135,18 @@ Route::post('/admin/sesson/update/{id}', [FlightCategoryController::class, 'upda
 
 Route::get('/admin/currencies', [CurrencyController::class, 'index'])->name('admin.price.currency');
 Route::post('/admin/currencies/create', [CurrencyController::class, 'create'])->name('admin.price.currency.create');
-Route::post('/admin/currencies/update/{id}', [CurrencyController::class, 'update'])->name('admin.sesson.currency.update');
+Route::post('/admin/currencies/update/{id}', [CurrencyController::class, 'update'])->name('admin.price.currency.update');
 
+// Rates
 
-Route::post('/admin/prices/edit', [ClassesController::class, 'create'])->name('admin.price.edit');
-Route::post('/admin/prices/delete/admin/{id}', [ClassesController::class, 'delete'])->name('admin.price.delete');
+Route::get('/admin/rate', [CurrencyRateController::class, 'index'])->name('admin.price.rate');
+Route::post('/admin/rate/create', [CurrencyRateController::class, 'create'])->name('admin.price.rate.create');
+Route::post('/admin/rate/update/{id}', [CurrencyRateController::class, 'update'])->name('admin.price.rate.delete');
+
+//Prices
+
+Route::get('/admin/prices', [FlightClassController::class, 'index'])->name('admin.price.index');
+Route::post('/admin/prices/create', [FlightClassController::class, 'create'])->name('admin.class.create');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');
 
 
