@@ -16,5 +16,12 @@ class Airport extends Model
         'location',
         'country_code',
         'timezone',
+        'airport_tax',
+        'airport_tax_code',
+        'currency_id'
     ];
+
+    public function currency(){
+        return $this->belongsTo(Currency::class);
+    }
 }

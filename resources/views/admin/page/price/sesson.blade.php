@@ -60,7 +60,7 @@
                                     <label for="name">Sesson Name</label>
                                     <input type="text" name="name" class="form-control form-control-user
                                         @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Sesson Name" value="{{ old('name')}}">
+                                        placeholder="Sesson Name" value="{{ old('name')}}"/>
                                 </div>
 
                                 <div class="col-md-4">

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddClassTypeIdToFlightClassTable extends Migration
+class AddCurrencyIdToAirportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class AddClassTypeIdToFlightClassTable extends Migration
      */
     public function up()
     {
-        Schema::table('flight_class', function (Blueprint $table) {
-            $table->unsignedBigInteger('class_type_id');
-            $table->foreign('class_type_id')
+        Schema::table('airports', function (Blueprint $table) {
+            $table->unsignedBigInteger('currency_id');
+            $table->foreign('currency_id')
             ->references('id')
-            ->on('class_types');
+            ->on('currencies');
         });
     }
 
@@ -28,8 +28,8 @@ class AddClassTypeIdToFlightClassTable extends Migration
      */
     public function down()
     {
-        Schema::table('flight_class', function (Blueprint $table) {
-            $table->dropColumn('class_type_id');
+        Schema::table('airports', function (Blueprint $table) {
+            $table->dropColumn('currency_id');
         });
     }
 }

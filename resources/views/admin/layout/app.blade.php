@@ -160,6 +160,7 @@
                         <a class="collapse-item" href="{{ route('admin.price.sesson')}}">Class Category</a>
                         <a class="collapse-item" href="{{ route('admin.price.currency')}}">Currency</a>
                         <a class="collapse-item" href="{{ route('admin.price.rate')}}">Rate</a>
+                        <a class="collapse-item" href="{{ route('admin.class.index')}}">Class Type</a>
                         <a class="collapse-item" href="{{ route('admin.price.index')}}">Class & Price</a>
                     </div>
                 </div>

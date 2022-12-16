@@ -8,6 +8,7 @@ use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\Api\ExchangeRatesController;
+use App\Http\Controllers\ClassTypeController;
 use App\Http\Controllers\FaktureGenerateController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NotificationController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Staff\Price\CurrencyRateController;
 use App\Http\Controllers\Staff\Price\FlightClassController;
 use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
+use App\Models\ClassType;
 use App\Models\FlightCategory;
 
 /*
@@ -40,9 +42,15 @@ use App\Models\FlightCategory;
 |
 */
 
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::get('/test/api', [ExchangeRatesController::class, 'test']);
-Route::get('/', [LoginController::class, 'index'])->name('index');
+Route::get('/login', [LoginController::class, 'index'])->name('index');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+
 
 
 Route::middleware('staff')->group(function () {
@@ -141,6 +149,12 @@ Route::post('/admin/currencies/update/{id}', [CurrencyController::class, 'update
 
 Route::get('/admin/rate', [CurrencyRateController::class, 'index'])->name('admin.price.rate');
 Route::post('/admin/rate/create', [CurrencyRateController::class, 'create'])->name('admin.price.rate.create');
+Route::post('/admin/rate/update/{id}', [CurrencyRateController::class, 'update'])->name('admin.price.rate.delete');
+
+// class Type
+
+Route::get('/admin/classtype', [ClassTypeController::class, 'index'])->name('admin.class.index');
+Route::post('/admin/classtype/create', [ClassTypeController::class, 'create'])->name('admin.class.create');
 Route::post('/admin/rate/update/{id}', [CurrencyRateController::class, 'update'])->name('admin.price.rate.delete');
 
 //Prices

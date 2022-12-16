@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff\Airport;
 use App\Models\Airport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Currency;
 
 class AirportController extends Controller
 {
@@ -18,8 +19,10 @@ class AirportController extends Controller
 
     public function store(){
         $airports = Airport::all();
+        $currencies = Currency::all();
         return view('admin.page.airport.store',[
-        'airports' => $airports
+        'airports' => $airports,
+        'currencies' => $currencies
     ]);
     }
 
@@ -30,6 +33,9 @@ class AirportController extends Controller
             'location' => 'required',
             'country_code' => 'required',
             'timezone' => 'required',
+            'tax' => 'required',
+            'tax_code' => 'required',
+            'currency_id' => 'required|exists:currencies,id'
         ]);
 
         Airport::create([
@@ -37,7 +43,10 @@ class AirportController extends Controller
             'IATA' => $request->IATA,
             'location' => $request->location,
             'country_code' => $request->country_code,
-            'timezone' => $request->timezone
+            'timezone' => $request->timezone,
+            'airport_tax' => $request->tax,
+            'airport_tax_code' => $request->tax_code,
+            'currency_id' => $request->currency_id
         ]);
         return back()->with('message', 'Nice! A new Aiport has been added to the system');
     }
@@ -50,6 +59,9 @@ class AirportController extends Controller
             'update_location' => 'required',
             'update_country_code' => 'required',
             'update_timezone' => 'required',
+            'update_tax' => 'required|numeric',
+            'update_tax_code' => 'required',
+            'update_currency_id' => 'required|exists:currencies,id'
         ]);
         
         Airport::where('id',$request->id)->update([
@@ -57,7 +69,10 @@ class AirportController extends Controller
             'IATA' => $request->update_IATA,
             'location' => $request->update_location,
             'country_code' => $request->update_country_code,
-            'timezone' => $request->update_timezone
+            'timezone' => $request->update_timezone,
+            'airport_tax' => $request->update_tax,
+            'airport_tax_code' => $request->update_tax_code,
+            'currency_id' => $request->update_currency_id
         ]);
         return back()->with('update', 'Nice! The Airport Details is up to date! Great!');
     }

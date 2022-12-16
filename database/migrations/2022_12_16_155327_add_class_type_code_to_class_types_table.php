@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassTypeTable extends Migration
+class AddClassTypeCodeToClassTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateClassTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_type', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('class_types', function (Blueprint $table) {
+            $table->char('class_type_code',3);
         });
     }
 
@@ -27,6 +25,8 @@ class CreateClassTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_type');
+        Schema::table('class_types', function (Blueprint $table) {
+            $table->dropColumn('class_type_code');
+        });
     }
 }
