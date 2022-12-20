@@ -13,7 +13,8 @@ class ClassType extends Model
 
     protected $fillable = [
         'id',
-        'name'
+        'name',
+        'class_type_code'
     ];
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Staff\Price;
 
+use App\Models\ClassType;
 use App\Models\Currency;
 use App\Models\Destination;
 use App\Models\Flight;
@@ -21,6 +22,7 @@ class PriceForm extends Component
     public $price;
     public $tax_price = 0;
     public $more_price = 0;
+    public $class_type_code;
 
     protected $rules = [
         'SelectedDestination' => 'required|exists:destinations,id',
@@ -30,6 +32,7 @@ class PriceForm extends Component
         'SelectedCurrency' => 'required|exists:currencies,id',
         'price' => 'required|not_in:0|numeric',
         'tax_price' => 'required|not_in:0|numeric',
+        'class_type_code' => 'required|exists:classtypes,id|numeric',
     ];
 
     public function changeFlight()
@@ -48,11 +51,15 @@ class PriceForm extends Component
             $query->where('flight_id',$this->SelectFlight);
             })->get();
 
+        $SelectedClassType = ClassType::find($this->class_type_code);    
+
         return view('livewire.staff.price.price-form',[
             'flights' => Flight::with('airline')->get(),
             'destinations' => $destinations,
             'categories' => $categories,
             'currencies' => Currency::all(),
+            'classtypes' => ClassType::all(),
+            'SelectedClassType' => $SelectedClassType,
         ]);
     }
 

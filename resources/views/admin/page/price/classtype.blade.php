@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Rates For Currencies</h1>
+    <h1 class="h3 mb-2 text-gray-800">Create Class Type</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -20,7 +20,7 @@
                 </div>
                     <div class="card-body">
 
-                        <form action="{{ route('admin.class.create')}}" class="user" method="post">
+                        <form action="{{ route('admin.classtype.create')}}" class="user" method="post">
                             @csrf
                             @if($errors->any())
                                 @foreach($errors->all() as $error)
@@ -46,16 +46,24 @@
                             @endif
                             
                             <div class="form-group row"> 
-                                <div class="col-md-12">
+                                <div class="col-md-7">
                                     <label for="name">Class Type</label>
-                                    <input type="text" name="name"id="name" class="form-control form-control-user
-                                    @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Class Type fx. OW" value="{{ old('name')}}"
+                                    <input type="text" name="name" id="name" class="form-control form-control-user
+                                    @error('name') border border-danger @enderror"
+                                        placeholder="Class Type fx. One Way" value="{{ old('name')}}"
+                                     />
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label for="code">Class Type Code</label>
+                                    <input type="text" name="code"id="code" class="form-control form-control-user
+                                    @error('name') border border-danger @enderror"
+                                        placeholder="Class Type fx. OW" value="{{ old('code')}}"
                                      />
                                 </div>
                             </div>
                             <button type="submit" class="btn custom btn-user btn-block">
-                                Create Rate
+                                Create Class Type
                             </button>
                         </form>
                     </div>
@@ -75,6 +83,7 @@
                                 <thead>
                                     <tr>
                                         <th>Class Type</th>
+                                        <th>Class Code</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
@@ -85,17 +94,18 @@
                                         <td>
                                             {{ $classType->name }}
                                         </td>
-
+                                        <td>
+                                            {{ $classType->class_type_code }}
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal{{ $classType->id}}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </td>
-                                        
                                         <td>{{ $classType->created_at }}</td>
                                     </tr>
                                     @empty
-                                        <p>No Rates</p>
+                                        <p>No Class Types</p>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -110,11 +120,10 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     </div>
-                                    <form action="{{route('admin.price.classType.delete', ['id' =>  $classType->id]) }}" method="post">
+                                    <form action="{{route('admin.classtype.update', ['id' =>  $classType->id]) }}" method="post">
                                         @csrf
                                         <div class="modal-body">
-                                            <h5>Sure you want to delete the Rate {{$classType->from->currency_code}}/{{$classType->to->currency_code}}</h5>
-
+                                            <h5>Sure you want to delete the Rate</h5>
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

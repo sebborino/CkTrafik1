@@ -8,7 +8,6 @@ use App\Http\Controllers\Staff\Auth\UserController;
 use App\Http\Controllers\Staff\Auth\RegisterController;
 use App\Http\Controllers\Agent\Page\AgentPageController;
 use App\Http\Controllers\Api\ExchangeRatesController;
-use App\Http\Controllers\ClassTypeController;
 use App\Http\Controllers\FaktureGenerateController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\NotificationController;
@@ -22,6 +21,7 @@ use App\Http\Controllers\Staff\Flight\FlightController;
 use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
+use App\Http\Controllers\Staff\Price\ClassTypeController;
 use App\Http\Controllers\Staff\Price\CurrencyController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Price\CurrencyRateController;
@@ -44,10 +44,10 @@ use App\Models\FlightCategory;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Route::get('/test/api', [ExchangeRatesController::class, 'test']);
-Route::get('/login', [LoginController::class, 'index'])->name('index');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 
@@ -154,8 +154,8 @@ Route::post('/admin/rate/update/{id}', [CurrencyRateController::class, 'update']
 // class Type
 
 Route::get('/admin/classtype', [ClassTypeController::class, 'index'])->name('admin.class.index');
-Route::post('/admin/classtype/create', [ClassTypeController::class, 'create'])->name('admin.class.create');
-Route::post('/admin/rate/update/{id}', [CurrencyRateController::class, 'update'])->name('admin.price.rate.delete');
+Route::post('/admin/classtype/create', [ClassTypeController::class, 'create'])->name('admin.classtype.create');
+Route::post('/admin/classtype/update/{id}', [ClassTypeController::class, 'update'])->name('admin.classtype.update');
 
 //Prices
 

@@ -5,7 +5,8 @@
             <h6 class="m-0 font-weight-bold text-primary">Table</h6>
         </div>
             <div class="card-body">
-
+                <div class="row">
+                    <div class="container-fluid">
                     @if($errors->any())
                         @foreach($errors->all() as $error)
 
@@ -37,9 +38,10 @@
 
                     </div>
                     @endif
-
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h2 class="h3 mb-0 text-gray-800">Flight Details</h2>
+                    </div>
                     <div class="form-group row">
-
                         <div class="col-md-4">
                             <label>Flight(Route)</label>
                             <select class="form-control" wire:model="SelectFlight" wire:change="changeFlight">
@@ -77,6 +79,10 @@
                             </select>
                         </div>
                     </div>
+                    <hr>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h2 class="h3 mb-0 text-gray-800">Flight Class Details</h2>
+                    </div>
                     <div class="form-group row">
                         <div class="col-md-3">
                             <label for="class">Class Name</label>
@@ -87,16 +93,26 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label for="class">Class Code</label>
-                            <input id="class" class="form-control" 
-                            {{ empty($class) ? 'disabled' : '' }}
-                             type="text" wire:model="class_code"
-                             placeholder="Class Code" />
+                            <label>Class Type</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="class_type_code">
+                                <option value="0">Choose Sesson</option>  
+                                @forelse($classtypes as $classtype)
+                                    <option value="{{$classtype->id}}">({{$classtype->class_type_code}}) {{$classtype->name}} 
+                                    </option>
+                                @empty
+                                    No Sessons
+                                @endforelse        
+                            </select>
                         </div>
-
+                    </div>
+                    <hr>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h2 class="h3 mb-0 text-gray-800">Price Details</h2>
+                    </div>
+                    <div class="form-group row">
                         <div class="col-md-2">
                             <label for="currency">Currency</label>
-                            <select id="currency" class="form-control" {{ empty($class_code) ? 'disabled' : '' }} wire:model="SelectedCurrency">
+                            <select id="currency" class="form-control" {{ empty($class_type_code) ? 'disabled' : '' }} wire:model="SelectedCurrency">
                                 <option value="0">Choose Currency</option>  
                                 @forelse($currencies as $currency)
                                     <option value="{{$currency->id}}">{{$currency->currency_code}}
@@ -135,7 +151,8 @@
                     class="btn custom btn-user btn-block">
                         Create Flight Class
                     </button>
-
+                </div>
+            </div>
             </div>
         </div>
     </div>
