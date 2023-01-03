@@ -40,4 +40,8 @@ class FlightClass extends Model
     public function traveler_type(){
         return $this->belongsTo(TravelerType::class);
     }
+
+    public function class_type(){
+        return $this->belongsTo(ClassType::class);
+    }
 }

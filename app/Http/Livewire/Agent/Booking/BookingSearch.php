@@ -83,6 +83,7 @@ class BookingSearch extends Component
     }
 
     public function search(){
+        
         $destination = Destination::where('from_id',$this->departure_id)->where('to_id',$this->arrival_id)->value('id');
         if($this->return_departure_id != null && $this->return_arrival_id != null)
         {

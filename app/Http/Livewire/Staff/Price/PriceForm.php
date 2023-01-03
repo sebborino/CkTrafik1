@@ -69,7 +69,6 @@ class PriceForm extends Component
 
     public function save(){
         $this->validate();
-       
         FlightClass::create([
             'name' => $this->class,
             'class_code' => $this->class,

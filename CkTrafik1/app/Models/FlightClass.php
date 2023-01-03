@@ -42,6 +42,6 @@ class FlightClass extends Model
     }
 
     public function class_type(){
-        return $this->belongsTo(ClassType::class,'','');
+        return $this->belongsTo(ClassType::class);
     }
 }
