@@ -33,7 +33,7 @@
     @if(!is_null($notification->read_at))
         <livewire:notification.read-at :notification="$notification" />
     @endif
-    @if(!is_null($notification->accept))
+    @if($bank == 0)
         <livewire:notification.wallet-request-form :notification="$notification" />
     @endif
 </div>

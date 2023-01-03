@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class ShowNotificationController extends Controller
 {
     public function wallet_request($id){
+       $bank = Bank::where('user_id',auth()->user()->id)->value('accept');
         return view('agent.page.notification.wallet.request',[
-            'notification' => Notification::find($id)
+            'notification' => Notification::find($id),
+            'bank' => $bank,
         ]);
     }
 

@@ -75,9 +75,9 @@
                             <div class="form-group row"> 
                             
                                 <div class="col-md-6">
-                                    <label for="name">Airline</label>
+                                    <label for="airline_id">Airline</label>
                                     <select name="airline_id" class="form-control
-                                    @error('airline_id') border border-danger @enderror" id="airline">
+                                    @error('airline_id') border border-danger @enderror" id="airline_id">
                                         <option value="0">Choose Airline</option>
                                         @foreach($airlines as $airline)
                                             <option value="{{ $airline->id}}">{{ $airline->name}}</option>

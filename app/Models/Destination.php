@@ -36,4 +36,13 @@ class Destination extends Model
     {
         return $this->belongsTo(Airport::class, 'to_id', 'id');
     }
+
+    public function flight_classes(){
+        return $this->belongsTo(FlightClass::class,'id','destination_id');
+    }
+
+    public function travel(){
+        return $this->belongsTo(Travel::class,'id','destination_id');
+    }
+
 }

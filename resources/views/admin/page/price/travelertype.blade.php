@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Sesson</h1>
+    <h1 class="h3 mb-2 text-gray-800">Create Traveler Type</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -20,7 +20,7 @@
                 </div>
                     <div class="card-body">
 
-                        <form action="{{ route('admin.price.sesson.create')}}" class="user" method="post">
+                        <form action="{{ route('admin.travelerType.create')}}" class="user" method="post">
                             @csrf
                             @if($errors->any())
                                 @foreach($errors->all() as $error)
@@ -57,33 +57,27 @@
                             <div class="form-group row"> 
                             
                                 <div class="col-md-8">
-                                    <label for="name">Sesson Name</label>
+                                    <label for="name">Traveler Type Name</label>
                                     <input type="text" name="name" class="form-control
                                         @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Sesson Name" value="{{ old('name')}}"/>
+                                        placeholder="Traveler Type Name" value="{{ old('name')}}"/>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="session">Sesson/Category Name</label>
-                                    <select name="flight" class="form-control
-                                        @error('flight') border border-danger @enderror"  id="flight"
-                                        placeholder="ex. High" value="{{ old('flight')}}">
-                                        <option value="" selected>Choose Flight Route</option>
+                                <div class="col-md-2">
+                                    <label for="age_from">Age From</label>
+                                    <input type="number" name="age_from" 
+                                    class="form-control @error('age_from') border border-danger @enderror" id="age_from" value="{{ old('age_from')}}" placeholder="Age From">
+                                </div>
 
-                                        @forelse($flights as $flight)
-                                        <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
-                                        @empty
-                                        
-                                        <option value="">No Airlines</option>
-                                        
-                                        @endforelse
-                                        
-                                    </select>
+                                <div class="col-md-2">
+                                    <label for="age_to">Age From</label>
+                                    <input type="number" name="age_to" 
+                                    class="form-control @error('age_to') border border-danger @enderror" id="age_to" value="{{ old('age_to')}}" placeholder="Age To">
                                 </div>
                                 
                             </div>
                             <button type="submit" class="btn custom btn-user btn-block">
-                                Create Sesson
+                                Create Traveler Type
                             </button>
                         </form>
 
@@ -97,71 +91,63 @@
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Created Sessons</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Created Traveler Types</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>Sessons Name</th>
-                                        <th>Route Name</th>
-                                        <th>Airline</th>
+                                        <th>Traveler Types Name</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($sessons as $sesson)
+                                    @forelse($travelerTypes as $travelerType)
                                     <tr>
-                                        <td>{{ $sesson->name }}</td>
-                                        <td>{{ $sesson->flight->route }}</td>
-                                        <td>{{ $sesson->flight->airline->name }}</td>
+                                        <td>{{ $travelerType->name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $sesson->id}}">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $travelerType->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
                                             </button>
                                         </td>
-                                        <td>{{ $sesson->created_at }}</td>
+                                        <td>{{ $travelerType->created_at }}</td>
                                     </tr>
                                     @empty
-                                        <p>No Sessons</p>
+                                        <p>No travelerTypes</p>
                                     @endforelse
                                 </tbody>
                             </table>
-                            @forelse($sessons as $sesson)
+                            @forelse($travelerTypes as $travelerType)
                             <!-- Modal -->
-                            <div class="modal fade" id="Modal{{ $sesson->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="Modal{{ $travelerType->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Change Name For {{ $sesson->name }}</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Change Details For {{ $travelerType->name }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     </div>
-                                    <form action="{{route('admin.sesson.update', ['id' =>  $sesson->id]) }}" method="post">
+                                    <form action="{{route('admin.travelerType.update', ['id' =>  $travelerType->id]) }}" method="post">
                                         @csrf
                                         <div class="modal-body">
                                             <div class="form-group">
-                                                <label for="name">Sesson Name</label>
-                                                <input type="text" name="update_name" class="form-control form-control-user"  id="name"
-                                                    placeholder="Sesson Name" value="{{ $sesson->name }}">
+                                                <label for="update_name">travelerType Name</label>
+                                                <input type="text" name="update_name" class="form-control"  id="update_name"
+                                                    placeholder="Traveler Type Name" value="{{ $travelerType->name }}">
                                             </div>   
-                                            
-                                            <label for="session">Sesson/Category Name</label>
-                                            <select name="update_flight" class="form-control
-                                                @error('update_flight') border border-danger @enderror"  id="update_flight"
-                                                value="{{ old('update_flight')}}">
-                                                <option value="{{$sesson->flight->id}}" selected>{{$sesson->flight->route}} ({{$sesson->flight->airline->name}})</option>
-                                                @foreach($flights as $flight)
-                                                @if($flight->id != $sesson->flight->id)
-                                                <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
-                                                @endif
-                                                
-                                                @endforeach
-                                                
-                                            </select>  
+
+                                            <div class="form-group">Age From</label>
+                                                <input type="number" name="update_age_from" class="form-control"  id="update_age_from"
+                                                    placeholder="Age From" value="{{ $travelerType->age_from }}">
+                                            </div>   
+
+                                            <div class="form-group">Age To</label>
+                                                <input type="number" name="update_age_to" class="form-control"  id="update_age_to"
+                                                    placeholder="Age To" value="{{ $travelerType->age_to }}">
+                                            </div>     
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

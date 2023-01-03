@@ -1,35 +1,37 @@
 <?php
 
-use App\Models\User_role;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Staff\StaffController;
-use App\Http\Controllers\Staff\Auth\UserController;
-use App\Http\Controllers\Staff\Auth\RegisterController;
-use App\Http\Controllers\Agent\Page\AgentPageController;
-use App\Http\Controllers\Api\ExchangeRatesController;
-use App\Http\Controllers\FaktureGenerateController;
-use App\Http\Controllers\LogoutController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ShowNotificationController;
-use App\Http\Controllers\ShowNotificationWallet;
-use App\Http\Controllers\Staff\Agent\AgentController;
-use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
-use App\Http\Controllers\Staff\Airline\AircraftController;
-use App\Http\Controllers\Staff\Airline\AirlineController;
-use App\Http\Controllers\Staff\Flight\FlightController;
-use App\Http\Controllers\Staff\Airport\AirportController;
-use App\Http\Controllers\Staff\flyclass\ClassesController;
-use App\Http\Controllers\Staff\Destination\DestinationController;
-use App\Http\Controllers\Staff\Price\ClassTypeController;
-use App\Http\Controllers\Staff\Price\CurrencyController;
-use App\Http\Controllers\Staff\Price\FlightCategoryController;
-use App\Http\Controllers\Staff\Price\CurrencyRateController;
-use App\Http\Controllers\Staff\Price\FlightClassController;
-use App\Http\Controllers\Staff\Travels\TravelController;
 use App\Models\Airport;
 use App\Models\ClassType;
+use App\Models\User_role;
 use App\Models\FlightCategory;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Staff\StaffController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ShowNotificationWallet;
+use App\Http\Controllers\FaktureGenerateController;
+use App\Http\Controllers\Staff\Auth\UserController;
+use App\Http\Controllers\ShowNotificationController;
+use App\Http\Controllers\Api\ExchangeRatesController;
+use App\Http\Controllers\Staff\Agent\AgentController;
+use App\Http\Controllers\Staff\Auth\RegisterController;
+use App\Http\Controllers\Staff\Flight\FlightController;
+use App\Http\Controllers\Agent\Page\AgentPageController;
+use App\Http\Controllers\AgentBookingController;
+use App\Http\Controllers\Staff\Price\CurrencyController;
+use App\Http\Controllers\Staff\Travels\TravelController;
+use App\Http\Controllers\Staff\Airline\AirlineController;
+use App\Http\Controllers\Staff\Airport\AirportController;
+use App\Http\Controllers\Staff\Price\ClassTypeController;
+use App\Http\Controllers\Staff\Airline\AircraftController;
+use App\Http\Controllers\Staff\flyclass\ClassesController;
+use App\Http\Controllers\Staff\Price\FlightClassController;
+use App\Http\Controllers\Staff\Price\CurrencyRateController;
+use App\Http\Controllers\Staff\Price\TravelerTypeController;
+use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
+use App\Http\Controllers\Staff\Price\FlightCategoryController;
+use App\Http\Controllers\Staff\Destination\DestinationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,6 +159,11 @@ Route::get('/admin/classtype', [ClassTypeController::class, 'index'])->name('adm
 Route::post('/admin/classtype/create', [ClassTypeController::class, 'create'])->name('admin.classtype.create');
 Route::post('/admin/classtype/update/{id}', [ClassTypeController::class, 'update'])->name('admin.classtype.update');
 
+Route::get('/admin/travelerType', [TravelerTypeController::class, 'index'])->name('admin.travelerType.index');
+Route::post('/admin/travelerType/create', [TravelerTypeController::class, 'create'])->name('admin.travelerType.create');
+Route::post('/admin/travelerType/update/{id}', [TravelerTypeController::class, 'update'])->name('admin.travelerType.update');
+
+
 //Prices
 
 Route::get('/admin/prices', [FlightClassController::class, 'index'])->name('admin.price.index');
@@ -187,6 +194,11 @@ Route::get('/dashboard/tables', function () {
 // Dashboard For Agent Start Here
 Route::get('/dashboard', [AgentPageController::class, 'index'])->name('agent.index')->middleware('agent');
 Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('agent.price')->middleware('agent');
+
+// Agent Booking Start Here
+Route::get('/dashboard/booking', [AgentBookingController::class, 'index'])->name('agent.booking.index')->middleware('agent');
+Route::post('/dashboard/booking', [AgentBookingController::class, 'search'])->name('agent.booking.search')->middleware('agent');
+Route::get('/dashboard/booking/{destination}/{date}/{return}/{return_date}', [AgentBookingController::class, 'store'])->name('agent.booking.store')->middleware('agent');
 
 // Agent Notifications Start Here
 Route::get('/dasboard/notification', [NotificationController::class, 'index'])->name('agent.notification.index')->middleware('agent');

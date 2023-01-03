@@ -17,10 +17,12 @@ class FlightClass extends Model
         'price',
         'tax_price',
         'more_price',
-        'more_rate',
+        'tax_code',
+        'class_type_id',
         'destination_id',
         'currency_id',
-        'flight_category_id'
+        'flight_category_id',
+        'traveler_type_id'
     ];
 
     public function destination(){
@@ -33,5 +35,9 @@ class FlightClass extends Model
 
     public function flight_category(){
         return $this->belongsTo(FlightCategory::class);
+    }
+
+    public function traveler_type(){
+        return $this->belongsTo(TravelerType::class);
     }
 }

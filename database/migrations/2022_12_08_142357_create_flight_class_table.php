@@ -19,7 +19,6 @@ class CreateFlightClassTable extends Migration
             $table->string('class_code');
             $table->decimal('price',14,2);
             $table->decimal('more_price',14,2);
-            $table->decimal('more_rate',14,2);
 
             $table->unsignedBigInteger('flight_category_id');
             $table->foreign('flight_category_id')

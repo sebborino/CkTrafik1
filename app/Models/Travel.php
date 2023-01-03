@@ -30,6 +30,10 @@ class Travel extends Model
         return $this->belongsTo(Destination::class);
     }
 
+    public function return(){
+        return $this->belongsTo(Destination::class,'destination_id','id');
+    }
+
     public function stopover(){
         return $this->belongsTo(Airport::class);
     }

@@ -149,6 +149,21 @@
             @endadmin
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Currency"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Currency And Rates</span>
+                </a>
+                <div id="Currency" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Currency, Rate:</h6>
+                        <a class="collapse-item" href="{{ route('admin.price.currency')}}">Currency</a>
+                        <a class="collapse-item" href="{{ route('admin.price.rate')}}">Rate</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#flight_categories"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-dollar-sign"></i>
@@ -158,9 +173,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Prices:</h6>
                         <a class="collapse-item" href="{{ route('admin.price.sesson')}}">Class Category</a>
-                        <a class="collapse-item" href="{{ route('admin.price.currency')}}">Currency</a>
-                        <a class="collapse-item" href="{{ route('admin.price.rate')}}">Rate</a>
                         <a class="collapse-item" href="{{ route('admin.class.index')}}">Class Type</a>
+                        <a class="collapse-item" href="{{ route('admin.travelerType.index')}}">Travel Type</a>
                         <a class="collapse-item" href="{{ route('admin.price.index')}}">Class & Price</a>
                     </div>
                 </div>

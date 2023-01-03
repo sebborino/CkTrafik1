@@ -21,6 +21,10 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 
+    
+    @stack('datepicker-css')
+    @stack('dataTable-css')    
+    @livewireStyles
 </head>
 
 <body id="page-top">
@@ -47,6 +51,11 @@
                 <a class="nav-link" href="{{ route('agent.index')}}">
                     <i class="fas fa-fw fa-dashboard"></i>
                     <span>Dashboard</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('agent.booking.index')}}">
+                    <i class="fas fa-fw fa-calender"></i>
+                    <span>Booking</span></a>
             </li>
         </ul>
 
@@ -268,7 +277,7 @@
         </div>
     </div>
 
-    @livewireScripts 
+    
 
     <!-- Bootstrap core JavaScript-->
     <script src="/js/jquery/jquery.min.js"></script>
@@ -276,6 +285,10 @@
 
     <!-- Core plugin JavaScript-->
     <script src="/js/jquery-easing/jquery.easing.min.js"></script>
+
+    @stack('datepicker-js')
+    @stack('dataTable-scripts')
+    @livewireScripts 
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>

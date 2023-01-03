@@ -41,27 +41,28 @@
                         <thead>
                             <tr>
                                 <th>Class Name</th>
-                                <th>Class Code</th>
                                 <th>Destination</th>
                                 <th>Sesson</th>
+                                <th>Traveler Type</th>
                                 <th>Fare Price</th>
                                 <th>Tax Price</th>
                                 <th>More Price</th>
                                 <th>Total Price</th>
-
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($prices as $price)
                                 <tr>
                                     <td>{{$price->name}}</td>
-                                    <td>{{$price->class_code}}</td>
                                     <td>{{$price->destination->from->IATA}}-{{$price->destination->to->IATA}}</td>
                                     <td>{{$price->flight_category->name}}</td>
+                                    <td>{{$price->traveler_type->name}}</td>
                                     <td>{{$price->price}} {{ $price->currency->currency_code}}</td>
                                     <td>{{$price->tax_price}} {{ $price->currency->currency_code}}</td>
                                     <td>{{$price->more_price}} {{ $price->currency->currency_code}}</td>
                                     <td>{{$price->price + $price->more_price + $price->tax_price}} {{ $price->currency->currency_code}}</td>
+                                    <td></td>
                                 </tr>
                                 
                             @empty
