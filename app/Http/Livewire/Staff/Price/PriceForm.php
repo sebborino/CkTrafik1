@@ -8,6 +8,7 @@ use App\Models\Destination;
 use App\Models\Flight;
 use App\Models\FlightCategory;
 use App\Models\FlightClass;
+use App\Models\FlightClassCategory;
 use App\Models\TravelerType;
 use Livewire\Component;
 
@@ -21,10 +22,18 @@ class PriceForm extends Component
     public $SelectedCurrency = 0;
     public $price;
     public $tax_price = 0;
+    public $tax_code;
     public $more_price = 0;
     public $class_type_code;
     public $class_type;
     public $traveler_type;
+    public $refundable = 0;
+    public $change_able = 0;
+    public $bagage = 0;
+    public $rule;
+    public $class_category;
+    public $use_in = 0;
+    public $handbagage;
 
     protected $rules = [
         'SelectedDestination' => 'required|exists:destinations,id',
@@ -34,6 +43,13 @@ class PriceForm extends Component
         'price' => 'required|not_in:0|numeric',
         'tax_price' => 'required|numeric',
         'class_type_code' => 'required|exists:class_types,id|numeric',
+        'tax_code' => 'required',
+        'flight_class_category_id' => ['required','exists:flight_class_categories,id','numeric'],
+        'bagage' => 'required',
+        'refundable' => 'required',
+        'change_able' => 'required',
+        'use_in' => 'required',
+        'handbagage' => 'required'
     ];
 
     public function changeFlight()
@@ -64,6 +80,7 @@ class PriceForm extends Component
             'travelerTypes' => $travelerTypes,
             'classtypes' => ClassType::all(),
             'SelectedClassType' => $SelectedClassType,
+            'class_categories' => FlightClassCategory::all(),
         ]);
     }
 
@@ -78,9 +95,11 @@ class PriceForm extends Component
             'destination_id' => $this->SelectedDestination,
             'currency_id' => $this->SelectedCurrency,
             'tax_price' => $this->tax_price,
+            'flight_class_category_id' => $this->class_category,
             'class_type_id' => $this->class_type_code,
-            'tax_code' => 0,
-            'traveler_type_id' => $this->traveler_type
+            'tax_code' => $this->tax_code,
+            'traveler_type_id' => $this->traveler_type,
+            'use_in' => $this->use_in,
         ]);
 
         return redirect(request()->header('Referer'));

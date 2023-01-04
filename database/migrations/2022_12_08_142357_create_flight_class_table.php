@@ -34,6 +34,8 @@ class CreateFlightClassTable extends Migration
             $table->foreign('currency_id')
             ->references('id')
             ->on('currencies');
+            $table->integer('bagage');
+            $table->integer('use_in')->nullable();
 
             $table->timestamps();
         });

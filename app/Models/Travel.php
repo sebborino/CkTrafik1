@@ -23,7 +23,8 @@ class Travel extends Model
         'stopover_id',
         'stopover_departure_datetime',
         'stopover_arrival_datetime',
-        'cancelled_at'
+        'cancelled_at',
+        'flight_category_id'
     ];
 
     public function destination(){
@@ -40,5 +41,9 @@ class Travel extends Model
 
     public function aircraft(){
         return $this->belongsTo(Aircraft::class);
+    }
+
+    public function class_categori(){
+        return $this->belongsTo(FlightCategory::class);
     }
 }

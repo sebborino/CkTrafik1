@@ -215,12 +215,7 @@
                                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                                         <h2 class="h3 mb-0 text-gray-800">Flight Details</h2>
                                 </div>
-                                </div>
-                                <hr>
-                                <div class="form-group">
-
-                                </div>
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-0">
                                         <label for="aircraft">Aircraft</label>
                                         <select class="form-control" name="aircraft_id" id="aircraft">
@@ -229,7 +224,15 @@
                                                 <option value="{{$aircraft->id}}">{{$aircraft->registration}} ({{$aircraft->airline->name}})</option>
                                             @endforeach
                                         </select>
-                                    </div>      
+                                    </div> 
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        <label for="sesson">Sessons</label>
+                                        <select class="form-control" name="flight_category" id="sesson">
+                                            <option value="">Choose a Sesson</option>
+                                            <option  value="1">High</option>
+                                            <option  value="2">Low</option>
+                                        </select>
+                                    </div> 
                                 </div>   
                                 <div class="form-group row">
                                 </div>

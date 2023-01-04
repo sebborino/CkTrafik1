@@ -32,6 +32,7 @@ use App\Http\Controllers\Staff\Price\TravelerTypeController;
 use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
+use App\Http\Controllers\Staff\Flight\FlightClassCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,6 +99,12 @@ Route::post('/admin/arline/aircraft/update/{id}', [AircraftController::class, 'u
 Route::get('/admin/flight', [FlightController::class, 'index'])->name('admin.flight.index');
 Route::post('/admin/flight/create', [FlightController::class, 'create'])->name('admin.flight.create');
 Route::post('/admin/flight/update/{id}', [FlightController::class, 'update'])->name('admin.flight.update');
+
+// Dashboard Flights
+
+Route::get('/admin/flight/category', [FlightClassCategoryController::class, 'index'])->name('admin.flightCategory.index');
+Route::post('/admin/flight/category/create', [FlightClassCategoryController::class, 'create'])->name('admin.flightCategory.create');
+Route::post('/admin/flight/category/update/{id}', [FlightClassCategoryController::class, 'update'])->name('admin.flightCategory.update');
 
 // Dashboard Destinations
 

@@ -271,6 +271,7 @@ class TravelController extends Controller
                         return back()->withErrors(['errors' => "Failed! Stopover Departure have to be after Arrival"]);
                     }
                     else{
+                        dd($request->flight_category);
                         Travel::create([
                             'destination_id' => $request->id,
                             'open_until' => $departure_datetime->subHours(12),
@@ -283,6 +284,7 @@ class TravelController extends Controller
                             'stopover_id' => $request->stopover_id,
                             'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
                             'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
+                            'flight_category_id' => $request->flight_category
                         ]);
 
                             $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');
@@ -300,7 +302,6 @@ class TravelController extends Controller
             }
         }
     }
-    
     Travel::create([
         'destination_id' => $request->id,
         'open_until' => $departure_datetime->subHours(12),
@@ -313,6 +314,7 @@ class TravelController extends Controller
         'stopover_id' => null,
         'stopover_departure_datetime' => null,
         'stopover_arrival_datetime' => null,
+        'flight_category_id' => $request->flight_category
     ]);
     
     $travel = Travel::orderby('created_at','DESC')->take(1)->value('id');

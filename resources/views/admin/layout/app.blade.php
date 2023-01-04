@@ -120,11 +120,19 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.flight.index') }}">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#flight"
+                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-plane"></i>
-                    <span>Flights</span></a>
+                    <span>Flight & Category</span>
+                </a>
+                <div id="flight" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Custom Airlines:</h6>
+                        <a class="collapse-item" href="{{ route('admin.flight.index') }}">Flight</a>
+                        <a class="collapse-item" href="{{ route('admin.flightCategory.index') }}">Category</a>
+                    </div>
+                </div>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.destination.index') }}">
                     <i class="fas fa-location-arrow"></i>
@@ -174,7 +182,7 @@
                         <h6 class="collapse-header">Custom Prices:</h6>
                         <a class="collapse-item" href="{{ route('admin.price.sesson')}}">Class Category</a>
                         <a class="collapse-item" href="{{ route('admin.class.index')}}">Class Type</a>
-                        <a class="collapse-item" href="{{ route('admin.travelerType.index')}}">Travel Type</a>
+                        <a class="collapse-item" href="{{ route('admin.travelerType.index')}}">Traveler Type</a>
                         <a class="collapse-item" href="{{ route('admin.price.index')}}">Class & Price</a>
                     </div>
                 </div>

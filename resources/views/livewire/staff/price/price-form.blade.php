@@ -117,6 +117,67 @@
                                 @endforelse        
                             </select>
                         </div>
+
+                        <div class="col-md-3">
+                            <label>Class Categories</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="class_category">
+                                <option value="0">Choose Sesson</option>  
+                                @forelse($class_categories as $class_category)
+                                    <option value="{{$class_category->id}}">{{$class_category->name}} 
+                                    </option>
+                                @empty
+                                    No Class Categories
+                                @endforelse        
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>Refund Able</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="refundable">
+                                <option value="0">No</option> 
+                                <option value="1">Yes</option>  
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Change Able</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="change_able">
+                                <option value="0">No</option> 
+                                <option value="1">Yes</option>        
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="class">Bagage</label>
+                            <input id="class" class="form-control" 
+                            {{ empty($class) ? 'disabled' : '' }}
+                             type="number" wire:model="bagage"
+                             placeholder="Max Bagage" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="handbagage">Hand Bagage</label>
+                            <input id="handbagage" class="form-control" 
+                            {{ empty($class) ? 'disabled' : '' }}
+                             type="number" wire:model="handbagage"
+                             placeholder="Max Hand Bagage" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label for="use_in">Period</label>
+                            <input id="use_in" class="form-control" 
+                            {{ empty($class) ? 'disabled' : '' }}
+                             type="number" wire:model="use_in"
+                             placeholder="Days" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <label for="rule">Rules</label>
+                            <textarea id="rule" wire:model="rule" placeholder="Text Rules Here" class="form-control w-100" style="height:200px"></textarea>
+                        </div>
                     </div>
                     <hr>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -142,14 +203,6 @@
                             {{ empty($SelectedCurrency) ? 'disabled' : '' }}
                              wire:model="price" />
                         </div>
-
-                        <div class="col-md-1">
-                            <label for="tax_price">Tax</label>
-                            <input type="number" class="form-control"
-                            {{ empty($price) ? 'disabled' : '' }}
-                             wire:model="tax_price" />
-                        </div>
-
                         <div class="col-md-1">
                             <label for="more_price">More Price</label>
                             <input type="number" class="form-control"
@@ -157,6 +210,21 @@
                              wire:model="more_price" />
                         </div>
                         
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label for="tax_code">Tax Code</label>
+                            <input type="number" class="form-control"
+                            {{ empty($price) ? 'disabled' : '' }}
+                             wire:model="tax_code" />
+                        </div>
+
+                        <div class="col-md-1">
+                            <label for="tax_price">Tax</label>
+                            <input type="number" class="form-control"
+                            {{ empty($price) ? 'disabled' : '' }}
+                             wire:model="tax_price" />
+                        </div>
                     </div>    
 
                     <button type="submit" wire:click="save"
