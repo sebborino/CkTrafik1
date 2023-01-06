@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FlightClass extends Model
+class Price extends Model
 {
     use HasFactory;
-
-    protected $table = "flight_class";
 
     protected $fillable = [
         'name',
@@ -22,7 +20,13 @@ class FlightClass extends Model
         'destination_id',
         'currency_id',
         'flight_category_id',
-        'traveler_type_id'
+        'price_category_id',
+        'rule',
+        'use_in',
+        'luggage',
+        'hand_luggage',
+        'refundable',
+        'change_able'
     ];
 
     public function destination(){
@@ -37,11 +41,11 @@ class FlightClass extends Model
         return $this->belongsTo(FlightCategory::class);
     }
 
-    public function traveler_type(){
-        return $this->belongsTo(TravelerType::class);
-    }
-
     public function class_type(){
         return $this->belongsTo(ClassType::class);
+    }
+    
+    public function traveler_types(){
+        return $this->hasManyThrough(PriceAndTravlerTypes::class,TravelerType::class);
     }
 }

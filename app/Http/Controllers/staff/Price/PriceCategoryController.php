@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Staff\Flight;
+namespace App\Http\Controllers\Staff\Price;
 
 use App\Http\Controllers\Controller;
-use App\Models\FlightClassCategory;
+use App\Models\PriceCategory;
 use Illuminate\Http\Request;
 
-class FlightClassCategoryController extends Controller
+class PriceCategoryController extends Controller
 {
     public function index(){
         return view('admin.page.flight.flight_class_category.index',[
-            'values' => FlightClassCategory::all(),
+            'values' => PriceCategory::all(),
         ]);
     }
 
     public function create(Request $request){
         $this->validate($request,[
-            'name' => ['required','unique:flight_class_categories,name']
+            'name' => ['required','unique:price_categories,name']
         ]);
 
-        FlightClassCategory::create([
+        PriceCategory::create([
             'name' => $request->name,
         ]); 
 
@@ -29,10 +29,10 @@ class FlightClassCategoryController extends Controller
     public function update(Request $request){
         
         $this->validate($request, [
-            'update_name' => 'required|unique:flight_class_categories,name,'. $request->id . '|max:255',
+            'update_name' => 'required|unique:price_categories,name,'. $request->id . '|max:255',
         ]);
 
-        FlightClassCategory::where('id',$request->id)->update([
+        PriceCategory::where('id',$request->id)->update([
             'name' => $request->update_name,
         ]);
 

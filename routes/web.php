@@ -26,13 +26,13 @@ use App\Http\Controllers\Staff\Airport\AirportController;
 use App\Http\Controllers\Staff\Price\ClassTypeController;
 use App\Http\Controllers\Staff\Airline\AircraftController;
 use App\Http\Controllers\Staff\flyclass\ClassesController;
-use App\Http\Controllers\Staff\Price\FlightClassController;
+use App\Http\Controllers\Staff\Price\PriceController;
 use App\Http\Controllers\Staff\Price\CurrencyRateController;
 use App\Http\Controllers\Staff\Price\TravelerTypeController;
 use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
-use App\Http\Controllers\Staff\Flight\FlightClassCategoryController;
+use App\Http\Controllers\Staff\Price\PriceCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,9 +102,9 @@ Route::post('/admin/flight/update/{id}', [FlightController::class, 'update'])->n
 
 // Dashboard Flights
 
-Route::get('/admin/flight/category', [FlightClassCategoryController::class, 'index'])->name('admin.flightCategory.index');
-Route::post('/admin/flight/category/create', [FlightClassCategoryController::class, 'create'])->name('admin.flightCategory.create');
-Route::post('/admin/flight/category/update/{id}', [FlightClassCategoryController::class, 'update'])->name('admin.flightCategory.update');
+Route::get('/admin/flight/category', [PriceCategoryController::class, 'index'])->name('admin.flightCategory.index');
+Route::post('/admin/flight/category/create', [PriceCategoryController::class, 'create'])->name('admin.flightCategory.create');
+Route::post('/admin/flight/category/update/{id}', [PriceCategoryController::class, 'update'])->name('admin.flightCategory.update');
 
 // Dashboard Destinations
 
@@ -173,8 +173,8 @@ Route::post('/admin/travelerType/update/{id}', [TravelerTypeController::class, '
 
 //Prices
 
-Route::get('/admin/prices', [FlightClassController::class, 'index'])->name('admin.price.index');
-Route::post('/admin/prices/create', [FlightClassController::class, 'create'])->name('admin.class.create');
+Route::get('/admin/prices', [PriceController::class, 'index'])->name('admin.price.index');
+Route::post('/admin/prices/create', [PriceController::class, 'create'])->name('admin.class.create');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');
 
 

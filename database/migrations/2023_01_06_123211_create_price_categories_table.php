@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddChangeAbleToFlightClassTable extends Migration
+class CreatePriceCategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddChangeAbleToFlightClassTable extends Migration
      */
     public function up()
     {
-        Schema::table('flight_class', function (Blueprint $table) {
-            $table->boolean('change_able');
+        Schema::create('price_categories', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +26,6 @@ class AddChangeAbleToFlightClassTable extends Migration
      */
     public function down()
     {
-        Schema::table('flight_class', function (Blueprint $table) {
-            $table->dropColumn('change_able');
-        });
+        Schema::dropIfExists('price_categories');
     }
 }

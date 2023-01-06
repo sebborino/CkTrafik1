@@ -6,6 +6,7 @@ use App\Models\Airport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Currency;
+use App\Models\TravelerType;
 
 class AirportController extends Controller
 {
@@ -21,6 +22,7 @@ class AirportController extends Controller
         $airports = Airport::all();
         $currencies = Currency::all();
         return view('admin.page.airport.store',[
+        'travelers' => TravelerType::all(), 
         'airports' => $airports,
         'currencies' => $currencies
     ]);
@@ -33,8 +35,6 @@ class AirportController extends Controller
             'location' => 'required',
             'country_code' => 'required',
             'timezone' => 'required',
-            'tax' => 'required',
-            'tax_code' => 'required',
             'currency_id' => 'required|exists:currencies,id'
         ]);
 
@@ -44,8 +44,6 @@ class AirportController extends Controller
             'location' => $request->location,
             'country_code' => $request->country_code,
             'timezone' => $request->timezone,
-            'airport_tax' => $request->tax,
-            'airport_tax_code' => $request->tax_code,
             'currency_id' => $request->currency_id
         ]);
         return back()->with('message', 'Nice! A new Aiport has been added to the system');
@@ -59,8 +57,6 @@ class AirportController extends Controller
             'update_location' => 'required',
             'update_country_code' => 'required',
             'update_timezone' => 'required',
-            'update_tax' => 'required|numeric',
-            'update_tax_code' => 'required',
             'update_currency_id' => 'required|exists:currencies,id'
         ]);
         

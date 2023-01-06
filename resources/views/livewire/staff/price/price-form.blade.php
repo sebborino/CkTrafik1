@@ -120,7 +120,7 @@
 
                         <div class="col-md-3">
                             <label>Class Categories</label>
-                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="class_category">
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="price_category">
                                 <option value="0">Choose Sesson</option>  
                                 @forelse($class_categories as $class_category)
                                     <option value="{{$class_category->id}}">{{$class_category->name}} 
@@ -150,19 +150,19 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label for="class">Bagage</label>
+                            <label for="class">Luggage</label>
                             <input id="class" class="form-control" 
                             {{ empty($class) ? 'disabled' : '' }}
-                             type="number" wire:model="bagage"
-                             placeholder="Max Bagage" />
+                             type="number" wire:model="luggage"
+                             placeholder="Max Luggage" />
                         </div>
 
                         <div class="col-md-2">
-                            <label for="handbagage">Hand Bagage</label>
-                            <input id="handbagage" class="form-control" 
+                            <label for="hand_luggage">Hand Luggage</label>
+                            <input id="hand_luggage" class="form-control" 
                             {{ empty($class) ? 'disabled' : '' }}
-                             type="number" wire:model="handbagage"
-                             placeholder="Max Hand Bagage" />
+                             type="number" wire:model="hand_luggage"
+                             placeholder="Max Hand Luggage" />
                         </div>
 
                         <div class="col-md-2">
@@ -196,7 +196,7 @@
                                 @endforelse        
                             </select>
                         </div>
-
+                        
                         <div class="col-md-2">
                             <label for="price">Price</label>
                             <input type="number" class="form-control"
@@ -230,7 +230,7 @@
                     <button type="submit" wire:click="save"
                     {{ empty($price) ? 'disabled' : '' }}     
                     class="btn custom btn-user btn-block">
-                        Create Flight Class
+                        Create Price
                     </button>
                 </div>
             </div>
