@@ -169,7 +169,7 @@
                     </tr>
                     <tr>
                         <td class="left">                            
-                            073-{{ $e_ticket}} For {{ $name }}
+                            {{ $e_ticket}} For {{ $name }}
                         </td>
                     </tr>
                     <tr>
