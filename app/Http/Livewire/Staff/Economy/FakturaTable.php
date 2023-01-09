@@ -22,7 +22,7 @@ class FakturaTable extends Component
     public $paginate = 10;
     public $checked = false;
     public $pdf = [];
-    
+    public $forSearch = null;
 
     public function updatingSearch()
     {
@@ -34,12 +34,20 @@ class FakturaTable extends Component
         
         $columns = Schema::getColumnListing('fakture_generate');
 
-        $fakturas = FaktureGenerate::where(function($query)use($columns)
-        {
-            foreach($columns as $column){
-                $query->OrWhere($column, 'LIKE', '%' . $this->search . '%');
-            }
-        })->orderBy('fak_nr')->paginate($this->paginate);
+        $fakturas = FaktureGenerate::when(is_null($this->forSearch), function($query)use($columns){
+            $query->where(function($query)use($columns)
+            {
+                foreach($columns as $column){
+                    $query->where($column, 'LIKE', '%' . $this->search . '%');
+                }
+            });
+        }
+        )->when(!is_null($this->forSearch), function($query)use($columns){
+                    $query->where($this->forSearch, 'LIKE', '%' . $this->search . '%');
+                }
+
+
+        )->orderBy('fak_nr')->paginate($this->paginate);
 
         return view('livewire.staff.economy.faktura-table',[
             'fakturas' => $fakturas,
