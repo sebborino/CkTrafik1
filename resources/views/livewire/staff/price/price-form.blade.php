@@ -65,7 +65,6 @@
                                 @endforelse        
                             </select>
                         </div>
-
                         <div class="col-md-4">
                             <label>Categories</label>
                             <select class="form-control" {{ empty($SelectedDestination) ? 'disabled' : '' }} wire:model="SelectedSesson">

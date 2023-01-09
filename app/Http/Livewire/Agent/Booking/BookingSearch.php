@@ -30,7 +30,7 @@ class BookingSearch extends Component
     public $return_arrival_id;
 
     // search
-    public $search;
+    public $values = null;
     public $return = null;
 
     public function render()
@@ -83,7 +83,7 @@ class BookingSearch extends Component
     }
 
     public function search(){
-        
+
         $destination = Destination::where('from_id',$this->departure_id)->where('to_id',$this->arrival_id)->value('id');
         if($this->return_departure_id != null && $this->return_arrival_id != null)
         {
@@ -94,10 +94,17 @@ class BookingSearch extends Component
             ->where('departure_date',$this->departure_date)->get();
         }
         
-        $this->search = FlightClass::with('destination','destination.travel','traveler_type')
+        $this->values = FlightClass::with('destination','destination.travel')
             ->where('destination_id',$destination)
+            ->where('class_type_id',$this->class_type)
+            ->orderBy('flight_class_category_id','ASC')
+            ->orderBy('traveler_type_id','ASC')
+            ->whereHas('traveler_types', function($query){
+                $query->whereIn('id',[1,2,3]);
+            })
             ->whereHas('destination.travel', function($query){
                 $query->where('departure_date',$this->departure_date);
-            })->get();
+            })
+            ->get();
     }
 }

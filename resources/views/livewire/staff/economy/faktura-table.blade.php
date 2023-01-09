@@ -9,7 +9,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-4"></div>
+        <div class="col-4">
+            <button wire:click="delete()" class="btn btn-danger" {{ empty($pdf) ? 'disabled' : ''}} >Delete Seleted</button>
+        </div>
         <div class="col-4">
             <div
                 class="block float-right form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
@@ -26,6 +28,7 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            
                             <th><input @if($checked == false) wire:click="all" @else checked wire:click="resetCheckBox" @endif type="checkbox"/> All</th>
                             <th>Faktura Nr.</th>
                             <th>E ticket</th>

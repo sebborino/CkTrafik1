@@ -18,10 +18,17 @@ class FlightClass extends Model
         'tax_price',
         'more_price',
         'tax_code',
+        'flight_category_id',
         'class_type_id',
         'destination_id',
         'currency_id',
-        'flight_category_id',
+        'flight_class_category_id',
+        'bagage',
+        'refundable',
+        'change_able',
+        'rule',
+        'use_in',   
+        'handbagage',
         'traveler_type_id'
     ];
 
@@ -37,8 +44,8 @@ class FlightClass extends Model
         return $this->belongsTo(FlightCategory::class);
     }
 
-    public function traveler_type(){
-        return $this->belongsTo(TravelerType::class);
+    public function traveler_types(){
+        return $this->hasMany(TravelerType::class,'id','traveler_type_id');
     }
 
     public function class_type(){

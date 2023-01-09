@@ -22,7 +22,7 @@ class PriceForm extends Component
     public $SelectedCurrency = 0;
     public $price;
     public $tax_price = 0;
-    public $tax_code;
+    public $tax_code = 0;
     public $more_price = 0;
     public $class_type_code;
     public $class_type;
@@ -41,10 +41,8 @@ class PriceForm extends Component
         'class' => 'required|max:255',
         'SelectedCurrency' => 'required|exists:currencies,id',
         'price' => 'required|not_in:0|numeric',
-        'tax_price' => 'required|numeric',
         'class_type_code' => 'required|exists:class_types,id|numeric',
-        'tax_code' => 'required',
-        'flight_class_category_id' => ['required','exists:flight_class_categories,id','numeric'],
+        'class_category' => ['required','exists:flight_class_categories,id','numeric'],
         'bagage' => 'required',
         'refundable' => 'required',
         'change_able' => 'required',
@@ -83,8 +81,9 @@ class PriceForm extends Component
             'class_categories' => FlightClassCategory::all(),
         ]);
     }
-
+    
     public function save(){
+   
         $this->validate();
         FlightClass::create([
             'name' => $this->class,
@@ -99,7 +98,12 @@ class PriceForm extends Component
             'class_type_id' => $this->class_type_code,
             'tax_code' => $this->tax_code,
             'traveler_type_id' => $this->traveler_type,
+            'bagage' => $this->bagage,
+            'handbagage' => $this->handbagage,
+            'rule' => $this->rule,
             'use_in' => $this->use_in,
+            'refundable' => $this->refundable,
+            'change_able' => $this->change_able
         ]);
 
         return redirect(request()->header('Referer'));
