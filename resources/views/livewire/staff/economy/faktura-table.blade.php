@@ -50,7 +50,7 @@
                                     />
                                 </th>
                                 <td>{{ $faktura->fak_nr}}</td>
-                                <td>073-{{ $faktura->e_ticket}}</td>
+                                <td>{{ $faktura->e_ticket}}</td>
                                 <td>{{ $faktura->pnr}}</td>
                                 <td>{{ number_format( $faktura->fare_price , 2 , ',' , '.' )}}</td>
                                 <td>{{ $faktura->tax}}</td>
