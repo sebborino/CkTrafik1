@@ -153,14 +153,31 @@
                             <thead>
                                 <tr>
                                     <th>Destinations</th>
-                                    <th>Flight</th>
+                                    <th>Class</th>
                                     <th>Edit</th>
                                     <th>Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ations</p>
-                            
+                                
+                            @if(!is_null($values))
+                               @forelse($values as $value) 
+                                <tr>
+                                    <td>{{$value->destination->from->IATA}} - {{$value->destination->to->IATA}}</td>
+                                    <td>{{$value->name }}</td>
+                                    <td>
+                                        <ul>
+                                            @foreach($value->traveler_types as $type)
+                                                <li>{{ $type->name }}</li>
+                                            @endforeach    
+                                        </ul>
+                                    </td>
+                                </tr>
+                                @empty
+                                
+
+                                @endforelse
+                            @endif
                             </tbody>
                         </table> 
                     </div>

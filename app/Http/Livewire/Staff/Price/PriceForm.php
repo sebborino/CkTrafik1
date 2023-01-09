@@ -42,7 +42,6 @@ class PriceForm extends Component
         'class' => 'required|max:255',
         'SelectedCurrency' => 'required|exists:currencies,id',
         'price' => 'required|not_in:0|numeric',
-        'tax_price' => 'required|numeric',
         'class_type_code' => 'required|exists:class_types,id|numeric',
         'price_category' => ['required','exists:price_categories,id','numeric'],
         'luggage' => ['required ','numeric'],
@@ -84,8 +83,9 @@ class PriceForm extends Component
             'class_categories' => PriceCategory::all(),
         ]);
     }
-
+    
     public function save(){
+   
         $this->validate();
         Price::create([
             'name' => $this->class,
@@ -100,12 +100,13 @@ class PriceForm extends Component
             'class_type_id' => $this->class_type_code,
             'tax_code' => $this->tax_code,
             'traveler_type_id' => $this->traveler_type,
-            'use_in' => $this->use_in,
             'rule' => $this->rule,
             'luggage' => $this->luggage,
             'hand_luggage' => $this->hand_luggage,
+            'use_in' => $this->use_in,
             'refundable' => $this->refundable,
             'change_able' => $this->change_able
+            
         ]);
 
         Price::orderBy('id','DESC')->take(1)->value('id');

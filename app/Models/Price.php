@@ -16,6 +16,7 @@ class Price extends Model
         'tax_price',
         'more_price',
         'tax_code',
+        'flight_category_id',
         'class_type_id',
         'destination_id',
         'currency_id',
@@ -27,6 +28,7 @@ class Price extends Model
         'hand_luggage',
         'refundable',
         'change_able'
+
     ];
 
     public function destination(){
@@ -39,6 +41,10 @@ class Price extends Model
 
     public function flight_category(){
         return $this->belongsTo(FlightCategory::class);
+    }
+
+    public function traveler_types(){
+        return $this->hasMany(TravelerType::class,'id','traveler_type_id');
     }
 
     public function class_type(){

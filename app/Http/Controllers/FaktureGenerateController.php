@@ -44,7 +44,7 @@ class FaktureGenerateController extends Controller
          $file = file_get_contents(base_path('/public/storage/fakture/generate_'.$number.'.xls'), true);
          
          if(!File::exists(base_path('/public/storage/PDFs'))){
-            File::makeDirectory(base_path('/public/storage/PDFs'), 0755, true, true);
+            File::makeDirectory(base_path('/public/storage/PDFs'), 755, true, true);
         }
        
 

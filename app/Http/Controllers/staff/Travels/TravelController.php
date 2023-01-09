@@ -271,7 +271,6 @@ class TravelController extends Controller
                         return back()->withErrors(['errors' => "Failed! Stopover Departure have to be after Arrival"]);
                     }
                     else{
-                       
                         Travel::create([
                             'destination_id' => $request->id,
                             'open_until' => $departure_datetime->subHours(12),

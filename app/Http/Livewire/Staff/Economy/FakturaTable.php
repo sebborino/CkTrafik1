@@ -109,4 +109,17 @@ class FakturaTable extends Component
     
         return response()->download(base_path('/public/files/'.$fileName));
     }
+
+    public function delete(){
+        $count = count($this->pdf);
+        for($x = 0; $x <= $count -1; $x++)
+        {
+            FaktureGenerate::where('fak_nr',$this->pdf[$x])->delete();
+
+            unlink(base_path('/public/storage/PDFs/Faktura-'.$this->pdf[$x].'.pdf'));   
+        }
+
+        $this->pdf = [];
+        
+    }
 }
