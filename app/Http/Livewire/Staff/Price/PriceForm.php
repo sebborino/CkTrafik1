@@ -21,13 +21,13 @@ class PriceForm extends Component
     public $SelectedSesson = 0;
     public $class = "";
     public $SelectedCurrency = 0;
-    public $price;
+    public $price = [];
     public $tax_price = 0;
     public $tax_code = 0;
     public $more_price = 0;
     public $class_type_code;
     public $class_type;
-    public $traveler_type;
+    public $traveler_type = [];
     public $refundable = 0;
     public $change_able = 0;
     public $luggage = 0;
@@ -35,21 +35,17 @@ class PriceForm extends Component
     public $price_category;
     public $use_in = 0;
     public $hand_luggage;
+    
 
     protected $rules = [
         'SelectedDestination' => 'required|exists:destinations,id',
         'SelectedSesson' => ['required','exists:flight_categories,id','numeric'],
         'class' => 'required|max:255',
         'SelectedCurrency' => 'required|exists:currencies,id',
-        'price' => 'required|not_in:0|numeric',
         'class_type_code' => 'required|exists:class_types,id|numeric',
         'price_category' => ['required','exists:price_categories,id','numeric'],
-        'luggage' => ['required ','numeric'],
         'refundable' => 'required',
-        'rule' => 'required',
         'change_able' => 'required',
-        'use_in' => ['required ','numeric'],
-        'hand_luggage' => ['required ','numeric']
     ];
 
     public function changeFlight()
@@ -85,25 +81,19 @@ class PriceForm extends Component
     }
     
     public function save(){
-   
+        dd($this->traveler_type);
         $this->validate();
         Price::create([
             'name' => $this->class,
             'class_code' => $this->class,
-            'price' => $this->price,
-            'more_price' => $this->more_price,
             'flight_category_id' => $this->SelectedSesson,
             'destination_id' => $this->SelectedDestination,
             'currency_id' => $this->SelectedCurrency,
-            'tax_price' => $this->tax_price,
+            'tax_price' => 0,
             'price_category_id' => $this->price_category,
             'class_type_id' => $this->class_type_code,
-            'tax_code' => $this->tax_code,
+            'tax_code' => 0,
             'traveler_type_id' => $this->traveler_type,
-            'rule' => $this->rule,
-            'luggage' => $this->luggage,
-            'hand_luggage' => $this->hand_luggage,
-            'use_in' => $this->use_in,
             'refundable' => $this->refundable,
             'change_able' => $this->change_able
             
