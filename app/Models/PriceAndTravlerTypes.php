@@ -16,7 +16,7 @@ class PriceAndTravlerTypes extends Model
     ];
 
     public function traveler_types(){
-        return $this->belongsTo(TravelerType::class)
+        return $this->belongsTo(TravelerType::class);
     }
     
 }

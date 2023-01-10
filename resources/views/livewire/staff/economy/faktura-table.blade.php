@@ -1,6 +1,6 @@
 <div>
     <div class="row">
-        <div class="col-2">
+        <div class="col-4">
             <div
                 class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group">
@@ -9,27 +9,11 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-2">
-            <div
-                class="block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <select  wire:model="forSearch" class="form-control">
-                    <option selected value="">All</option>
-                    <option value="fak_nr">Fakura Number</option>
-                    <option value="e_ticket">E Ticket</option>
-                    <option value="pnr">PNR</option>
-                    <option value="fare_price">Fare Price</option>
-                    <option value="tax">Tax</option>
-                    <option value="agent">Agent</option>
-                    <option value="created_at">Dato</option>
-                </select>
-            </div>
-        </div>
         
-        <div class="col-3">
+        <div class="col-4">
             <button wire:click="delete()" class="btn btn-danger" {{ empty($pdf) ? 'disabled' : ''}} >Delete Seleted</button>
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <div
                 class="block float-right form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                 <div class="input-group">

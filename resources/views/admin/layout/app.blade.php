@@ -100,6 +100,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Airports:</h6>
                         <a class="collapse-item" href="{{ route('admin.airport.store')}}">Airports</a>
+                        <a class="collapse-item" href="{{ route('admin.tax.index')}}">Airport Taxes</a>
                     </div>
                 </div>
             </li>

@@ -50,8 +50,5 @@ class Price extends Model
     public function class_type(){
         return $this->belongsTo(ClassType::class);
     }
-    
-    public function traveler_types(){
-        return $this->hasManyThrough(PriceAndTravlerTypes::class,TravelerType::class);
-    }
+
 }

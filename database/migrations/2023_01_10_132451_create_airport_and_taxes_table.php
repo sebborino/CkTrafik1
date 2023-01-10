@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAiportAndTaxesTable extends Migration
+class CreateAirportAndTaxesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateAiportAndTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('aiport_and_taxes', function (Blueprint $table) {
+        Schema::create('airport_and_taxes', function (Blueprint $table) {
             $table->id();
-            $table->decimal('airport_tax',14,2);
-            $table->char('airport_tax_code',3);
+            $table->decimal('tax',14,2);
+            $table->char('tax_code',3);
 
             $table->unsignedBigInteger('airport_id');
             $table->foreign('airport_id')
@@ -27,6 +27,11 @@ class CreateAiportAndTaxesTable extends Migration
             $table->foreign('traveler_id')
             ->references('id')
             ->on('traveler_types');
+
+            $table->unsignedBigInteger('currency_id');
+            $table->foreign('currency_id')
+            ->references('id')
+            ->on('currencies');
 
             $table->timestamps();
         });
@@ -39,6 +44,6 @@ class CreateAiportAndTaxesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('aiport_and_taxes');
+        Schema::dropIfExists('airport_and_taxes');
     }
 }

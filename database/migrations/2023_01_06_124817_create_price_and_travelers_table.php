@@ -28,6 +28,10 @@ class CreatePriceAndTravelersTable extends Migration
             
             $table->decimal('price',14,2);
             $table->decimal('more_price',14,2);
+            
+            $table->text('rule');
+            $table->integer('hand_luggage');
+            $table->integer('luggage');
 
             $table->timestamps();
         });

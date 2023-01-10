@@ -57,12 +57,6 @@ class CreatePricesTable extends Migration
             $table->integer('use_in')->nullable();
             $table->boolean('refundable');
             $table->boolean('change_able');
-            $table->text('rule');
-            $table->integer('hand_luggage');
-            $table->integer('luggage');
-
-            
-
             $table->timestamps();
         });
     }

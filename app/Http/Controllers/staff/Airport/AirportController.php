@@ -22,10 +22,8 @@ class AirportController extends Controller
         $airports = Airport::all();
         $currencies = Currency::all();
         return view('admin.page.airport.store',[
-        'travelers' => TravelerType::all(), 
         'airports' => $airports,
-        'currencies' => $currencies
-    ]);
+        ]);
     }
 
     public function create(Request $request){
@@ -35,7 +33,6 @@ class AirportController extends Controller
             'location' => 'required',
             'country_code' => 'required',
             'timezone' => 'required',
-            'currency_id' => 'required|exists:currencies,id'
         ]);
 
         Airport::create([
@@ -44,7 +41,6 @@ class AirportController extends Controller
             'location' => $request->location,
             'country_code' => $request->country_code,
             'timezone' => $request->timezone,
-            'currency_id' => $request->currency_id
         ]);
         return back()->with('message', 'Nice! A new Aiport has been added to the system');
     }
@@ -57,7 +53,6 @@ class AirportController extends Controller
             'update_location' => 'required',
             'update_country_code' => 'required',
             'update_timezone' => 'required',
-            'update_currency_id' => 'required|exists:currencies,id'
         ]);
         
         Airport::where('id',$request->id)->update([
@@ -68,7 +63,6 @@ class AirportController extends Controller
             'timezone' => $request->update_timezone,
             'airport_tax' => $request->update_tax,
             'airport_tax_code' => $request->update_tax_code,
-            'currency_id' => $request->update_currency_id
         ]);
         return back()->with('update', 'Nice! The Airport Details is up to date! Great!');
     }

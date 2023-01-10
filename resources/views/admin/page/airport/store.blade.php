@@ -94,32 +94,6 @@
                                 </div>
                                 
                             </div>
-                            <div class="form-group row"> 
-
-                                <div class="col-md-2">
-                                    <label for="tax">Airport Tax</label>
-                                    <input type="number" name="tax" class="form-control form-control-user
-                                        @error('tax') border border-danger @enderror" step=".01"  id="tax"
-                                        placeholder="Airport Tax" value="{{ old('tax')}}">
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="currency">Currency</label>
-                                    <select name="currency_id" class="form-control mt-1">
-                                        <option selected value="">Choose Currency</option>
-                                        @forelse($currencies as $currency)
-                                        <option value="{{$currency->id}}">{{$currency->currency_code}}</option>
-                                        @empty
-                                        <option value="">No Currencies</option>
-                                        @endforelse
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <label for="tax_code">Airport Tax Code</label>
-                                    <input type="text" name="tax_code" class="form-control form-control-user
-                                        @error('tax_code') border border-danger @enderror"  id="tax_code"
-                                        placeholder="Airport Tax Code" value="{{ old('tax_code')}}">
-                                </div>
-                            </div>
                             <button type="submit" class="btn custom btn-user btn-block">
                                 Create Airport
                             </button>
@@ -147,9 +121,6 @@
                                         <th>Location</th>
                                         <th>Country Code</th>
                                         <th>Timezone</th>
-                                        <th>Tax</th>
-                                        <th>Currency</th>
-                                        <th>Tax Code</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
@@ -162,9 +133,6 @@
                                         <td>{{ $airport->country_code }}</td>
                                         <td>{{ $airport->location }}</td>
                                         <td>{{ $airport->timezone }}</td>
-                                        <td>{{ $airport->airport_tax }}</td>
-                                        <td>{{ $airport->currency->currency_code }}</td>
-                                        <td>{{ $airport->airport_tax_code }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $airport->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -220,31 +188,6 @@
                                                     placeholder="Timezone" value="{{ $airport->timezone }}">
                                             </div>
 
-                                            <div class="form-group">
-                                                <label for="tax">Airport Tax</label>
-                                                <input type="number" name="update_tax" class="form-control form-control-user"  id="tax"
-                                                    placeholder="Airport" value="{{ $airport->airport_tax }}">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="currency">Currency</label>
-                                                <select name="update_currency_id" class="form-control mt-1">
-                                                    <option selected value="{{$airport->currency_id}}">{{$airport->currency->currency_code}}</option>
-                                                    @forelse($currencies as $currency)
-                                                    @if($airport->currency_id != $currency->id)
-                                                    <option value="{{$currency->id}}">{{$currency->currency_code}}</option>
-                                                    @endif
-                                                    @empty
-                                                    <option value="">No Currencies</option>
-                                                    @endforelse
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="update_tax_code">Tax Code</label>
-                                                <input type="text" name="update_tax_code" class="form-control form-control-user"  id="update_tax_code"
-                                                    placeholder="Tax Code" value="{{ $airport->airport_tax_code }}">
-                                            </div>
 
                                         </div>
                                     <div class="modal-footer">

@@ -18,7 +18,6 @@ class Airport extends Model
         'timezone',
         'airport_tax',
         'airport_tax_code',
-        'currency_id'
     ];
 
     public function currency(){

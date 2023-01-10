@@ -105,19 +105,6 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Traveler Type</label>
-                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="traveler_type">
-                                <option value="0">Choose Sesson</option>  
-                                @forelse($travelerTypes as $travelerType)
-                                    <option value="{{$travelerType->id}}">{{$travelerType->name}} 
-                                    </option>
-                                @empty
-                                    No Traveler Types
-                                @endforelse        
-                            </select>
-                        </div>
-
-                        <div class="col-md-3">
                             <label>Class Categories</label>
                             <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="price_category">
                                 <option value="0">Choose Sesson</option>  
@@ -149,41 +136,6 @@
                         </div>
 
                         <div class="col-md-2">
-                            <label for="class">Luggage</label>
-                            <input id="class" class="form-control" 
-                            {{ empty($class) ? 'disabled' : '' }}
-                             type="number" wire:model="luggage"
-                             placeholder="Max Luggage" />
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="hand_luggage">Hand Luggage</label>
-                            <input id="hand_luggage" class="form-control" 
-                            {{ empty($class) ? 'disabled' : '' }}
-                             type="number" wire:model="hand_luggage"
-                             placeholder="Max Hand Luggage" />
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="use_in">Period</label>
-                            <input id="use_in" class="form-control" 
-                            {{ empty($class) ? 'disabled' : '' }}
-                             type="number" wire:model="use_in"
-                             placeholder="Days" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-12">
-                            <label for="rule">Rules</label>
-                            <textarea id="rule" wire:model="rule" placeholder="Text Rules Here" class="form-control w-100" style="height:200px"></textarea>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class="h3 mb-0 text-gray-800">Price Details</h2>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-2">
                             <label for="currency">Currency</label>
                             <select id="currency" class="form-control" {{ empty($class_type_code) ? 'disabled' : '' }} wire:model="SelectedCurrency">
                                 <option value="0">Choose Currency</option>  
@@ -195,36 +147,72 @@
                                 @endforelse        
                             </select>
                         </div>
-                        
-                        <div class="col-md-2">
-                            <label for="price">Price</label>
-                            <input type="number" class="form-control"
-                            {{ empty($SelectedCurrency) ? 'disabled' : '' }}
-                             wire:model="price" />
-                        </div>
-                        <div class="col-md-1">
-                            <label for="more_price">More Price</label>
-                            <input type="number" class="form-control"
-                            {{ empty($price) ? 'disabled' : '' }}
-                             wire:model="more_price" />
-                        </div>
+
                         
                     </div>
-                    <div class="form-group row">
-                        <div class="col-md-2">
-                            <label for="tax_code">Tax Code</label>
-                            <input type="number" class="form-control"
-                            {{ empty($price) ? 'disabled' : '' }}
-                             wire:model="tax_code" />
-                        </div>
+                    <hr>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h2 class="h3 mb-0 text-gray-800">Price Details</h2>
+                    </div>
+                    @forelse($travelerTypes as $traveler)
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label for="price">Traveler Type</label>
+                                <input type="text" class="form-control" value="{{$traveler->name}}" disabled />
+                            </div>
 
-                        <div class="col-md-1">
-                            <label for="tax_price">Tax</label>
-                            <input type="number" class="form-control"
-                            {{ empty($price) ? 'disabled' : '' }}
-                             wire:model="tax_price" />
+                            <div class="col-md-2">
+                                <label for="price">Traveler id</label>
+                                <input type="text" class="form-control" wire:model="traveler_type.{{$traveler->id}}" value="{{$traveler->id}}" disabled />
+                            </div>
+                            <div class="col-md-2">
+                                <label for="price">Price</label>
+                                <input type="number" class="form-control"
+                                {{ empty($SelectedCurrency) ? 'disabled' : '' }}
+                                wire:model="price.{{$traveler->id}}" />
+                            </div>
+                            <div class="col-md-1">
+                                <label for="more_price">More Price</label>
+                                <input type="number" class="form-control"
+                                {{ empty($SelectedCurrency) ? 'disabled' : '' }}
+                                wire:model="more_price.{{$traveler->id}}" />
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="class">Luggage</label>
+                                <input id="class" class="form-control" 
+                                {{ empty($class) ? 'disabled' : '' }}
+                                 type="number" wire:model="luggage.{{$traveler->id}}"
+                                 placeholder="Max Luggage" />
+                            </div>
+    
+                            <div class="col-md-2">
+                                <label for="hand_luggage">Hand Luggage</label>
+                                <input id="hand_luggage" class="form-control" 
+                                {{ empty($class) ? 'disabled' : '' }}
+                                 type="number" wire:model="hand_luggage.{{$traveler->id}}"
+                                 placeholder="Max Hand Luggage" />
+                            </div>
+    
+                            <div class="col-md-2">
+                                <label for="use_in">Period</label>
+                                <input id="use_in" class="form-control" 
+                                {{ empty($class) ? 'disabled' : '' }}
+                                 type="number" wire:model="use_in.{{$traveler->id}}"
+                                 placeholder="Days" />
+                            </div>
                         </div>
-                    </div>    
+                        <div class="form-group row">
+                            <div class="col-md-11">
+                                <label for="rule">Rules</label>
+                                <textarea id="rule" wire:model="rule.{{$traveler->id}}" placeholder="Text Rules Here" class="form-control w-100" style="height:200px"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                    @empty
+
+                    @endforelse
+  
 
                     <button type="submit" wire:click="save"
                     {{ empty($price) ? 'disabled' : '' }}     

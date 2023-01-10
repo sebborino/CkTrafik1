@@ -30,6 +30,7 @@ use App\Http\Controllers\Staff\Price\PriceController;
 use App\Http\Controllers\Staff\Price\CurrencyRateController;
 use App\Http\Controllers\Staff\Price\TravelerTypeController;
 use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
+use App\Http\Controllers\Staff\Airport\AirportTaxController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
 use App\Http\Controllers\Staff\Price\PriceCategoryController;
@@ -73,6 +74,14 @@ Route::get('/admin/airport/store', [AirportController::class, 'store'])->name('a
 Route::get('/admin/airport/{IATA}', [AirportController::class, 'index'])->name('admin.airport.index');
 Route::post('/admin/airport/create', [AirportController::class, 'create'])->name('admin.airport.create');
 Route::post('/admin/airport/update/{id}', [AirportController::class, 'update'])->name('admin.airport.update');
+
+
+// Dashboard Airport Taxes
+
+Route::get('/admin/tax/', [AirportTaxController::class, 'index'])->name('admin.tax.index');
+Route::post('/admin/tax/create', [AirportTaxController::class, 'create'])->name('admin.tax.create');
+Route::post('/admin/tax/update/{id}', [AirportTaxController::class, 'update'])->name('admin.tax.update');
+Route::post('/admin/tax/delete/{id}', [AirportTaxController::class, 'delete'])->name('admin.tax.delete');
 
 // Dashboard Airlines
 
