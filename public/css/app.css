@@ -7,6 +7,22 @@
     color:white;
   }
 
+.circle{
+height:15px;
+width:15px;
+background-color:var(--custom);
+border-radius: 100%;
+float:left;
+}
+
+.line{
+    margin-top:6px;
+    height:3px;
+    width:150px;
+    background-color:var(--custom);
+    float:left;
+    }
+
 .bg-login-image{
     background: url(../img/flight.jpg);
     background-repeat: no-repeat;

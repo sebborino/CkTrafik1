@@ -42,9 +42,22 @@
                         <h2 class="h3 mb-0 text-gray-800">Flight Details</h2>
                     </div>
                     <div class="form-group row">
-                        <div class="col-md-4">
+
+                        <div class="col-md-3">
+                            <label>Airlines</label>
+                            <select class="form-control" wire:model="SelectedAirline">
+                                <option value="">Choose Airline</option>  
+                                @forelse($airlines as $airline)
+                                    <option value="{{$airline->id}}">{{$airline->name}}</option>
+                                @empty
+                                    No Airline
+                                @endforelse        
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
                             <label>Flight(Route)</label>
-                            <select class="form-control" wire:model="SelectFlight" wire:change="changeFlight">
+                            <select class="form-control" {{ empty($SelectedAirline) ? 'disabled' : '' }} wire:model="SelectFlight">
                                 <option value="">Choose Route</option>  
                                 @forelse($flights as $flight)
                                     <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
@@ -54,7 +67,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>Destination(Route)</label>
                             <select class="form-control" {{ empty($SelectFlight) ? 'disabled' : '' }} wire:model="SelectedDestination">
                                 <option value="0">Choose Destination</option>  
@@ -65,7 +78,7 @@
                                 @endforelse        
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>Categories</label>
                             <select class="form-control" {{ empty($SelectedDestination) ? 'disabled' : '' }} wire:model="SelectedSesson">
                                 <option value="0">Choose Sesson</option>  
@@ -92,9 +105,24 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Class Type</label>
-                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="class_type_code">
+                            <label>Class Categories</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="price_category">
                                 <option value="0">Choose Sesson</option>  
+                                @forelse($class_categories as $class_category)
+                                    <option value="{{$class_category->id}}">{{$class_category->name}} 
+                                    </option>
+                                @empty
+                                    No Class Categories
+                                @endforelse        
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label>OW/RT</label>
+                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="class_type">
+                                <option value="0">Choose Class</option>  
                                 @forelse($classtypes as $classtype)
                                     <option value="{{$classtype->id}}">({{$classtype->class_type_code}}) {{$classtype->name}} 
                                     </option>
@@ -105,14 +133,14 @@
                         </div>
 
                         <div class="col-md-3">
-                            <label>Class Categories</label>
-                            <select class="form-control" {{ empty($class) ? 'disabled' : '' }} wire:model="price_category">
-                                <option value="0">Choose Sesson</option>  
-                                @forelse($class_categories as $class_category)
-                                    <option value="{{$class_category->id}}">{{$class_category->name}} 
-                                    </option>
+                            <label>Return Destination(Route)</label>
+                            <select class="form-control" @if($class_type != 2) disabled @endif wire:model="ReturnDestination">
+                                <option value="0">Choose Destination</option>
+ 
+                                @forelse($returns as $return)
+                                    <option value="{{$return->id}}">{{$return->from->IATA}}-{{$return->to->IATA}} ({{$return->flight->route}})</option>
                                 @empty
-                                    No Class Categories
+                                    No Destinations
                                 @endforelse        
                             </select>
                         </div>
@@ -137,7 +165,7 @@
 
                         <div class="col-md-2">
                             <label for="currency">Currency</label>
-                            <select id="currency" class="form-control" {{ empty($class_type_code) ? 'disabled' : '' }} wire:model="SelectedCurrency">
+                            <select id="currency" class="form-control" {{ empty($class_type) ? 'disabled' : '' }} wire:model="SelectedCurrency">
                                 <option value="0">Choose Currency</option>  
                                 @forelse($currencies as $currency)
                                     <option value="{{$currency->id}}">{{$currency->currency_code}}
@@ -161,10 +189,6 @@
                                 <input type="text" class="form-control" value="{{$traveler->name}}" disabled />
                             </div>
 
-                            <div class="col-md-2">
-                                <label for="price">Traveler id</label>
-                                <input type="text" class="form-control" wire:model="traveler_type.{{$traveler->id}}" value="{{$traveler->id}}" disabled />
-                            </div>
                             <div class="col-md-2">
                                 <label for="price">Price</label>
                                 <input type="number" class="form-control"

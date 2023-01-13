@@ -9,14 +9,26 @@ class PriceAndTravlerTypes extends Model
 {
     use HasFactory;
 
+    protected $table = 'price_and_travelers';
+
     protected $fillable = [
     'id',
     'price_id',
-    'traveler_id'
+    'traveler_id',
+    'price',
+    'more_price',
+    'rule',
+    'hand_luggage',
+    'luggage'
     ];
 
-    public function traveler_types(){
-        return $this->belongsTo(TravelerType::class);
+    public function traveler_type(){
+        return $this->belongsTo(TravelerType::class,'traveler_id','id');
+    }
+
+    public function class(){
+        return $this->belongsTo(Price::class,'price_id','id');
     }
     
+
 }

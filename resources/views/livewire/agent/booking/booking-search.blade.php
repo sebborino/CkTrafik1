@@ -44,8 +44,9 @@
                             </div>
                         </div>
                     </div>
-
-                    {{ $class_type}}
+                    <select name="" id="">
+                        
+                    </select>
                     <div class="form-group row">
                         
                         <div class="col-4">
@@ -117,6 +118,7 @@
                                     </div>
                                     @endif
                             </div>
+                            
                             <div class="col-4">
                                 
                                 <label for="">To</label>
@@ -149,7 +151,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-borderless" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Destinations</th>
@@ -163,19 +165,24 @@
                             @if(!is_null($values))
                                @forelse($values as $value) 
                                 <tr>
-                                    <td>{{$value->destination->from->IATA}} - {{$value->destination->to->IATA}}</td>
+                                    <td>
+                                        <div class="circle"></div>
+                                        <div class="line"></div>
+                                        <div class="circle"></div>
+                                        <div class="line"></div>
+                                        <div class="circle"></div>
+                                        {{$value->destination->from->IATA}} - {{$value->destination->to->IATA}}</td>
                                     <td>{{$value->name }}</td>
                                     <td>
                                         <ul>
-                                            @foreach($value->traveler_types as $type)
-                                                <li>{{ $type->name }}</li>
+                                            @foreach($value->prices as $price)
+                                                <li>{{ $price->name }}</li>
                                             @endforeach    
                                         </ul>
                                     </td>
                                 </tr>
                                 @empty
                                 
-
                                 @endforelse
                             @endif
                             </tbody>

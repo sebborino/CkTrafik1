@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Agent\Booking;
 use App\Models\Airport;
 use App\Models\ClassType;
 use App\Models\Destination;
-use App\Models\FlightClass;
+use App\Models\Price;
 use App\Models\Travel;
 use Livewire\Component;
 
@@ -94,17 +94,14 @@ class BookingSearch extends Component
             ->where('departure_date',$this->departure_date)->get();
         }
         
-        $this->values = FlightClass::with('destination','destination.travel')
+        $this->values = Price::with('destination','destination.travel','prices')
             ->where('destination_id',$destination)
             ->where('class_type_id',$this->class_type)
-            ->orderBy('flight_class_category_id','ASC')
-            ->orderBy('traveler_type_id','ASC')
-            ->whereHas('traveler_types', function($query){
-                $query->whereIn('id',[1,2,3]);
-            })
             ->whereHas('destination.travel', function($query){
                 $query->where('departure_date',$this->departure_date);
             })
             ->get();
+
+           
     }
 }

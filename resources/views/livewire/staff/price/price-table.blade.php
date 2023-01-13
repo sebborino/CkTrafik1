@@ -53,17 +53,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($prices as $price)
+                            @forelse($values as $value)
+                            
                                 <tr>
-                                    <td>{{$price->name}}</td>
-                                    <td>{{$price->destination->from->IATA}}-{{$price->destination->to->IATA}}</td>
-                                    <td>{{$price->flight_category->name}}</td>
-                                    <td>{{$price->traveler_type->name}}</td>
-                                    <td>{{$price->class_type->name}}</td>
-                                    <td>{{$price->price}} {{ $price->currency->currency_code}}</td>
-                                    <td>{{$price->tax_price}} {{ $price->currency->currency_code}}</td>
-                                    <td>{{$price->more_price}} {{ $price->currency->currency_code}}</td>
-                                    <td>{{$price->price + $price->more_price + $price->tax_price}} {{ $price->currency->currency_code}}</td>
+                                    <td>{{$value->class->name}}</td>
+                                    <td>{{$value->class->destination->from->IATA}}-{{$value->class->destination->to->IATA}}</td>
+                                    <td>{{$value->class->flight_category->name}}</td>
+                                    <td>{{$value->traveler_type->name}}</td>
+                                    <td>{{$value->class->class_type->name}}</td>
+                                    <td>{{$value->price}} {{ $value->class->currency->currency_code}}</td>
+                                    <td>{{$value->class->tax_price}} {{ $value->class->currency->currency_code}}</td>
+                                    <td>{{$value->more_price}} {{ $value->class->currency->currency_code}}</td>
+                                    <td>{{$value->price + $value->more_price + $value->class->tax_price}} {{ $value->class->currency->currency_code}}</td>
                                     <td></td>
                                 </tr>
                                 

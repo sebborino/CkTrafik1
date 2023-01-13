@@ -43,9 +43,15 @@ class Price extends Model
         return $this->belongsTo(FlightCategory::class);
     }
 
-    public function traveler_types(){
-        return $this->hasMany(TravelerType::class,'id','traveler_type_id');
+    public function price_category(){
+        return $this->belongsTo(PriceCategory::class);
     }
+
+    public function Prices(){
+        return $this->hasMany(PriceAndTravlerTypes::class);
+    }
+
+    
 
     public function class_type(){
         return $this->belongsTo(ClassType::class);
