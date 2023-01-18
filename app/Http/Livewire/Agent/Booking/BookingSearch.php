@@ -8,6 +8,7 @@ use App\Models\Destination;
 use App\Models\Price;
 use App\Models\Travel;
 use Livewire\Component;
+use PhpOffice\PhpSpreadsheet\Calculation\Financial\Securities\Rates;
 
 class BookingSearch extends Component
 {
@@ -49,12 +50,21 @@ class BookingSearch extends Component
         
         $travelTypes = ClassType::all();
 
+        $this->values = Price::with('price_category',
+                                    'destination','destination.travel','destination.travel.stopover',
+                                    'prices','prices.traveler_type',
+                                    'currency','currency.from','currency.to')
+        ->where('class_type_id',$this->class_type)
+
+        ->get();
+
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
             'arrivals' => $arrivals,
             'travelTypes' => $travelTypes,
             'ReturnDepartures' => $ReturnDepartures,
             'ReturnArrivals' => $ReturnArrivals,
+            'values' => $this->values,
         ]);
     }
 
@@ -94,12 +104,13 @@ class BookingSearch extends Component
             ->where('departure_date',$this->departure_date)->get();
         }
         
-        $this->values = Price::with('destination','destination.travel','prices')
+        $this->values = Price::with('price_category','destination','destination.travel','destination.travel.stopover','prices')
             ->where('destination_id',$destination)
             ->where('class_type_id',$this->class_type)
             ->whereHas('destination.travel', function($query){
                 $query->where('departure_date',$this->departure_date);
             })
+            ->orderBy('price_category_id','ASC')
             ->get();
 
            

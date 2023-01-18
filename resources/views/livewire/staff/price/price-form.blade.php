@@ -164,6 +164,14 @@
                         </div>
 
                         <div class="col-md-2">
+                            <label for="use_in">Period</label>
+                            <input id="use_in" class="form-control" 
+                            {{ empty($class) ? 'disabled' : '' }}
+                             type="number" wire:model="use_in"
+                             placeholder="Days" />
+                        </div>
+
+                        <div class="col-md-2">
                             <label for="currency">Currency</label>
                             <select id="currency" class="form-control" {{ empty($class_type) ? 'disabled' : '' }} wire:model="SelectedCurrency">
                                 <option value="0">Choose Currency</option>  
@@ -218,13 +226,6 @@
                                  placeholder="Max Hand Luggage" />
                             </div>
     
-                            <div class="col-md-2">
-                                <label for="use_in">Period</label>
-                                <input id="use_in" class="form-control" 
-                                {{ empty($class) ? 'disabled' : '' }}
-                                 type="number" wire:model="use_in.{{$traveler->id}}"
-                                 placeholder="Days" />
-                            </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-11">

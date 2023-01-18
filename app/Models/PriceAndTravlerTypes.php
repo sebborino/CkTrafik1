@@ -26,6 +26,10 @@ class PriceAndTravlerTypes extends Model
         return $this->belongsTo(TravelerType::class,'traveler_id','id');
     }
 
+    public function tax(){
+        return $this->belongsTo(AirportTax::class,'traveler_id','traveler_id');
+    }
+
     public function class(){
         return $this->belongsTo(Price::class,'price_id','id');
     }

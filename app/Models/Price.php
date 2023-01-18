@@ -23,6 +23,7 @@ class Price extends Model
         'flight_category_id',
         'price_category_id',
         'rule',
+        'return_id',
         'use_in',
         'luggage',
         'hand_luggage',

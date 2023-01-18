@@ -48,6 +48,14 @@ class PriceForm extends Component
         'price_category' => ['required','exists:price_categories,id','numeric'],
         'refundable' => 'required',
         'change_able' => 'required',
+        'use_in' => 'required',
+
+        'price.*' => ['required','numeric','min:0','not_in:0'],
+        'luggage.*' => 'required',
+        'hand_luggage.*' => 'required',
+        'rule.*' => 'required',
+        
+        
     ];
 
     public function changeFlight()
@@ -101,8 +109,9 @@ class PriceForm extends Component
        {
         $return = Destination::where('id',$this->SelectedDestination)->value('from_id');
        }
-
+       
         $this->validate();
+        
         Price::create([
             'name' => $this->class,
             'class_code' => $this->class,
@@ -113,10 +122,12 @@ class PriceForm extends Component
             'price_category_id' => $this->price_category,
             'class_type_id' => $this->class_type,
             'tax_code' => 0,
-            'return' => is_null($this->ReturnDestination) ? null : $this->ReturnDestination,
+            'return_id' => $this->ReturnDestination,
             'traveler_type_id' => $this->traveler_type,
             'refundable' => $this->refundable,
-            'change_able' => $this->change_able
+            'change_able' => $this->change_able,
+            'use_in' => $this->use_in
+            
             
         ]);
 
@@ -127,7 +138,7 @@ class PriceForm extends Component
         $travelerTypes = TravelerType::all(); 
         $price = Price::orderBy('created_at','DESC')->take(1)->value('id');
 
-        $x = 1;
+
         foreach($travelerTypes as $traveler)
         {
             PriceAndTravlerTypes::create([
@@ -137,8 +148,7 @@ class PriceForm extends Component
                 'more_price' => $this->more_price[$traveler->id],
                 'rule' => $this->rule[$traveler->id],
                 'hand_luggage' => $this->hand_luggage[$traveler->id],
-                'luggage' => $this->luggage[$traveler->id]   
-
+                'luggage' => $this->luggage[$traveler->id],
             ]);
         }
 

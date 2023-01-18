@@ -33,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
             return auth()->check() && auth()->user()->user_role_id == 2;
         });
 
+
+
         Paginator::useBootstrap();
     }
 }

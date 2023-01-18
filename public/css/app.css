@@ -2,23 +2,35 @@
     --custom: #0a4505;
 }
 
+.price-card{
+    
+}
+.price-card .destination{
+
+}
+
 .custom{
     background-color:var(--custom);
     color:white;
   }
 
+.price-table{
+    height: auto;
+    float:left;
+}
+
 .circle{
-height:15px;
-width:15px;
-background-color:var(--custom);
-border-radius: 100%;
-float:left;
+    height:15px;
+    width: 15px;
+    background-color:var(--custom);
+    border-radius: 100%;
+    float:left;
 }
 
 .line{
     margin-top:6px;
     height:3px;
-    width:150px;
+    width:44%;
     background-color:var(--custom);
     float:left;
     }

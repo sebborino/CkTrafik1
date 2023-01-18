@@ -12,7 +12,18 @@ class Currency extends Model
     protected $fillable = [
         'name',
         'currency_code',
-        'rate',
-        'more_rate'
     ];
+
+    public function from(){
+        return $this->belongsTo(CurrencyRate::class,'id','from_id');
+    }
+
+    public function to(){
+        return $this->belongsTo(CurrencyRate::class,'id','to_id');
+    }
+
+    public static function convert($from,$to){
+       $rate = CurrencyRate::where('from_id',$from)->where('to_id',$to)->value('rate');
+        return $rate;
+    }
 }
