@@ -21,9 +21,4 @@ class Currency extends Model
     public function to(){
         return $this->belongsTo(CurrencyRate::class,'id','to_id');
     }
-
-    public static function convert($from,$to){
-       $rate = CurrencyRate::where('from_id',$from)->where('to_id',$to)->value('rate');
-        return $rate;
-    }
 }

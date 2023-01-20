@@ -52,7 +52,9 @@ class Price extends Model
         return $this->hasMany(PriceAndTravlerTypes::class);
     }
 
-    
+    public function return(){
+        return $this->belongsTo(Destination::class,'return_id','id');
+    }
 
     public function class_type(){
         return $this->belongsTo(ClassType::class);

@@ -15,4 +15,8 @@ class TravelerType extends Model
         'age_from',
         'age_to'
     ];
+
+    public function tax(){
+        return $this->belongsTo(AirportTax::class,'id','traveler_id');
+    }
 }

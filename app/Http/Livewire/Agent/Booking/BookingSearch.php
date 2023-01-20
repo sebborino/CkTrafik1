@@ -51,12 +51,22 @@ class BookingSearch extends Component
         $travelTypes = ClassType::all();
 
         $this->values = Price::with('price_category',
-                                    'destination','destination.travel','destination.travel.stopover',
-                                    'prices','prices.traveler_type',
+                                    'destination',
+                                    'destination.from','destination.travel','destination.travel.stopover',
+                                    'return','return.travel','return.travel.stopover',
+                                    'prices','prices.traveler_type','prices.traveler_type.tax',
                                     'currency','currency.from','currency.to')
-        ->where('class_type_id',$this->class_type)
-
-        ->get();
+                                    ->where('class_type_id',$this->class_type)
+                                    ->whereHas('destination',function($query){
+                                        $query->where('from_id',$this->departure_id);
+                                    })
+                                    ->whereHas('destination',function($query){
+                                        $query->where('to_id',$this->arrival_id);
+                                    })
+                                    ->whereHas('prices.traveler_type.tax',function($query){
+                                        $query->where('airport_id',$this->departure_id);
+                                    })
+                                    ->get();
 
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,

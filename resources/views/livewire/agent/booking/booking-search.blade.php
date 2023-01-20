@@ -181,10 +181,17 @@
                                             @endif">{{ $value->name}} Class</span>
                                     </div>
                                     <div class="col-12 price-table">
-                                        <div class="col-4 price-table">
+                                        <div class="col-2 price-table">
                                             <h6>
                                                 <strong>
-                                                Departure
+                                                Departure {{date('d.m.Y',strtotime($value->destination->travel->departure_date))}}
+                                            </strong>
+                                        </h6>
+                                        </div>
+                                        <div class="col-2 price-table">
+                                            <h6>
+                                                <strong class="float-right">
+                                                Arrival {{date('d.m.Y',strtotime($value->destination->travel->arrival_date))}}
                                             </strong>
                                         </h6>
                                         </div>
@@ -197,33 +204,46 @@
                                             <h6>Total</h6>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-12 price-table">
                                         <div class="col-4 price-table">
                                             <div class="price-card d-flex justify-content-between">
-                                                <h6 class="destination">CPH</h6>
+                                                <h6 class="destination">{{$value->destination->travel->destination->from->IATA}}</h6>
                                                 
-                                                <h6 class="destination">EBL</h6>
+                                                <h6 class="destination">{{$value->destination->travel->stopover->IATA}}</h6>
                                                 
-                                                <h6 class="destination">BGW</h6>
+                                                <h6 class="destination">{{$value->destination->travel->destination->to->IATA}}</h6>
     
                                             </div>
-                                            <div class="circle"></div>
-                                            <div class="line"></div>
-                                            <div class="circle"></div>
-                                            <div class="line"></div>
-                                            <div class="circle"></div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="circle"></div>
+                                                    <div class="line"></div>
+                                                    <div class="circle"></div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="circle"></div>
+                                                    <div class="line"></div>
+                                                    <div class="circle"></div>
+                                                </div>
+                                            </div>
                                             <br/>
                                             <div class="price-card d-flex justify-content-between">
-                                                <h6 class="destination">17.30</h6>
-                                                <i class="small">3h 33m</i>
-                                                <h6 class="destination">21.45</h6>
-                                                <i class="small">3h 24m</i>
-                                                <h6 class="destination">05.00</h6>
+                                                <h6 class="destination">
+                                                    {{date('H.i',strtotime($value->destination->travel->departure_time))}}
+                                                </h6>
+                                                <div>
+                                                <h6 class="destination text-center">{{date('H.i',strtotime($value->destination->travel->stopover_arrival_datetime))}} -
+                                                    {{date('H.i',strtotime($value->destination->travel->stopover_departure_datetime))}}</h6>
+                                                
+                                                <h6 class="destination">{{date('d.m.Y',strtotime($value->destination->travel->stopover_arrival_datetime))}}</h6>
+                                                </div>
+                                                <h6 class="destination"> {{date('H.i',strtotime($value->destination->travel->arrival_time))}}</h6>
     
                                             </div>
                                             <div class="price-card d-flex justify-content-center">
-                                                <h6>Duration(5h 33m)</h6>
+                                                <h6>Duration({{date('H', strtotime($value->destination->travel->duration)).'h'}} 
+                                                    {{date('i', strtotime($value->destination->travel->duration)).'m'}})</h6>
     
                                             </div>
                                         </div>
@@ -243,7 +263,7 @@
                                                 <li>ChangeAble <i class="fas fa-check"></i></li>
                                                 @endif
                                                 <li>
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#Modal">Rules
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#Modal{{$price->id}}">Rules
                                                         <i class="fas fa-info-circle">
                                                         </i>
                                                     </button> 
@@ -251,7 +271,7 @@
                                             </ul>
                                             <div class="row">
                                             <strong class="w-100 text-center">
-                                                {{ convert($from,$to)}}
+                                                
                                                 Price @if($value->currency->from->name == 'DKK') 
                                                 {{ $price->price }}
                                                 @elseif($price->tax->currency->from->name == 'DKK')
@@ -264,7 +284,7 @@
                                             </div>
                                         </div>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="Modal{{$price->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -274,6 +294,9 @@
                                                 </button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p>
+                                                        {{$price->rule}}
+                                                    </p>
                                                 </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>
@@ -295,46 +318,80 @@
                                             <button class="mt-2 btn custom btn-block" href="">Start Booking</button>
                                         </div>
                                     </div>
-                                    <div class="col-md-auto price-table ">
+
+                                    <!-- for return -->
+                                    
+                                    @if(isset($value->return->travel))
+                               
+                                    <div class="col-2 price-table">
                                         <h6>
                                             <strong>
-                                                Return
-                                            </strong>
-                                        </h6>
+                                                
+                                            Return {{date('d.m.Y',strtotime($value->return->travel->departure_date))}}
+                                        </strong>
+                                    </h6>
                                     </div>
-                                    <div class="col-12">
-                                        <div class="col-4 price-table">
-                                            <div class="price-card d-flex justify-content-between">
-                                                <h6 class="destination">CPH</h6>
-                                                
-                                                <h6 class="destination">EBL</h6>
-                                                
-                                                <h6 class="destination">BGW</h6>
-    
+                                    <div class="col-2 price-table">
+                                        <h6>
+                                            <strong class="float-right">
+                                            Arrival {{date('d.m.Y',strtotime($value->return->travel->arrival_date))}}
+                                        </strong>
+                                    </h6>
+                                    </div>
+                                </div>
+                                <div class="col-12 price-table">
+                                    <div class="col-4 price-table">
+                                        <div class="price-card d-flex justify-content-between">
+                                            <h6 class="destination">{{$value->return->travel->destination->from->IATA}}</h6>
+                                            
+                                            @if(isset($value->return->travel->stopover))
+                                            <h6 class="destination">{{$value->return->travel->stopover->IATA}}</h6>
+                                            @endif
+                                            <h6 class="destination">{{$value->return->travel->destination->to->IATA}}</h6>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="circle"></div>
+                                                <div class="line"></div>
+                                                <div class="circle"></div>
                                             </div>
-                                            <div class="circle"></div>
-                                            <div class="line"></div>
-                                            <div class="circle"></div>
-                                            <div class="line"></div>
-                                            <div class="circle"></div>
-                                            <br/>
-                                            <div class="price-card d-flex justify-content-between">
-                                                <h6 class="destination">17.30</h6>
-                                                <i class="small">3h 33m</i>
-                                                <h6 class="destination">21.45</h6>
-                                                <i class="small">3h 24m</i>
-                                                <h6 class="destination">05.00</h6>
-    
-                                            </div>
-                                            <div class="price-card d-flex justify-content-center">
-                                                <h6>Duration(5h 33m)</h6>
-    
+                                            <div class="col-6">
+                                                <div class="circle"></div>
+                                                <div class="line"></div>
+                                                <div class="circle"></div>
                                             </div>
                                         </div>
+                                        <br/>
+                                        <div class="price-card d-flex justify-content-between">
+                                            <h6 class="destination">
+                                                {{date('H.i',strtotime($value->return->travel->departure_time))}}
+                                            </h6>
+
+                                            @if(isset($value->return->travel->stopover))
+                                            <div>
+                                            
+                                            <h6 class="destination text-center">{{date('H.i',strtotime($value->return->travel->stopover_arrival_datetime))}} -
+                                                {{date('H.i',strtotime($value->return->travel->stopover_departure_datetime))}}</h6>
+                                            
+                                            <h6 class="destination">{{date('d.m.Y',strtotime($value->return->travel->stopover_arrival_datetime))}}</h6>
+                                            </div>
+                                            @endif
+
+                                            <h6 class="destination"> {{date('H.i',strtotime($value->return->travel->arrival_time))}}</h6>
+
+                                        </div>
+                                        <div class="price-card d-flex justify-content-center">
+                                            <h6>Duration({{date('H', strtotime($value->return->travel->duration)).'h'}} 
+                                                {{date('i', strtotime($value->return->travel->duration)).'m'}})</h6>
+
+                                        </div>
                                     </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
+
                        
                     @empty
 

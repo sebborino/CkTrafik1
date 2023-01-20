@@ -27,7 +27,4 @@ class AirportTax extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    public function travelerType(){
-        return $this->belongsTo(TravelerType::class,'traveler_id','id');
-    }
 }

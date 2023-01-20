@@ -23,4 +23,8 @@ class Airport extends Model
     public function currency(){
         return $this->belongsTo(Currency::class);
     }
+
+    public function taxes(){
+        return $this->hasManyThrough(TravelerType::class,AirportTax::class,'airport_id','id','id','traveler_id');
+    }
 }
