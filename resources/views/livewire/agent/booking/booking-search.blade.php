@@ -44,6 +44,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <select name="" id="">
                         
                     </select>
@@ -140,7 +141,9 @@
                     <button class="btn btn-block btn-info" wire:click="search">Search</button>
             </div>
     </div>
+
     @if(!is_null($values))
+   
     <div class="row">
         <div class="col-12">
             <div class="card shadow mb-4">
@@ -186,6 +189,7 @@
                                                 <strong>
                                                 Departure {{date('d.m.Y',strtotime($value->destination->travel->departure_date))}}
                                             </strong>
+                                            
                                         </h6>
                                         </div>
                                         <div class="col-2 price-table">
@@ -208,10 +212,11 @@
                                     <div class="col-12 price-table">
                                         <div class="col-4 price-table">
                                             <div class="price-card d-flex justify-content-between">
+                                                
                                                 <h6 class="destination">{{$value->destination->travel->destination->from->IATA}}</h6>
-                                                
+                                                @if(isset($value->destination->travel->stopover))
                                                 <h6 class="destination">{{$value->destination->travel->stopover->IATA}}</h6>
-                                                
+                                                @endif
                                                 <h6 class="destination">{{$value->destination->travel->destination->to->IATA}}</h6>
     
                                             </div>
@@ -271,7 +276,7 @@
                                             </ul>
                                             <div class="row">
                                             <strong class="w-100 text-center">
-                                                
+                                                {{$price->tax}}
                                                 Price @if($value->currency->from->name == 'DKK') 
                                                 {{ $price->price }}
                                                 @elseif($price->tax->currency->from->name == 'DKK')

@@ -54,7 +54,7 @@ class BookingSearch extends Component
                                     'destination',
                                     'destination.from','destination.travel','destination.travel.stopover',
                                     'return','return.travel','return.travel.stopover',
-                                    'prices','prices.traveler_type','prices.traveler_type.tax',
+                                    'prices','prices.traveler_type','prices.traveler_type.tax','prices.tax',
                                     'currency','currency.from','currency.to')
                                     ->where('class_type_id',$this->class_type)
                                     ->whereHas('destination',function($query){
