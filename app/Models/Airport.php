@@ -25,6 +25,6 @@ class Airport extends Model
     }
 
     public function taxes(){
-        return $this->hasManyThrough(TravelerType::class,AirportTax::class,'airport_id','id','id','traveler_id');
+        return $this->HasMany(AirportTax::class,'airport_id','id');
     }
 }

@@ -52,22 +52,23 @@ class BookingSearch extends Component
 
         $this->values = Price::with('price_category',
                                     'destination',
-                                    'destination.from','destination.travel','destination.travel.stopover',
+                                    'destination.from','destination.from.taxes','destination.travel','destination.travel.stopover',
                                     'return','return.travel','return.travel.stopover',
-                                    'prices','prices.traveler_type','prices.traveler_type.tax','prices.tax',
+                                    'prices','prices.traveler_type','prices.traveler_type.tax',
                                     'currency','currency.from','currency.to')
                                     ->where('class_type_id',$this->class_type)
                                     ->whereHas('destination',function($query){
-                                        $query->where('from_id',$this->departure_id);
+                                        $query->where('from_id',$this->departure_id)
+                                        ->where('to_id',$this->arrival_id);
                                     })
-                                    ->whereHas('destination',function($query){
-                                        $query->where('to_id',$this->arrival_id);
-                                    })
-                                    ->whereHas('prices.traveler_type.tax',function($query){
-                                        $query->where('airport_id',$this->departure_id);
-                                    })
+                                    ->whereHas('destination.from.taxes',function($query){
+                                            $query->where('test_id',$this->departure_id);
+                                        })
+                                    ->whereHas('currency.from',function($query){
+                                        $query->where('to_id',1);
+                                    })    
                                     ->get();
-
+                                    
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
             'arrivals' => $arrivals,

@@ -15,10 +15,10 @@ class Currency extends Model
     ];
 
     public function from(){
-        return $this->belongsTo(CurrencyRate::class,'id','from_id');
+        return $this->HasMany(CurrencyRate::class,'from_id','id');
     }
 
     public function to(){
-        return $this->belongsTo(CurrencyRate::class,'id','to_id');
+        return $this->HasMany(CurrencyRate::class,'to_id','id');
     }
 }

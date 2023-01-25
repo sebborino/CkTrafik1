@@ -276,15 +276,14 @@
                                             </ul>
                                             <div class="row">
                                             <strong class="w-100 text-center">
-                                                {{$price->tax}}
-                                                Price @if($value->currency->from->name == 'DKK') 
-                                                {{ $price->price }}
-                                                @elseif($price->tax->currency->from->name == 'DKK')
-                                                {{ $price->price * $value->currency->from->rate + $price->tax->tax }}
-                                                @else
-                                                {{($price->price * $value->currency->from->rate) + ($price->tax->tax * $value->currency->from->rate)}}
+                                                @foreach($value->destination->from->taxes as $tax)
+                                                @if($price->traveler_type->id == $tax->traveler_id)
+                                                
+                                                {{($price->price * $value->currency->from->rate) + ($tax->tax * $tax->currency->from->rate)}}
+                                                
+                                               
                                                 @endif
-                                                {{ $value->currency->to->rate}}
+                                                @endforeach
                                             </strong>
                                             </div>
                                         </div>

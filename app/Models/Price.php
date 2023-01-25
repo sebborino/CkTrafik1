@@ -48,7 +48,7 @@ class Price extends Model
         return $this->belongsTo(PriceCategory::class);
     }
 
-    public function Prices(){
+    public function prices(){
         return $this->hasMany(PriceAndTravlerTypes::class);
     }
 
