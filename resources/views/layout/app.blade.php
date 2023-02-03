@@ -76,7 +76,7 @@
               </li>
 
               <li class="nav-item text-center">
-                <a  href="{{route('login')}}" class="nav-link custom-color">
+                <a  href="https://www.tiktok.com/@iraqiairwaysdk" class="nav-link custom-color">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
                       <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z"/>
                     </svg>             
@@ -123,13 +123,13 @@
           </p>
           <p>
             <div>
-              <a href="" class="mx-2 text-reset">
+              <a href="https://www.facebook.com/iraqiairways" class="mx-2 text-reset">
                 <i class="fab fa-facebook-f"></i>
               </a>
-              <a href="" class="mx-2 text-reset">
+              <a href="https://www.tiktok.com/@iraqiairwaysdk" class="mx-2 text-reset">
                 <i class="fab fa-tiktok"></i>
               </a>
-              <a href="" class="mx-2 text-reset">
+              <a href="https://wa.me/4555247733" class="mx-2 text-reset">
                 <i class="fab fa-whatsapp"></i>
               </a>
             </div>
