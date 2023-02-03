@@ -81,9 +81,7 @@
               Rich Culture and History: Erbil is home to many historic sites and monuments, including the Citadel of Erbil,
                 which dates back to the Assyrian era and has been listed as a UNESCO World Heritage Site.
                 Visitors can also explore the Bazaar of Erbil, a bustling market that has been in operation for over 2,000 years.
-                <br/>
-              Natural Beauty: Erbil is surrounded by stunning natural beauty, including parks and gardens, as well as the nearby mountains and lakes.
-              The city also boasts several parks and public spaces, providing residents and visitors with ample opportunities to enjoy the great outdoors.
+             
             </p>   
         </div>
       </div>
