@@ -113,6 +113,8 @@
             <img  width="30px" src="{{ asset('../img/cktrafik.jpg')}}"> Ck Trafik 1 ApS
           </h6>
           <p>
+            Opening Hours:
+            <br>
                 Mon - Fri: 10:00-16:00
                 <br>
                 Weekends: 10:00-15:00
