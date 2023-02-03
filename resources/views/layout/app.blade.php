@@ -113,13 +113,11 @@
             <img  width="30px" src="{{ asset('../img/cktrafik.jpg')}}"> Ck Trafik 1 ApS
           </h6>
           <p>
-            <ul>
-                <li>Mon - Fri: 10:00-16:00</li>
-                <li>Weekends: 10:00-15:00</li>
-                <li>Holidays: 10:00-15:00</li>
-                <li>WhatsApp +4555247733 (WhatsApp will only be used for text-messaging, and will be answered between 10:00 and 16:00)</li>
-            </ul>
-
+                Mon - Fri: 10:00-16:00
+                <br>
+                Weekends: 10:00-15:00
+                <br>
+                Holidays: 10:00-15:00
           </p>
           <p>
             <div>
