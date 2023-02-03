@@ -14,11 +14,11 @@ class Currency extends Model
         'currency_code',
     ];
 
-    public function from(){
-        return $this->HasMany(CurrencyRate::class,'from_id','id');
+    public function rates(){
+        return $this->hasMany(CurrencyRate::class,'from_id','id');
     }
 
     public function to(){
-        return $this->HasMany(CurrencyRate::class,'to_id','id');
+        return $this->belongsTo(CurrencyRate::class,'id','to_id');
     }
 }

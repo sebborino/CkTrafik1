@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Agent\Booking;
 
 use App\Models\Airport;
 use App\Models\ClassType;
+use App\Models\Currency;
+use App\Models\CurrencyRate;
 use App\Models\Destination;
 use App\Models\Price;
 use App\Models\Travel;
+use App\Models\TravelerType;
 use Livewire\Component;
 use PhpOffice\PhpSpreadsheet\Calculation\Financial\Securities\Rates;
 
@@ -20,6 +23,10 @@ class BookingSearch extends Component
     public $departure_date;
     public $departure_id;
     public $arrival_id;
+    public $SelectedRate = 1;
+    public $travelerCount = [0 => 1, 1 => 0, 2 => 0];
+    public $travelerTotal = [0 => 0, 1 => 0, 2 => 0];
+    public $travelers;
     
     // Return
     public $ReturnDeparture;
@@ -50,24 +57,8 @@ class BookingSearch extends Component
         
         $travelTypes = ClassType::all();
 
-        $this->values = Price::with('price_category',
-                                    'destination',
-                                    'destination.from','destination.from.taxes','destination.travel','destination.travel.stopover',
-                                    'return','return.travel','return.travel.stopover',
-                                    'prices','prices.traveler_type','prices.traveler_type.tax',
-                                    'currency','currency.from','currency.to')
-                                    ->where('class_type_id',$this->class_type)
-                                    ->whereHas('destination',function($query){
-                                        $query->where('from_id',$this->departure_id)
-                                        ->where('to_id',$this->arrival_id);
-                                    })
-                                    ->whereHas('destination.from.taxes',function($query){
-                                            $query->where('test_id',$this->departure_id);
-                                        })
-                                    ->whereHas('currency.from',function($query){
-                                        $query->where('to_id',1);
-                                    })    
-                                    ->get();
+        $this->travelers = TravelerType::all();
+                                    
                                     
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
@@ -76,6 +67,8 @@ class BookingSearch extends Component
             'ReturnDepartures' => $ReturnDepartures,
             'ReturnArrivals' => $ReturnArrivals,
             'values' => $this->values,
+            'currencies' => Currency::all(),
+            'travelers' => $this->travelers
         ]);
     }
 
@@ -103,26 +96,83 @@ class BookingSearch extends Component
         $this->return_arrival_id = $id;
     }
 
-    public function search(){
-
-        $destination = Destination::where('from_id',$this->departure_id)->where('to_id',$this->arrival_id)->value('id');
-        if($this->return_departure_id != null && $this->return_arrival_id != null)
+    public function add($value){
+        if(array_sum($this->travelerCount) != 9)
         {
-            $return = Destination::where('from_id',$this->return_departure_id)->where('to_id',$this->return_arrival_id)->value('id');
-            
-            $this->return = Travel::with('destination','destination.from')
-            ->where('destination_id',$return)
-            ->where('departure_date',$this->departure_date)->get();
+
+            if($value == 1)
+            {
+                $this->travelerCount[0] = $this->travelerCount[0] + 1;
+            }
+            elseif($value == 2)
+            {
+                $this->travelerCount[1] = $this->travelerCount[1] + 1;
+            }
+            else{
+                $this->travelerCount[2] = $this->travelerCount[2] + 1;
+                if($this->travelerCount[0] < $this->travelerCount[2])
+            {
+                $this->travelerCount[2] = $this->travelerCount[0];
+            }
+            }
         }
+    }
+
+    public function sub($value){
+
+        if($value == 1)
+        {
+            $this->travelerCount[0] = $this->travelerCount[0] - 1;
+            if($this->travelerCount[0] < $this->travelerCount[2])
+            {
+                $this->travelerCount[2] = $this->travelerCount[0];
+            }
+
+            if($this->travelerCount[0] <= 1){
+                $this->travelerCount[0] = 1;
+            }
+        }
+        elseif($value == 2)
+        {
+            $this->travelerCount[1] = $this->travelerCount[1] - 1;
+            if($this->travelerCount[1] <= 0){
+                $this->travelerCount[1] = 0;
+            }
+        }
+        else{
+            $this->travelerCount[2] = $this->travelerCount[2] - 1;
+            if($this->travelerCount[2] <= 0){
+                $this->travelerCount[2] = 0;
+            }
+        }
+
         
-        $this->values = Price::with('price_category','destination','destination.travel','destination.travel.stopover','prices')
-            ->where('destination_id',$destination)
-            ->where('class_type_id',$this->class_type)
-            ->whereHas('destination.travel', function($query){
-                $query->where('departure_date',$this->departure_date);
-            })
-            ->orderBy('price_category_id','ASC')
-            ->get();
+
+}
+
+    public function search(){
+        
+        $this->values = Price::where('class_type_id',$this->class_type)
+                                    ->with('price_category',
+                                    'destination',
+                                    'destination.from',
+                                    'destination.from.taxes',
+                                    'destination.from.taxes.currency',
+                                    'destination.from.taxes.currency.rates',
+                                    'destination.travel',
+                                    'destination.travel.stopover',
+                                    'return','return.travel','return.travel.stopover',
+                                    'prices','prices.traveler_type',
+                                    'currency.rates',
+                                    'currency.rates.to')
+                                    ->whereHas('destination',function($query){
+                                        $query->where('from_id',$this->departure_id)
+                                        ->where('to_id',$this->arrival_id);
+                                    })
+                                    ->whereHas('destination.from.taxes',function($query){
+                                            $query->where('airport_id',$this->departure_id);
+                                        }) 
+                                    ->get();
 
            
     }

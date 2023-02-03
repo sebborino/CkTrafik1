@@ -92,10 +92,37 @@
 
                         <div class="col-2" style="opacity: @if($class_type == 2) 1 @else 0  @endif ;">
                             <label for="return_departure_date">Dates</label>
-                                <input type="text" id="return_departure_date"
+                                <input type="text" id="return_departure_date" @if($class_type != 2) disabled @endif
                                 class="form-control datetimepicker" placeholder="Return Date"
                                 wire:model="return_departure_date">
                         </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        
+                        
+                            <div class="col-3">
+                                <h5>Adult</h5>
+                                <button class="btn btn-danger" @if($travelerCount[0] >= $travelerCount[2] && $travelerCount[0] <= 1) disabled @endif  wire:click="sub(1)"><i class="fas fa-minus"></i></button>
+                                <input type="submit" class="btn btn-light" disabled value="{{$travelerCount[0]}}" />
+                                <button class="btn btn-success" wire:click="add(1)"><i class="fas fa-plus"></i></button>
+                            </div>
+
+                            <div class="col-3">
+                                <h5>Child</h5>
+                                <button class="btn btn-danger" @if($travelerCount[1] <= 0) disabled @endif  wire:click="sub(2)"><i class="fas fa-minus"></i></button>
+                                <input type="submit" class="btn btn-light" disabled value="{{$travelerCount[1]}}" />
+                                <button class="btn btn-success" wire:click="add(2)"><i class="fas fa-plus"></i></button>
+                            </div>
+
+                            <div class="col-3">
+                                <h5>Infint</h5>
+                                <button class="btn btn-danger" @if($travelerCount[2] <= 0) disabled @endif  wire:click="sub(3)"><i class="fas fa-minus"></i></button>
+                                <input type="submit" class="btn btn-light" disabled value="{{$travelerCount[2]}}" />
+                                <button class="btn btn-success" @if($travelerCount[2] >= $travelerCount[0]) disabled @endif wire:click="add(3)"><i class="fas fa-plus"></i></button>
+                            </div>
+                       
+                        
                     </div>
                     
                     
@@ -148,7 +175,16 @@
         <div class="col-12">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Created Destinations</h6>
+                    <div class="col-12">
+
+                    <select class="form-control w-25 float-right" wire:model="SelectedRate">
+                            @forelse($currencies as $currency)
+                                <option value="{{$currency->id}}">{{$currency->currency_code}} ({{$currency->name}})</option>
+                            @empty
+                            @endforelse
+                    </select>
+                    
+                    </div>
                 </div>
                 <div class="card-body">
                     @forelse($values as $value)
@@ -277,12 +313,23 @@
                                             <div class="row">
                                             <strong class="w-100 text-center">
                                                 @foreach($value->destination->from->taxes as $tax)
+                                                @foreach($value->currency->rates as $rate)
+                                                @foreach($tax->currency->rates as $key => $taxRate)
                                                 @if($price->traveler_type->id == $tax->traveler_id)
                                                 
-                                                {{($price->price * $value->currency->from->rate) + ($tax->tax * $tax->currency->from->rate)}}
-                                                
+                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
+                                                @php
+                                                    $currency = $rate->to->currency_code;
+                                                    
+                                                @endphp
+                                                {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) }} {{$currency}}
                                                
+                                                
+                                                
                                                 @endif
+                                                @endif
+                                                @endforeach
+                                                @endforeach
                                                 @endforeach
                                             </strong>
                                             </div>
@@ -313,11 +360,30 @@
                                         @endforeach
 
                                         <div class="col-2 price-table">
-                                            <ul class="ml-3">  
-                                                <li>3 x Adult - <i>10500 DKK</i></li>
-                                                <li>1 x Child - 1750  DKK</li>
-                                                <li>2 x Infint - 2500 DKK</li>
-                                                <li>Total - 2500 DKK</li>
+                                            <ul class="ml-3"> 
+                                                @foreach($value->prices as $key => $price)
+                                                @foreach($value->destination->from->taxes as $tax)
+                                                @foreach($value->currency->rates as $rate)
+                                                @foreach($tax->currency->rates as $taxRate)
+                                                @php
+                                                $RateTax = $taxRate;
+                                                @endphp
+                                                @if($price->traveler_type->id == $tax->traveler_id)
+                                                
+                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
+                                                <li>{{$travelerCount[$key]}} x {{$price->traveler_type->name}} - <i>
+                                                    @php
+                                                        $travelerTotal[$key] = $travelerCount[$key] * ((($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate))
+                                                    @endphp
+                                                    {{ $travelerTotal[$key] }}</i></li>
+
+                                                @endif
+                                                @endif
+                                                @endforeach
+                                                @endforeach
+                                                @endforeach
+                                                @endforeach
+                                                <li> <strong>{{ array_sum($travelerTotal)}} {{$currency}}</strong></li>
                                             </ul>
                                             <button class="mt-2 btn custom btn-block" href="">Start Booking</button>
                                         </div>

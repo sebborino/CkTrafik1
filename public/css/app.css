@@ -1,5 +1,6 @@
 :root {
     --custom: #0a4505;
+    --custom-color:#d2c795;
 }
 
 .price-card{
@@ -209,3 +210,31 @@
     right: 0px; 
 }
 
+.custom-color{
+    color: #d2c795!important;
+}
+
+.custom-color-bg{
+    background:#1d1d1b;
+}
+
+
+.bg-black{
+    background:#000;
+}
+
+@media (min-width: 768px) {
+    .carousel-multi-item-2 .col-md-3 {
+      float: left;
+      width: 25%;
+      max-width: 100%;
+    }
+  }
+  
+  .carousel-multi-item-2 .card img {
+    border-radius: 2px;
+  }
+
+  .img-custom-h{
+    height:200px;
+  }
