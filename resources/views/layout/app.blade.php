@@ -47,7 +47,7 @@
                   About</a>
               </li>
               <li class="nav-item px-3 mt-2">
-                <a class="nav-link h6 text-center custom-color" href="#">
+                <a class="nav-link h6 text-center custom-color" href="{{ route('contact')}}">
                   <i class="fas fa-envelope"></i>
                   Contact</a>
               </li>
