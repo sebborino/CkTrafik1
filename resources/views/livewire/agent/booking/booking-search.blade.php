@@ -320,8 +320,8 @@
                                                 @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
                                                 @php
                                                     $currency = $rate->to->currency_code;
-                                                    
                                                 @endphp
+                                                {{ $value->return->from }}
                                                 {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) }} {{$currency}}
                                                
                                                 
