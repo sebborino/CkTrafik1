@@ -11,9 +11,10 @@ use Illuminate\Http\Request;
 class CurrencyRateController extends Controller
 {
     public function index(){
+        
         return view('admin.page.price.rate',[
             'currencies' => Currency::all(),
-            'rates' => CurrencyRate::all(),
+            'rates' => CurrencyRate::with('currencyFrom','currencyTo')->get(),
         ]);
     }
 
@@ -23,7 +24,7 @@ class CurrencyRateController extends Controller
             'from' => ['required','exists:currencies,id'],
             'to' => ['required','exists:currencies,id'],
         ]);
-
+        
         $from = Currency::find($request->from);
         $to = Currency::find($request->to);
 

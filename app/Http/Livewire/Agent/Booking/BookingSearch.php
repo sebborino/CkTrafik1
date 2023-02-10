@@ -39,7 +39,13 @@ class BookingSearch extends Component
 
     // search
     public $values = null;
+    public $noTravels = null;
     public $return = null;
+
+    protected $rules = [
+        'class_type' => 'required|exists:class_types,id',
+        'departure_id' => ['required','exists:destinations,from_id','numeric'], 
+    ];
 
     public function render()
     {
@@ -128,8 +134,8 @@ class BookingSearch extends Component
                 $this->travelerCount[2] = $this->travelerCount[0];
             }
 
-            if($this->travelerCount[0] <= 1){
-                $this->travelerCount[0] = 1;
+            if($this->travelerCount[0] <= 0){
+                $this->travelerCount[0] = 0;
             }
         }
         elseif($value == 2)
@@ -151,6 +157,8 @@ class BookingSearch extends Component
 }
 
     public function search(){
+    
+        $this->validate();
         
         $this->values = Price::where('class_type_id',$this->class_type)
                                     ->with('price_category',
@@ -162,6 +170,7 @@ class BookingSearch extends Component
                                     'destination.travel',
                                     'destination.travel.stopover',
                                     'return','return.travel','return.travel.stopover',
+                                    'return.from','return.from.taxes','return.from.taxes.currency','return.from.taxes.currency.rates',
                                     'prices','prices.traveler_type',
                                     'currency.rates',
                                     'currency.rates.to')
@@ -169,11 +178,21 @@ class BookingSearch extends Component
                                         $query->where('from_id',$this->departure_id)
                                         ->where('to_id',$this->arrival_id);
                                     })
+                                    ->whereHas('destination.travel', function($query){
+                                        $query->where('departure_date',$this->departure_date);
+                                    })
+                                    ->whereHas('return.travel', function($query){
+                                        $query->where('departure_date',$this->return_departure_date);
+                                    })
                                     ->whereHas('destination.from.taxes',function($query){
                                             $query->where('airport_id',$this->departure_id);
-                                        }) 
+                                        })
+                                    ->whereHas('return',function($query){
+                                        $query->where('from_id',$this->return_departure_id)
+                                        ->where('to_id',$this->return_arrival_id);
+                                    })
                                     ->get();
-
+                                   
            
     }
 }

@@ -99,9 +99,10 @@
                                 </thead>
                                 <tbody>
                                     @forelse($rates as $rate)
+                                    $rate
                                     <tr>
                                         <td>
-                                            {{ $rate->from->currency_code }}/{{ $rate->to->currency_code }}
+                                            {{ $rate->currencyFrom->currency_code }}/{{ $rate->currencyTo->currency_code }}
                                         </td>
                                         <td>
                                             {{ $rate->rate }}
@@ -133,7 +134,7 @@
                                     <form action="{{route('admin.price.rate.delete', ['id' =>  $rate->id]) }}" method="post">
                                         @csrf
                                         <div class="modal-body">
-                                            <h5>Sure you want to delete the Rate {{$rate->from->currency_code}}/{{$rate->to->currency_code}}</h5>
+                                            <h5>Sure you want to delete the Rate {{$rate->currencyFrom->currency_code}}/{{$rate->currencyTo->currency_code}}</h5>
 
                                         </div>
                                     <div class="modal-footer">

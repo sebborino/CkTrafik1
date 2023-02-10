@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTestIdToAirportAndTaxes extends Migration
+class CreateBookingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddTestIdToAirportAndTaxes extends Migration
      */
     public function up()
     {
-        Schema::table('airport_and_taxes', function (Blueprint $table) {
-            $table->integer('test_id')->nullable();
+        Schema::create('bookings', function (Blueprint $table) {
+            $table->id();
+            $table->string('ck_ref');
+            $table->char('pnr',6)->nullable();
+            $table->number('total_price');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddTestIdToAirportAndTaxes extends Migration
      */
     public function down()
     {
-        Schema::table('airport_and_taxes', function (Blueprint $table) {
-            $table->dropColumn('test_id')->nullable();
-        });
+        Schema::dropIfExists('bookings');
     }
 }

@@ -57,7 +57,7 @@
                             
                                 <tr>
                                     <td>{{$value->class->name}}</td>
-                                    <td>{{$value->class->destination->from->IATA}}-{{$value->class->destination->to->IATA}}</td>
+                                    <td>{{$value->class->destination->from->IATA}}-{{$value->class->destination->to->IATA}}@if($value->class->return != null) / {{ $value->class->return->from->IATA }}-{{ $value->class->return->to->IATA }}@endif</td>
                                     <td>{{$value->class->flight_category->name}}</td>
                                     <td>{{$value->traveler_type->name}}</td>
                                     <td>{{$value->class->class_type->name}}</td>

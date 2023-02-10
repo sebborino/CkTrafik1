@@ -10,79 +10,25 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
+<form action="">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Travels</h1>
+    <h1 class="h3 mb-2 text-gray-800">Booking</h1>
+    @for($x= 1; $x <= $travelerCount[0]; $x++)
     <div class="row">
         <div class="col-12">
+            
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">List</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">{{$x}}. Adult </h6>
                 </div>
                     <div class="card-body">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-borderless" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Travel</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                
-                                <tbody>
-                                    @forelse($travels as $travel)
-                                    <tr>
-                                        <td>
-                                            From {{$travel->destination->from->IATA}} ({{$travel->destination->from->name}})
-                                            <ul>
-                                                <li>
-                                                     Departure {{$travel->departure_date}} {{$travel->departure_time}}
-                                                </li>
-                                            </ul>
-
-                                            Duration
-                                            <ul>
-                                                <li>
-                                                     hours {{$travel->duration}}
-                                                </li>
-                                            </ul>
-
-                                            To {{$travel->destination->to->IATA}} ({{$travel->destination->to->name}})</li>
-                                            <ul>
-                                                <li>
-                                                     Arrival {{$travel->arrival_date}} {{$travel->arrival_time}}
-                                                </li>
-                                            </ul>
-                                         </td>
-                                         <td>
-                                            Prices
-                                            <ul>
-                                             @foreach($prices as $price)
-                                            
-                                            
-                                                <li>{{$price->traveler_type->name}} - {{$price->price + $price->more_price}} {{$price->currency->currency_code}}</li>
-                                                
-                                            
-                                            @endforeach
-                                        </ul>
-                                         </td>
-                                    </tr>
-                                 @empty
-                                 <tr>
-                                    <td>No Travels</td>
-                                 </tr>
-                                 @endforelse
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
                     </div>
             </div>
         </div>
     </div>
+    @endfor
+</form>
 </div>
 
 <!-- /.container-fluid -->

@@ -14,7 +14,7 @@ class AddStopoverDurationArrivalToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->time('stopover_duration_arrival');
+            $table->time('stopover_duration_arrival')->nullable();
         });
     }
 

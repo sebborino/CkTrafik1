@@ -13,6 +13,7 @@ class Currency extends Model
         'name',
         'currency_code',
     ];
+    
 
     public function rates(){
         return $this->hasMany(CurrencyRate::class,'from_id','id');

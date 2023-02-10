@@ -11,7 +11,7 @@ class PriceTable extends Component
 {
     public function render()
     {
-        $prices = PriceAndTravlerTypes::with('class','class.currency','class.flight_category','traveler_type','class.destination')->get();
+        $prices = PriceAndTravlerTypes::with('class','class.currency','class.flight_category','traveler_type','class.destination','class.return','class.return.from','class.return.to')->get();
         //$prices = Price::with('destination','currency','price_category')->get();
 
         return view('livewire.staff.price.price-table',[

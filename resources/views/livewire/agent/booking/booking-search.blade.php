@@ -103,7 +103,7 @@
                         
                             <div class="col-3">
                                 <h5>Adult</h5>
-                                <button class="btn btn-danger" @if($travelerCount[0] >= $travelerCount[2] && $travelerCount[0] <= 1) disabled @endif  wire:click="sub(1)"><i class="fas fa-minus"></i></button>
+                                <button class="btn btn-danger" @if($travelerCount[0] >= $travelerCount[2] && $travelerCount[0] <= 0) disabled @endif  wire:click="sub(1)"><i class="fas fa-minus"></i></button>
                                 <input type="submit" class="btn btn-light" disabled value="{{$travelerCount[0]}}" />
                                 <button class="btn btn-success" wire:click="add(1)"><i class="fas fa-plus"></i></button>
                             </div>
@@ -312,24 +312,37 @@
                                             </ul>
                                             <div class="row">
                                             <strong class="w-100 text-center">
+                                                
                                                 @foreach($value->destination->from->taxes as $tax)
-                                                @foreach($value->currency->rates as $rate)
-                                                @foreach($tax->currency->rates as $key => $taxRate)
-                                                @if($price->traveler_type->id == $tax->traveler_id)
-                                                
-                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
-                                                @php
-                                                    $currency = $rate->to->currency_code;
-                                                @endphp
-                                                {{ $value->return->from }}
-                                                {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) }} {{$currency}}
-                                               
-                                                
-                                                
-                                                @endif
-                                                @endif
-                                                @endforeach
-                                                @endforeach
+                                                    @foreach($value->currency->rates as $rate)
+                                                        @foreach($tax->currency->rates as $key => $taxRate)
+                                                            @forelse($value->return->from->taxes as $returnTax)
+                                                                @foreach($returnTax->currency->rates as $ReturntaxRate)
+                                                                @if($price->traveler_type->id == $tax->traveler_id && $price->traveler_type->id == $returnTax->traveler_id)
+                                                                <br/>
+                                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate && $ReturntaxRate->to_id == $SelectedRate)
+
+                                                                @php
+                                                                    $currency = $rate->to->currency_code;
+                                                                @endphp
+                                                                
+                                                                {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) + ($returnTax->tax * $ReturntaxRate->rate) }} {{$currency}}
+                                                                <br/>
+                                                                price:{{ $price->price * $rate->rate }}
+                                                                <br/>
+                                                                more price: {{ $price->more_price * $rate->rate}}
+                                                                <br/>
+                                                                departure tax {{ $tax->tax * $taxRate->rate}}
+                                                                <br/>
+                                                                return tax {{ $returnTax->tax * $ReturntaxRate->rate}}
+                                                                @endif
+                                                                @endif
+                                                                
+                                                                @endforeach
+                                                            @empty
+                                                            @endforelse
+                                                        @endforeach
+                                                    @endforeach
                                                 @endforeach
                                             </strong>
                                             </div>
@@ -362,30 +375,55 @@
                                         <div class="col-2 price-table">
                                             <ul class="ml-3"> 
                                                 @foreach($value->prices as $key => $price)
-                                                @foreach($value->destination->from->taxes as $tax)
-                                                @foreach($value->currency->rates as $rate)
-                                                @foreach($tax->currency->rates as $taxRate)
-                                                @php
-                                                $RateTax = $taxRate;
-                                                @endphp
-                                                @if($price->traveler_type->id == $tax->traveler_id)
-                                                
-                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
-                                                <li>{{$travelerCount[$key]}} x {{$price->traveler_type->name}} - <i>
-                                                    @php
-                                                        $travelerTotal[$key] = $travelerCount[$key] * ((($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate))
-                                                    @endphp
-                                                    {{ $travelerTotal[$key] }}</i></li>
+                                                    @foreach($value->destination->from->taxes as $tax)
+                                                        @foreach($value->currency->rates as $rate)
+                                                            @foreach($tax->currency->rates as $taxRate)
+                                                                @forelse($value->return->from->taxes as $returnTax)
+                                                                @foreach($returnTax->currency->rates as $ReturntaxRate)
+                                                                @php
+                                                                $RateTax = $taxRate;
+                                                                @endphp
+                                                                @if($price->traveler_type->id == $tax->traveler_id && $price->traveler_type->id == $returnTax->traveler_id)
+                                                                
+                                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate && $ReturntaxRate->to_id == $SelectedRate)
+                                                                <li>{{$travelerCount[$key]}} x {{$price->traveler_type->name}} - <i>
+                                                                    @php
+                                                                        $airportTax[$key] = $tax->tax * $taxRate->rate;
+                                                                        $airportReturnTax[$key] = $returnTax->tax * $ReturntaxRate->rate;
+                                                                        $travelerPrice[$key] = (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) + ($returnTax->tax * $ReturntaxRate->rate);
+                                                                        $travelerTotal[$key] = $travelerCount[$key] * ((($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) + ($returnTax->tax * $ReturntaxRate->rate));
+                                                                    @endphp
+                                                                    {{ $travelerTotal[$key] }}</i></li>
+                                                                   
 
-                                                @endif
-                                                @endif
+                                                                @endif
+                                                                @endif
+                                                                @endforeach
+                                                                @empty
+                                                                @endforelse
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endforeach
                                                 @endforeach
-                                                @endforeach
-                                                @endforeach
-                                                @endforeach
-                                                <li> <strong>{{ array_sum($travelerTotal)}} {{$currency}}</strong></li>
+                                                <li> <strong> Total {{ array_sum($travelerTotal)}} {{$currency}}</strong></li>
                                             </ul>
-                                            <button class="mt-2 btn custom btn-block" href="">Start Booking</button>
+                                            
+                                            <form method="post" action="{{ route('agent.booking.start',
+                                            [
+                                                'price_id' => $value->id,
+                                                'travel_id' => $value->destination->travel->id,
+                                                'return' => $value->return->travel->id,
+                                                'travelerCount' => $travelerCount,
+                                                'travelerPrice' => $travelerPrice,
+                                                'airportTax' => $airportTax,
+                                                'airportReturnTax' => $airportReturnTax,
+                                                'class_type_id' => $class_type,
+                                                'total' => array_sum($travelerTotal),
+                                                'currency' => $SelectedRate,
+                                            ])}}">
+                                                @csrf
+                                                <input type="submit" value="Start Booking" class="mt-2 btn custom btn-block"  />
+                                            </form>
                                         </div>
                                     </div>
 
@@ -464,7 +502,11 @@
 
                        
                     @empty
-
+                        <div class="card">
+                            <div class="card-body">
+                                
+                            </div>
+                        </div>
                     @endforelse    
            
                 </div>  
