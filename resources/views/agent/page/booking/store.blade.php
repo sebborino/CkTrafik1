@@ -23,6 +23,19 @@
                     <h6 class="m-0 font-weight-bold text-primary">{{$x}}. Adult </h6>
                 </div>
                     <div class="card-body">
+                        <form action="">
+                            <div class="form-group">
+                                <label></label>
+                                <div class="col-4">
+                                    <input type="text" class="form-control">
+                                </div>
+                                <label>First Name</label>
+                                <input type="text" class="form-control">
+
+                                <label>Last Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </form>
                     </div>
             </div>
         </div>

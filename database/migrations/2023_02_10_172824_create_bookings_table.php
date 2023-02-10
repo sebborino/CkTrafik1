@@ -18,6 +18,7 @@ class CreateBookingsTable extends Migration
             $table->string('ck_ref');
             $table->char('pnr',6)->nullable();
             $table->number('total_price');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }
