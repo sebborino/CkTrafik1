@@ -2,19 +2,24 @@
 
 namespace App\Http\Livewire\Agent\Booking;
 
+use App\Enums\Gender;
 use App\Models\Airport;
 use App\Models\ClassType;
+use App\Models\Contries;
 use App\Models\Currency;
 use App\Models\CurrencyRate;
 use App\Models\Destination;
 use App\Models\Price;
+use App\Models\PriceAndTravlerTypes;
 use App\Models\Travel;
 use App\Models\TravelerType;
+use Carbon\Carbon;
 use Livewire\Component;
 use PhpOffice\PhpSpreadsheet\Calculation\Financial\Securities\Rates;
 
 class BookingSearch extends Component
 {
+    public $currentPage = 1;
     public $departure;
     public $addedDeparture;
     public $arrival;
@@ -24,9 +29,26 @@ class BookingSearch extends Component
     public $departure_id;
     public $arrival_id;
     public $SelectedRate = 1;
-    public $travelerCount = [0 => 1, 1 => 0, 2 => 0];
+    public $travelerCount = [0 => 1, 1 => 1, 2 => 1];
     public $travelerTotal = [0 => 0, 1 => 0, 2 => 0];
     public $travelers;
+    public $total;
+    public $price;
+    public $child_date;
+    public $infint_date;
+
+    public $email;
+    public $phone;
+    public $phonecode; 
+    
+    public $gender;
+    public $first;
+    public $last;
+    public $nation;
+    public $passport_nation; 
+    public $bday;
+    public $issue;
+    public $expiry;
     
     // Return
     public $ReturnDeparture;
@@ -42,10 +64,13 @@ class BookingSearch extends Component
     public $noTravels = null;
     public $return = null;
 
-    protected $rules = [
-        'class_type' => 'required|exists:class_types,id',
-        'departure_id' => ['required','exists:destinations,from_id','numeric'], 
-    ];
+    public function nextPage(){
+        $this->currentPage++;
+    }
+
+    public function previosPage(){
+        $this->currentPage--;
+    }
 
     public function render()
     {
@@ -65,7 +90,9 @@ class BookingSearch extends Component
 
         $this->travelers = TravelerType::all();
                                     
-                                    
+        $values  = Contries::contries();
+        $countries = json_decode($values)->data;
+
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
             'arrivals' => $arrivals,
@@ -73,8 +100,10 @@ class BookingSearch extends Component
             'ReturnDepartures' => $ReturnDepartures,
             'ReturnArrivals' => $ReturnArrivals,
             'values' => $this->values,
+            'countries' => $countries,
             'currencies' => Currency::all(),
-            'travelers' => $this->travelers
+            'travelers' => $this->travelers,
+            'genders' => Gender::getKeys(),
         ]);
     }
 
@@ -152,13 +181,10 @@ class BookingSearch extends Component
             }
         }
 
-        
-
 }
 
     public function search(){
-    
-        $this->validate();
+
         
         $this->values = Price::where('class_type_id',$this->class_type)
                                     ->with('price_category',
@@ -181,18 +207,72 @@ class BookingSearch extends Component
                                     ->whereHas('destination.travel', function($query){
                                         $query->where('departure_date',$this->departure_date);
                                     })
-                                    ->whereHas('return.travel', function($query){
-                                        $query->where('departure_date',$this->return_departure_date);
-                                    })
                                     ->whereHas('destination.from.taxes',function($query){
-                                            $query->where('airport_id',$this->departure_id);
-                                        })
-                                    ->whereHas('return',function($query){
+                                        $query->where('airport_id',$this->departure_id);
+                                    })
+                                    ->when($this->class_type == 2, function ($q) {
+                                     $q->whereHas('return.travel', function($query){
+                                        $query->where('departure_date',$this->return_departure_date);
+                                    });  
+                                     $q->whereHas('return',function($query){
                                         $query->where('from_id',$this->return_departure_id)
                                         ->where('to_id',$this->return_arrival_id);
+                                    });
                                     })
                                     ->get();
                                    
            
+    }
+
+    public function startBooking($price,$total){
+        $this->price = $price;
+        $this->total = $total;
+        $this->currentPage = 2;
+    }
+
+    public function confirmContact(){
+        $this->currentPage = 3;
+    }
+
+    public function confirm(){
+
+        
+
+        foreach($this->travelers as $key => $traveler)
+        {
+            if(is_null($this->return_departure_date)){
+                $date = $this->departure_date;
+            }
+            else{
+                $date = $this->return_departure_date;
+            }
+
+            if($this->travelerCount[$key] > 0)
+            {
+                
+                for($x = 1; $x <= $this->travelerCount[$key];$x++)
+                $this->validate([
+                    'first.'.$traveler->id.'.'.$x => 'required',
+                    'last.'.$traveler->id.'.'.$x => 'required|alpha',
+                    'bday.'.$traveler->id.'.'.$x => ['required',
+                                                    'date_format:Y-m-d',
+                                                    'date',
+                                                    'after:'.Carbon::createFromFormat('Y-m-d',$date)->subYears($traveler->age_to + 1)->format('Y-m-d'),
+                                                    'before_or_equal:'.Carbon::createFromFormat('Y-m-d',$date)->subYears($traveler->age_from)->format('Y-m-d')]
+
+                ]);
+            }
+           
+        }
+            $this->currentPage = 4;
+        }
+
+
+    public function payment(){
+        if(auth()->user()->bank->balance >= $this->total)
+        {
+            PriceAndTravlerTypes::where('price_id',$this->price)->get();
+        }
+        
     }
 }

@@ -1,11 +1,13 @@
 <div>
+    @if($currentPage === 1)
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Table</h6>
+            <h5 class="m-0 font-weight-bold text-gray-800">Search For Travels</h5>
         </div>
+
             <div class="card-body">
-                    @csrf
+                    
                     @if($errors->any())
                         @foreach($errors->all() as $error)
 
@@ -29,7 +31,7 @@
                     @endif
 
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h2 class="h3 mb-0 text-gray-800">Search For Departures</h2>
+                        
                     </div>
 
                     <div class="form-group row">
@@ -44,10 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <select name="" id="">
-                        
-                    </select>
+                    <hr>
                     <div class="form-group row">
                         
                         <div class="col-4">
@@ -312,14 +311,33 @@
                                             </ul>
                                             <div class="row">
                                             <strong class="w-100 text-center">
-                                                
+                                                @if(is_null($value->return))
+                                                @foreach($value->destination->from->taxes as $tax)
+                                                    @foreach($value->currency->rates as $rate)
+                                                        @foreach($tax->currency->rates as $key => $taxRate)
+                                                                @if($price->traveler_type->id == $tax->traveler_id)
+                                                             
+                                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
+
+                                                                @php
+                                                                    $currency = $rate->to->currency_code;
+                                                                @endphp
+                                                                
+                                                                {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) }} {{$currency}}
+                                                                @endif
+                                                                @endif
+                                                                
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                                @else
                                                 @foreach($value->destination->from->taxes as $tax)
                                                     @foreach($value->currency->rates as $rate)
                                                         @foreach($tax->currency->rates as $key => $taxRate)
                                                             @forelse($value->return->from->taxes as $returnTax)
                                                                 @foreach($returnTax->currency->rates as $ReturntaxRate)
                                                                 @if($price->traveler_type->id == $tax->traveler_id && $price->traveler_type->id == $returnTax->traveler_id)
-                                                                <br/>
+                                                             
                                                                 @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate && $ReturntaxRate->to_id == $SelectedRate)
 
                                                                 @php
@@ -327,14 +345,6 @@
                                                                 @endphp
                                                                 
                                                                 {{ (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate) + ($returnTax->tax * $ReturntaxRate->rate) }} {{$currency}}
-                                                                <br/>
-                                                                price:{{ $price->price * $rate->rate }}
-                                                                <br/>
-                                                                more price: {{ $price->more_price * $rate->rate}}
-                                                                <br/>
-                                                                departure tax {{ $tax->tax * $taxRate->rate}}
-                                                                <br/>
-                                                                return tax {{ $returnTax->tax * $ReturntaxRate->rate}}
                                                                 @endif
                                                                 @endif
                                                                 
@@ -344,6 +354,7 @@
                                                         @endforeach
                                                     @endforeach
                                                 @endforeach
+                                                @endif
                                             </strong>
                                             </div>
                                         </div>
@@ -371,9 +382,38 @@
                                         </div>
                                         <!-- Modal End Here -->
                                         @endforeach
-
+                                        
                                         <div class="col-2 price-table">
                                             <ul class="ml-3"> 
+                                                @if(is_null($value->return))
+                                                @foreach($value->prices as $key => $price)
+                                                    @foreach($value->destination->from->taxes as $tax)
+                                                        @foreach($value->currency->rates as $rate)
+                                                            @foreach($tax->currency->rates as $taxRate)
+
+                                                                @php
+                                                                $RateTax = $taxRate;
+                                                                @endphp
+                                                                @if($price->traveler_type->id == $tax->traveler_id)
+                                                                
+                                                                @if($rate->to_id == $SelectedRate && $taxRate->to_id == $SelectedRate)
+                                                                <li>{{$travelerCount[$key]}} x {{$price->traveler_type->name}} - <i>
+                                                                    @php
+                                                                        $airportTax[$key] = $tax->tax * $taxRate->rate;
+                                                                        $travelerPrice[$key] = (($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate);
+                                                                        $travelerTotal[$key] = $travelerCount[$key] * ((($price->price + $price->more_price) * $rate->rate) + ($tax->tax * $taxRate->rate));
+                                                                    @endphp
+                                                                    {{ $travelerTotal[$key] }}</i></li>
+                                                                   
+
+                                                                @endif
+                                                                @endif
+
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endforeach
+                                                @endforeach
+                                                @else        
                                                 @foreach($value->prices as $key => $price)
                                                     @foreach($value->destination->from->taxes as $tax)
                                                         @foreach($value->currency->rates as $rate)
@@ -405,25 +445,14 @@
                                                         @endforeach
                                                     @endforeach
                                                 @endforeach
+                                                @endif
                                                 <li> <strong> Total {{ array_sum($travelerTotal)}} {{$currency}}</strong></li>
                                             </ul>
                                             
-                                            <form method="post" action="{{ route('agent.booking.start',
-                                            [
-                                                'price_id' => $value->id,
-                                                'travel_id' => $value->destination->travel->id,
-                                                'return' => $value->return->travel->id,
-                                                'travelerCount' => $travelerCount,
-                                                'travelerPrice' => $travelerPrice,
-                                                'airportTax' => $airportTax,
-                                                'airportReturnTax' => $airportReturnTax,
-                                                'class_type_id' => $class_type,
-                                                'total' => array_sum($travelerTotal),
-                                                'currency' => $SelectedRate,
-                                            ])}}">
-                                                @csrf
-                                                <input type="submit" value="Start Booking" class="mt-2 btn custom btn-block"  />
-                                            </form>
+                                                <button @if(auth()->user()->bank->balance < array_sum($travelerTotal)) disabled 
+                                                    title="{{auth()->user()->bank->balance < array_sum($travelerTotal)}}" 
+                                                    @endif wire:click="startBooking({{$value->id}},{{ array_sum($travelerTotal)}})" class="mt-2 btn custom btn-block">Start Booking</button>
+                                                    
                                         </div>
                                     </div>
 
@@ -510,6 +539,155 @@
                     @endforelse    
            
                 </div>  
+            </div>
+        </div>
+    </div>
+    @endif
+    @elseif($currentPage === 2)
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h5 class="m-0 font-weight-bold text-gray-800">Main Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-group row">
+                <div class="col-2">
+                    <label for="phonecode">Phone Code</label>
+                    <select class="form-control @error('phonecode') border border-danger @enderror" wire:model="phonecode" id="phonecode">
+                        <option>Choose Phone Code</option>
+                        @foreach($countries as $contry) 
+                        <option>{{$contry->name}} ({{$contry->dial_code}})</option>
+                    @endforeach
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="phone">Phone</label>
+                    <input type="text" class="form-control  @error('phone') border border-danger @enderror" id="phone" wire:model="phone" placeholder="Phone Number">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control @error('email') border border-danger @enderror" id="email" wire:model="email" placeholder="Your@email.com">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-5">
+                    <button @if(is_null($phone) || is_null($phonecode) || is_null($email))
+                     disabled
+                    @endif
+                     class="btn btn-success" wire:click="confirmContact">Save Contact</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @elseif($currentPage === 3)
+    @foreach($travelers as $traveler)
+        @if($travelerCount[$loop->index] > 0)
+            @for($x = 1; $x <= $travelerCount[$loop->index];$x++)
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">{{$x}}. {{$traveler->name}}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-1">
+                                <label for="gender">Gender</label>
+                                <select id="gender" class="form-control">
+                                    @foreach($genders as $gender)
+                                        <option>{{$gender}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="first">First Name</label>
+                                <input type="text" wire:model="first.{{$traveler->id}}.{{$x}}" id="first" placeholder="First Name" 
+                                class="form-control @error('first.'.$traveler->id.'.'.$x) border border-danger @enderror">
+                                
+
+                            </div>
+                            <div class="col-4">
+                                <label for="last">Last Name</label>
+                                <input type="text" wire:model="last.{{$traveler->id}}.{{$x}}" id="last" placeholder="Last Name" 
+                                class="form-control @error('last.'.$traveler->id.'.'.$x) border border-danger @enderror">
+                            </div>
+
+                            <div class="col-3">
+                                
+                                <label for="bday">Birthday <i>(YYYY-MM-DD)</i></label>
+                                <input type="text" id="bday"  wire:model.lazy="bday.{{$traveler->id}}.{{$x}}" placeholder="Birthday (YYYY-MM-DD)"
+                                 class="form-control @error('bday.'.$traveler->id.'.'.$x) border border-danger @enderror">
+
+                            </div>
+                            
+                        </div>
+                        <hr>
+                            
+                        <div class="form-group row">
+                        <div class="col-2">
+                            <label for="phonecode">Passport Nationality</label>
+                            <select class="form-control" wire:model="passport_nation.{{$traveler->id}}.{{$x}}">
+                                <option>Choose Passport Nationality</option>
+                                @foreach($countries as $contry) 
+                                <option>{{$contry->name}} ({{$contry->code}})</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label for="passport">Passport Number</label>
+                            <input type="text" class="form-control" wire.model.lazy="passport_number" placeholder="Passport Number">
+                        </div>
+                        <div class="col-3">
+                            <label for="departure_date">Date of Expiry <i>(YYYY-MM-DD)</i></label>
+                            <input type="text"  
+                            class="form-control expiry" placeholder="Date"
+                            wire:model="expiry.{{$traveler->id}}.{{$x}}">
+                        </div>
+
+                        <div class="col-3">
+                            <label for="phonecode">Nationality</label>
+                            <select class="form-control" wire:model="nation.{{$traveler->id}}.{{$x}}">
+                                <option>Choose Nationality</option>
+                                @foreach($countries as $contry) 
+                                <option>{{$contry->name}} ({{$contry->code}})</option>
+                            @endforeach
+                            </select>
+                        </div>
+                        </div>
+                        <hr>
+                        <div class="form-group row">
+                            <div class="col-3">
+                                @if($traveler->id === 3)
+                                @if(isset($first[1][$x]) && isset($last[1][$x]))
+                                <input type="text" class="form-control" value="{{$first[1][$x]}} {{$last[1][$x]}}" disabled />
+                                @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endfor
+        @endif
+    @endforeach
+    <div class="card shadow">   
+        <div class="card-body">
+            <button class="btn btn-success" wire:click="confirm">Continue</button>
+        </div>
+    </div>
+
+    @elseif($currentPage === 4)
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Confirm</h6>
+        </div>
+        <div class="card-body">
+            <div class="col-4 d-block mx-auto">
+               <strong>Balance</strong> {{auth()->user()->bank->balance}}
+               <br>
+               <strong>payments</strong> {{$total}} 
+               <hr>
+                New Balance {{auth()->user()->bank->balance - $total}}
+                <br>
+                <button class="btn btn-success" wire:click="payment">Confirm</button>            
             </div>
         </div>
     </div>

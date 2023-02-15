@@ -34,6 +34,7 @@ use App\Http\Controllers\Staff\Airport\AirportTaxController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
 use App\Http\Controllers\Staff\Price\PriceCategoryController;
+use App\Models\Contries;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +67,7 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/test/api', [ExchangeRatesController::class, 'test']);
+Route::get('/test/api', [Contries::class, 'contries']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 

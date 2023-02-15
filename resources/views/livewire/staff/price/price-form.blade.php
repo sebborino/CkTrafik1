@@ -17,26 +17,26 @@
                             </button>
                         </div>
                         @endforeach
-                    @elseif(Session::has('message'))
-            
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <h4 class="alert-heading">Well done!</h4>
-                        <p>{!! Session::get('message') !!}</p>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        @elseif(Session::has('message'))
+                
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>{!! Session::get('message') !!}</p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
 
-                    </div>
-                    
-                    @elseif(Session::has('update'))
-                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                        <h4 class="alert-heading">Well done!</h4>
-                        <p>{!! Session::get('update') !!}</p>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        </div>
+                        
+                        @elseif(Session::has('update'))
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>{!! Session::get('update') !!}</p>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
 
-                    </div>
+                        </div>
                     @endif
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h2 class="h3 mb-0 text-gray-800">Flight Details</h2>
