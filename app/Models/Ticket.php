@@ -30,4 +30,8 @@ class Ticket extends Model
         'travel_id',
         'return_id'
     ];
+
+    public function travel(){
+        return $this->belongsTo(Travel::class);
+    }
 }

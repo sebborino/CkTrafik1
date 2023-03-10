@@ -241,7 +241,7 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.destination.index')}}">
+                <a class="nav-link" href="{{ route('admin.booking.index')}}">
                     <i class="fas fa-fw"></i>
                     <span>Tickets</span></a>
             </li>

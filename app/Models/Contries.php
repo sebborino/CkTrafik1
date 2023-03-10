@@ -14,7 +14,7 @@ class Contries extends Model
     $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://countriesnow.space/api/v0.1/countries/codes",
+            CURLOPT_URL => "https://countriesnow.space/api/v0.1/countries/iso",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_ENCODING => "",

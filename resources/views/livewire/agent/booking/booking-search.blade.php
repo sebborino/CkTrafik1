@@ -519,8 +519,8 @@
                     <label for="phonecode">Phone Code</label>
                     <select class="form-control @error('phonecode') border border-danger @enderror" wire:model="phonecode" id="phonecode">
                         <option>Choose Phone Code</option>
-                        @foreach($countries as $contry) 
-                        <option value="{{$contry->dial_code}}">{{$contry->name}} ({{$contry->dial_code}})</option>
+                        @foreach($phone_codes as $phone_code) 
+                        <option value="{{$phone_code->dial_code}}">{{$phone_code->name}} ({{$phone_code->dial_code}})</option>
                     @endforeach
                     </select>
                 </div>
@@ -556,10 +556,10 @@
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-1">
-
                                
                                 <label for="gender">Gender</label>
-                                <select wire:model="gender.{{$x}}.{{$traveler->name}}" id="gender" class="form-control">
+                                <select wire:model="gender.{{$x}}.{{$traveler->name}}" id="gender" class="form-control 
+                                    @error('gender.'.$x.'.'.$traveler->name) border border-danger @enderror">
                                     <option selected>Choose</option>
                                     @foreach($genders as $key => $gender)
                                         <option value="{{$gender}}">{{$key}}</option>
@@ -572,7 +572,6 @@
                                 <input type="text" wire:model="first.{{$x}}.{{$traveler->name}}" id="first" placeholder="First Name" 
                                 class="form-control @error('first.'.$x.'.'.$traveler->name) border border-danger @enderror">
                                 
-
                             </div>
                             <div class="col-4">
                                 <label for="last">Last Name</label>
@@ -581,7 +580,6 @@
                             </div>
 
                             <div class="col-3">
-                                
                                 <label for="bday">Birthday <i>(YYYY-MM-DD)</i>
                                     <span class="text-danger">
                                         @if($errors->has('bday.'.$x.'.'.$traveler->name))  
@@ -592,7 +590,6 @@
                                 <input type="text" id="bday"  wire:model.lazy="bday.{{$x}}.{{$traveler->name}}" placeholder="Birthday (YYYY-MM-DD)"
                                  class="form-control @error('bday.'.$x.'.'.$traveler->name) border border-danger @enderror">
                             </div>
-                            
                         </div>
                         <hr>
                             
@@ -603,7 +600,8 @@
                                 wire:model="passport_nation.{{$x}}.{{$traveler->name}}">
                                 <option>Choose Passport Nationality</option>
                                 @foreach($countries as $contry) 
-                                <option value="{{$contry->code}}">{{$contry->name}} ({{$contry->code}})</option>
+                                {{$countries}}
+                                <option value="{{$contry->Iso3}}">{{$contry->name}} ({{$contry->Iso3}})</option>
                             @endforeach
                             </select>
                         </div>

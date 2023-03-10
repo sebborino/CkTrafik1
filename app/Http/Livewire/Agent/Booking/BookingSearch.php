@@ -11,6 +11,7 @@ use App\Models\Contries;
 use App\Models\Currency;
 use App\Models\CurrencyRate;
 use App\Models\Destination;
+use App\Models\PhoneCode;
 use App\Models\Price;
 use App\Models\PriceAndTravlerTypes;
 use App\Models\Ticket;
@@ -108,7 +109,10 @@ class BookingSearch extends Component
         $this->travelers = TravelerType::all();
                                     
         $values  = Contries::contries();
-        $countries = json_decode($values)->data;
+        $countries = json_decode($values,false);
+
+        $api = PhoneCode::phonecode();
+        dd($phone_codes = json_decode($api)->data);
 
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
@@ -118,6 +122,7 @@ class BookingSearch extends Component
             'ReturnArrivals' => $ReturnArrivals,
             'values' => $this->values,
             'countries' => $countries,
+            'phone_codes' => $phone_codes,
             'currencies' => Currency::all(),
             'travelers' => $this->travelers,
             'genders' => Gender::asArray(),
@@ -334,6 +339,7 @@ class BookingSearch extends Component
                         'before_or_equal:'.Carbon::createFromFormat('Y-m-d',$date)->subYears($traveler->age_from)->format('Y-m-d')],
                     'passport_nation.'.$x.'.'.$traveler->name => 'required',
                     'passport_number.'.$x.'.'.$traveler->name => 'required',
+                    'gender.'.$x.'.'.$traveler->name => 'required',
                     'expiry.'.$x.'.'.$traveler->name 
                     => ['required',
                         'date',
@@ -356,7 +362,6 @@ class BookingSearch extends Component
             $priceRate = CurrencyRate::where('from_id',$this->search[0]->prices->currency_id)->where('to_id',$this->SelectedRate)->value('rate');
 
             $booking = Booking::orderByDesc('created_at')->take(1)->value('id');
-           
                 Booking::create([
                     'ck_ref' => is_null($booking) ? 'CK1' : 'CK'.$booking,
                     'pnr' => NULL,
@@ -367,7 +372,6 @@ class BookingSearch extends Component
                     'email' => $this->email,
                     'phone_code' => $this->phonecode
                 ]);
-
                 
             
             foreach($this->search[0]->prices->prices as $key => $price){
@@ -384,7 +388,14 @@ class BookingSearch extends Component
                     ->where('to_id',$this->SelectedRate)->value('rate');
                 
                 $tax = $this->search[0]->destination->from->taxes[$key]->tax * $taxRate;
-                $returnTax = $this->search[0]->prices->return->from->taxes[$key]->tax * $returnTaxRate;
+                if($this->return_id)
+                {
+                    $returnTax = $this->search[0]->prices->return->from->taxes[$key]->tax * $returnTaxRate;
+                }
+                else{
+                    $returnTax = 0;
+                }
+
                 
                 for($x = 1; $x <= $this->travelerCount[$key];$x++)
                 {
@@ -392,7 +403,7 @@ class BookingSearch extends Component
                     Ticket::create([
                         'booking_id' => is_null($booking) ? 1 : $booking,
                         'fare_price' => $this->travelerPrice[$key],
-                        'tax' => $tax + is_null($returnTax) ? 0 : $returnTax,
+                        'tax' => $tax + $returnTax,
                         'rate' => $priceRate,
                         'booking_id' => Booking::orderByDesc('created_at')->take(1)->value('id'),
                         'currency_id' => $this->SelectedRate,
