@@ -43,7 +43,11 @@ class Travel extends Model
         return $this->belongsTo(Aircraft::class);
     }
 
-    public function class_categori(){
+    public function flight_category(){
         return $this->belongsTo(FlightCategory::class);
+    }
+
+    public function prices(){
+        return $this->belongsTo(Price::class,'flight_category_id','flight_category_id');
     }
 }

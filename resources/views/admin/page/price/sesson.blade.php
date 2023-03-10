@@ -53,41 +53,18 @@
 
                             </div>
                             @endif
-                            
                             <div class="form-group row"> 
-                            
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <label for="name">Sesson Name</label>
                                     <input type="text" name="name" class="form-control
                                         @error('name') border border-danger @enderror"  id="name"
                                         placeholder="Sesson Name" value="{{ old('name')}}"/>
                                 </div>
-
-                                <div class="col-md-4">
-                                    <label for="session">Sesson/Category Name</label>
-                                    <select name="flight" class="form-control
-                                        @error('flight') border border-danger @enderror"  id="flight"
-                                        placeholder="ex. High" value="{{ old('flight')}}">
-                                        <option value="" selected>Choose Flight Route</option>
-
-                                        @forelse($flights as $flight)
-                                        <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
-                                        @empty
-                                        
-                                        <option value="">No Airlines</option>
-                                        
-                                        @endforelse
-                                        
-                                    </select>
-                                </div>
-                                
                             </div>
                             <button type="submit" class="btn custom btn-user btn-block">
                                 Create Sesson
                             </button>
                         </form>
-
-                        
                     </div>
                 </div>
             </div>
@@ -105,8 +82,6 @@
                                 <thead>
                                     <tr>
                                         <th>Sessons Name</th>
-                                        <th>Route Name</th>
-                                        <th>Airline</th>
                                         <th>Edit</th>
                                         <th>Created At</th>
                                     </tr>
@@ -115,8 +90,6 @@
                                     @forelse($sessons as $sesson)
                                     <tr>
                                         <td>{{ $sesson->name }}</td>
-                                        <td>{{ $sesson->flight->route }}</td>
-                                        <td>{{ $sesson->flight->airline->name }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal{{ $sesson->id}}">
                                                 <i class="fas fa-pencil-alt"></i>
@@ -148,20 +121,6 @@
                                                 <input type="text" name="update_name" class="form-control form-control-user"  id="name"
                                                     placeholder="Sesson Name" value="{{ $sesson->name }}">
                                             </div>   
-                                            
-                                            <label for="session">Sesson/Category Name</label>
-                                            <select name="update_flight" class="form-control
-                                                @error('update_flight') border border-danger @enderror"  id="update_flight"
-                                                value="{{ old('update_flight')}}">
-                                                <option value="{{$sesson->flight->id}}" selected>{{$sesson->flight->route}} ({{$sesson->flight->airline->name}})</option>
-                                                @foreach($flights as $flight)
-                                                @if($flight->id != $sesson->flight->id)
-                                                <option value="{{$flight->id}}">{{$flight->route}} ({{$flight->airline->name}})</option>
-                                                @endif
-                                                
-                                                @endforeach
-                                                
-                                            </select>  
                                         </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close X</button>

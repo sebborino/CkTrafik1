@@ -26,7 +26,7 @@ class CurrencyRate extends Model
     }
 
     public function from(){
-        return $this->hasMany(Currency::class,'from_id','id');
+        return $this->belongsTo(Currency::class,'from_id','id');
     }
 
     public function to(){

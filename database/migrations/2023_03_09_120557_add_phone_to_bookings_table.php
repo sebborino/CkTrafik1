@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFlightCategoriesTable extends Migration
+class AddPhoneToBookingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('flight_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('bookings', function (Blueprint $table) {
+            $table->char('phone');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateFlightCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flight_categories');
+        Schema::table('bookings', function (Blueprint $table) {
+            //
+        });
     }
 }

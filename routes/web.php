@@ -230,8 +230,6 @@ Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('age
 
 // Agent Booking Start Here
 Route::get('/dashboard/booking', [AgentBookingController::class, 'index'])->name('agent.booking.index')->middleware('agent');
-Route::any('/dashboard/booking/start', [AgentBookingController::class, 'startBooking'])->name('agent.booking.start')->middleware('agent');
-Route::post('/dashboard/booking/start', [AgentBookingController::class, 'startBooking'])->name('agent.booking.startBooking')->middleware('agent');
 Route::get('/dashboard/booking/{destination}/{date}/{return}/{return_date}', [AgentBookingController::class, 'store'])->name('agent.booking.store')->middleware('agent');
 
 // Agent Notifications Start Here

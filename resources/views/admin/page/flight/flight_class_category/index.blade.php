@@ -10,7 +10,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Create Flight Class Categori</h1>
+    <h1 class="h3 mb-2 text-gray-800">Create Flight Class Category</h1>
     <div class="row">
         <div class="col-12">
             <!-- DataTales Example -->
@@ -55,14 +55,12 @@
                             @endif
                             
                             <div class="form-group row"> 
-                            
                                 <div class="col-md-12">
-                                    <label for="name">Flight Class Categori</label>
+                                    <label for="name">Flight Class Category</label>
                                     <input type="text" name="name" class="form-control
                                         @error('name') border border-danger @enderror"  id="name"
-                                        placeholder="Name" value="{{ old('name')}}">
+                                        placeholder="fx. Economy, FirstClass" value="{{ old('name')}}">
                                 </div>
-                                
                             </div>
                             <button type="submit" class="btn custom btn-block">
                                 Create value
