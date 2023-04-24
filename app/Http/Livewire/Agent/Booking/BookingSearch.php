@@ -109,10 +109,10 @@ class BookingSearch extends Component
         $this->travelers = TravelerType::all();
                                     
         $values  = Contries::contries();
-        $countries = json_decode($values,false);
+        $countries = json_decode($values,false)->data;
 
         $api = PhoneCode::phonecode();
-        dd($phone_codes = json_decode($api)->data);
+        $phone_codes = json_decode($api)->data;
 
         return view('livewire.agent.booking.booking-search',[
             'departures' => $departures,
@@ -347,9 +347,7 @@ class BookingSearch extends Component
                         'after_or_equal:'.Carbon::createFromFormat('Y-m-d',$date)->format('Y-m-d')],
                     'nation.'.$x.'.'.$traveler->name => 'required',
                 ]);
-                
             }
-           
         }
     }
             $this->currentPage = 4;
@@ -357,9 +355,13 @@ class BookingSearch extends Component
 
 
     public function payment(){
+
         if(auth()->user()->bank->balance >= $this->total)
         {
-            $priceRate = CurrencyRate::where('from_id',$this->search[0]->prices->currency_id)->where('to_id',$this->SelectedRate)->value('rate');
+
+           $price = Price::find($this->price_id);
+
+            $priceRate = CurrencyRate::where('from_id',$price->currency_id)->where('to_id',$this->SelectedRate)->value('rate');
 
             $booking = Booking::orderByDesc('created_at')->take(1)->value('id');
                 Booking::create([
@@ -372,34 +374,29 @@ class BookingSearch extends Component
                     'email' => $this->email,
                     'phone_code' => $this->phonecode
                 ]);
-                
-            
-            foreach($this->search[0]->prices->prices as $key => $price){
 
-                $this->travelerPrice[$key] = $price->price * $priceRate;
+            foreach($price->prices as $key => $value){
 
-               
-                
+                $this->travelerPrice[$key] = $value->price * $priceRate;
 
-                $returnTaxRate = CurrencyRate::where('from_id',$this->search[0]->prices->return->from->taxes[$key]->currency_id)
+                $taxRate = CurrencyRate::where('from_id',$price->destination->from->taxes[$key]->currency->id)
                     ->where('to_id',$this->SelectedRate)->value('rate');
                 
-                $taxRate = CurrencyRate::where('from_id',$this->search[0]->destination->from->taxes[$key]->currency->id)
-                    ->where('to_id',$this->SelectedRate)->value('rate');
-                
-                $tax = $this->search[0]->destination->from->taxes[$key]->tax * $taxRate;
+               $tax = $price->destination->from->taxes[$key]->tax * $taxRate;
+
                 if($this->return_id)
                 {
-                    $returnTax = $this->search[0]->prices->return->from->taxes[$key]->tax * $returnTaxRate;
+                    $returnTaxRate = CurrencyRate::where('from_id',$price->prices->return->from->taxes[$key]->currency_id)
+                    ->where('to_id',$this->SelectedRate)->value('rate');
+                    $returnTax = $price->prices->return->from->taxes[$key]->tax * $returnTaxRate;
                 }
                 else{
                     $returnTax = 0;
                 }
 
-                
                 for($x = 1; $x <= $this->travelerCount[$key];$x++)
                 {
-                 
+                    
                     Ticket::create([
                         'booking_id' => is_null($booking) ? 1 : $booking,
                         'fare_price' => $this->travelerPrice[$key],
@@ -407,24 +404,28 @@ class BookingSearch extends Component
                         'rate' => $priceRate,
                         'booking_id' => Booking::orderByDesc('created_at')->take(1)->value('id'),
                         'currency_id' => $this->SelectedRate,
-                        'gender_code' => $this->gender[$x][$price->traveler_type->name],
-                        'first_name' => $this->first[$x][$price->traveler_type->name],
-                        'last_name' => $this->last[$x][$price->traveler_type->name],
-                        'birthday' => $this->bday[$x][$price->traveler_type->name],
-                        'nation' => $this->nation[$x][$price->traveler_type->name],
-                        'passport_number' => $this->passport_number[$x][$price->traveler_type->name],
-                        'expiry' => $this->expiry[$x][$price->traveler_type->name],
-                        'passport_nation' => $this->passport_nation[$x][$price->traveler_type->name],
-                        'more_price' => $price->more_price * $priceRate,
+                        'gender_code' => $this->gender[$x][$value->traveler_type->name],
+                        'first_name' => $this->first[$x][$value->traveler_type->name],
+                        'last_name' => $this->last[$x][$value->traveler_type->name],
+                        'birthday' => $this->bday[$x][$value->traveler_type->name],
+                        'nation' => $this->nation[$x][$value->traveler_type->name],
+                        'passport_number' => $this->passport_number[$x][$value->traveler_type->name],
+                        'expiry' => $this->expiry[$x][$value->traveler_type->name],
+                        'passport_nation' => $this->passport_nation[$x][$value->traveler_type->name],
+                        'more_price' => $value->more_price * $priceRate,
                         'travel_id' => $this->travel_id,
                         'return_id' => $this->return_id
                     ]);
                 }
             }
 
+            
+
             Bank::find(auth()->user()->bank->id)->update([
                 'balance' => auth()->user()->bank->balance - $this->total
             ]);
+
+
 
             $this->search = null;
             $this->currentPage = 1;

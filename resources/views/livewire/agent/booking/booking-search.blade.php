@@ -600,7 +600,7 @@
                                 wire:model="passport_nation.{{$x}}.{{$traveler->name}}">
                                 <option>Choose Passport Nationality</option>
                                 @foreach($countries as $contry) 
-                                {{$countries}}
+                               
                                 <option value="{{$contry->Iso3}}">{{$contry->name}} ({{$contry->Iso3}})</option>
                             @endforeach
                             </select>
@@ -623,7 +623,7 @@
                             <select class="form-control" wire:model="nation.{{$x}}.{{$traveler->name}}">
                                 <option>Choose Nationality</option>
                                 @foreach($countries as $contry) 
-                                <option value="{{$contry->code}}">{{$contry->name}} ({{$contry->code}})</option>
+                                <option value="{{$contry->Iso3}}">{{$contry->name}} ({{$contry->Iso3}})</option>
                             @endforeach
                             </select>
                         </div>
