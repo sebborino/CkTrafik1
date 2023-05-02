@@ -15,6 +15,9 @@ use PhpOffice\PhpSpreadsheet\Calculation\Financial\Securities\Rates;
 
 class BookingSearch extends Component
 {
+
+    public  $currenPage = 1;
+
     public $departure;
     public $addedDeparture;
     public $arrival;
@@ -46,6 +49,16 @@ class BookingSearch extends Component
         'class_type' => 'required|exists:class_types,id',
         'departure_id' => ['required','exists:destinations,from_id','numeric'], 
     ];
+
+    public function NextPage(){
+        $this->currenPage++;
+    }
+
+    public function PreviusPage(){
+        $this->currenPage--;
+    }
+
+
 
     public function render()
     {
