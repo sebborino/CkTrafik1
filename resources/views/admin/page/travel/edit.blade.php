@@ -253,7 +253,7 @@
                                 <div class="form-group">
                                     
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group row">
                                     <div class="col-sm-3 mb-3 mb-sm-0">
                                         <label for="aircraft">Aircraft</label>
                                         <select class="form-control" name="aircraft_id" id="aircraft">¨
@@ -262,6 +262,19 @@
                                             @foreach($aircrafts as $aircraft)
                                                 <option value="{{$aircraft->id}}">{{$aircraft->registration}} ({{$aircraft->airline->name}})</option>
                                             @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        <label for="sesson">Sessons</label>
+                                        <select class="form-control" name="flight_category" id="sesson">
+                                            <option selected value="{{$travel->flight_category->id}}">{{ $travel->flight_category->name}}</option>
+                                            @forelse($flight_categories as $flight_category)
+                                            @if($travel->flight_category->id != $flight_category->id)
+                                            <option value="{{$flight_category->id}}">{{ $flight_category->name}}</option>
+                                            @endif
+                                            @empty
+                                            <option>No Flight Categories</option>
+                                            @endforelse
                                         </select>
                                     </div>      
                                 </div>   

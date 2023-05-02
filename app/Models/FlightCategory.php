@@ -11,10 +11,5 @@ class FlightCategory extends Model
 
     protected $fillable = [
         'name',
-        'flight_id'
     ];
-
-    public function flight(){
-        return $this->belongsTo(Flight::class);
-    }
 }

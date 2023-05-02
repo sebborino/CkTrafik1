@@ -31,9 +31,11 @@ use App\Http\Controllers\Staff\Price\CurrencyRateController;
 use App\Http\Controllers\Staff\Price\TravelerTypeController;
 use App\Http\Controllers\Staff\Agent\Wallet\WalletController;
 use App\Http\Controllers\Staff\Airport\AirportTaxController;
+use App\Http\Controllers\Staff\Booking\BookingController;
 use App\Http\Controllers\Staff\Price\FlightCategoryController;
 use App\Http\Controllers\Staff\Destination\DestinationController;
 use App\Http\Controllers\Staff\Price\PriceCategoryController;
+use App\Models\Contries;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +68,7 @@ Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
 
-Route::get('/test/api', [ExchangeRatesController::class, 'test']);
+Route::get('/test/api', [Contries::class, 'contries']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
@@ -195,14 +197,15 @@ Route::get('/admin/travelerType', [TravelerTypeController::class, 'index'])->nam
 Route::post('/admin/travelerType/create', [TravelerTypeController::class, 'create'])->name('admin.travelerType.create');
 Route::post('/admin/travelerType/update/{id}', [TravelerTypeController::class, 'update'])->name('admin.travelerType.update');
 
-
 //Prices
 
 Route::get('/admin/prices', [PriceController::class, 'index'])->name('admin.price.index');
 Route::post('/admin/prices/create', [PriceController::class, 'create'])->name('admin.class.create');
 Route::post('/admin/prices/update/admin/{id}', [ClassesController::class, 'staffUpdate'])->name('admin.price.staffUpdate');
 
+//Booking 
 
+Route::get('/admin/booking', [BookingController::class, 'index'])->name('admin.booking.index');
 
 // Dashboard Prices End Here
 
@@ -229,8 +232,6 @@ Route::get('/dashboard/price', [AgentPageController::class, 'price'])->name('age
 
 // Agent Booking Start Here
 Route::get('/dashboard/booking', [AgentBookingController::class, 'index'])->name('agent.booking.index')->middleware('agent');
-Route::any('/dashboard/booking/start', [AgentBookingController::class, 'startBooking'])->name('agent.booking.start')->middleware('agent');
-Route::post('/dashboard/booking/start', [AgentBookingController::class, 'startBooking'])->name('agent.booking.startBooking')->middleware('agent');
 Route::get('/dashboard/booking/{destination}/{date}/{return}/{return_date}', [AgentBookingController::class, 'store'])->name('agent.booking.store')->middleware('agent');
 
 // Agent Notifications Start Here

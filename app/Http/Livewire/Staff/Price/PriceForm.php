@@ -76,9 +76,7 @@ class PriceForm extends Component
                 $query->where('id',$this->SelectedAirline);
             })->get();    
 
-        $categories = FlightCategory::whereHas('flight', function($query){
-            $query->where('flight_id',$this->SelectFlight);
-            })->get();
+        $categories = FlightCategory::all();
 
         $travelerTypes = TravelerType::all();    
 

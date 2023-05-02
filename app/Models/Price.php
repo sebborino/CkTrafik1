@@ -32,6 +32,10 @@ class Price extends Model
 
     ];
 
+    public function travel(){
+        return $this->belongsTo(Travel::class,'flight_category_id','flight_category_id');
+    }
+
     public function destination(){
         return $this->belongsTo(Destination::class);
     }

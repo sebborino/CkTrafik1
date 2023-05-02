@@ -17,7 +17,6 @@ class AirportTax extends Model
         'airport_id',
         'traveler_id',
         'currency_id',
-        'test_id'
     ];
 
     public function airport(){

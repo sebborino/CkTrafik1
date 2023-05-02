@@ -11,6 +11,7 @@ use App\Models\Destination;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Aircraft;
+use App\Models\FlightCategory;
 
 class TravelController extends Controller
 {
@@ -27,14 +28,16 @@ class TravelController extends Controller
         $destinations = Destination::with('from','to','flight')->get();
         $stopovers = Airport::all();
         $aircrafts = Aircraft::with('airline')->get();
+        $flight_categories = FlightCategory::all();
 
         $dayLabels = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thuesday', 'Friday', 'Saturday'];
         
-        return view('admin.page.travel.period',[
+        return view('admin.page.travel.period', [
             'destinations' => $destinations,
             'stopovers' => $stopovers,
             'aircrafts' => $aircrafts,
-            'dayLabels' => $dayLabels
+            'dayLabels' => $dayLabels,
+            'flight_categories' => $flight_categories
         ]);
     }
 
@@ -49,6 +52,7 @@ class TravelController extends Controller
                 'duration' => 'required|date_format:H:i',
                 'arrival_day' => 'required|numeric|min:0|max:6',
                 'arrival_time' => 'required|date_format:H:i',
+                'flight_category' => 'required|numeric',
                 
                 // Stopover validation
                 'stopover_id' => 'required_with:stop_arrival_day,stop_arrival_time,stop_departure_day,stop_departure_time',
@@ -130,6 +134,7 @@ class TravelController extends Controller
                 'arrival_date' => $arrival_datetime->copy()->addWeeks($x)->addDays($addDays)->format('Y-m-d'),
                 'arrival_time' => $request->arrival_time,
                 'stopover_id' => $request->stopover_id,
+                'flight_category_id' => $request->flight_category,
                 'stopover_departure_datetime' => empty($stopover_departure_datetime) ? null : $stopover_departure_datetime->copy()->addWeeks($x)->addDays($stopDepartureDay)->format('Y-m-d H:i'),
                 'stopover_arrival_datetime' => empty($stopover_arrival_datetime) ? null : $stopover_arrival_datetime->copy()->addWeeks($x)->addDays($stopArrivalDay)->format('Y-m-d H:i'),
             ]);
@@ -205,6 +210,7 @@ class TravelController extends Controller
         return view('admin.page.travel.store',[
             'date' => $date,
             'aircrafts' => $aircrafts,
+            'flight_categories' =>  FlightCategory::all(),
             'destination' => $destination,
             'dateWM' => $dateWM,
             'stopovers' => $stopovers,
@@ -333,10 +339,8 @@ class TravelController extends Controller
         $travel = Travel::with(
             'stopover',
             'aircraft','aircraft.airline',
-            'destination','destination.from','destination.to','destination.flight')
+            'destination','destination.from','destination.to','destination.flight','flight_category')
             ->find($request->id);
-
-        
 
             $destinations = Destination::where('id','!=',$travel->destination->id)
                 ->when($travel->stopover_id, function($query, $stopover_id){
@@ -349,7 +353,7 @@ class TravelController extends Controller
                 $travel->destination->to->id
                 ])->when($travel->stopover_id, function($query, $stopover_id){
                     $query->where('id','!=',$stopover_id);
-                })->get();
+                })->get(); 
 
                 
             $stopovers = Airport::whereNotIn('id',[$travel->destination->from->id,$travel->destination->to->id])->get();
@@ -375,7 +379,8 @@ class TravelController extends Controller
                 'airports' => $airports,
                 'stopovers' => $stopovers,
                 'aircrafts' => $aircrafts,
-                'stopover_dt' => $stopover_dt
+                'stopover_dt' => $stopover_dt,
+                'flight_categories' => FlightCategory::all(),   
             ]);
     }
     
@@ -399,7 +404,8 @@ class TravelController extends Controller
             'stop_departure_time' => 'required_with:stopover_id,stop_arrival_date,stop_arrival_time,stop_departure_date|',
 
             // Aircraft validation
-            //'aircraft_id' => 'required|exists:aircrafts,id|numeric|min:0|not_in:0',
+            'aircraft_id' => 'required|exists:aircrafts,id|numeric|min:0|not_in:0',
+            'flight_category' => 'required|exists:flight_categories,id|numeric|min:0|not_in:0',
         ]);
 
 
@@ -410,8 +416,7 @@ class TravelController extends Controller
         
         $departure_date = Carbon::createFromDate($request->departure_date);
         $arrival_date = Carbon::createFromDate($request->arrival_date);
-        
-        if($request->stop_arrival_date  != null && $request->stop_arrival_time != null)
+        if($request->stop_arrival_date != null && $request->stop_arrival_time != null)
         {
             $stopover_arrival_datetime = Carbon::createFromDate($request->stop_arrival_date . ' ' . $request->stop_arrival_time);
            
@@ -424,7 +429,7 @@ class TravelController extends Controller
             {
                     return back()->withErrors(['errors' => "Failed! Stopover have to be after Departure"]);
             }
-            else{
+            else{ 
 
                     if(!$stopover_departure_datetime->gt($stopover_arrival_datetime))
                     {
@@ -436,27 +441,29 @@ class TravelController extends Controller
                             return back()->withErrors(['errors' => "Failed! Stopover Departure have to be before Arrival"]);
                         }
                         else{
+                           
                             
-                            Travel::where('id',$request->id)->update([
-                                'destination_id' => $request->destination,
-                                'open_until' => $departure_datetime->subHours(12),
-                                'departure_date' => $departure_date->format('Y-m-d'),
-                                'departure_time' => $request->departure_time,
-                                'duration' => $request->duration,
-                                'arrival_date' => $arrival_date->format('Y-m-d'),
-                                'arrival_time' => $request->arrival_time,
-                                'stopover_id' => $request->stopover_id,
-                                'stopover_departure_datetime' => $stopover_departure_datetime->format('Y-m-d H:i'),
-                                'stopover_arrival_datetime' => $stopover_arrival_datetime->format('Y-m-d H:i'),
-                            ]);
-
-                            return redirect()->route('admin.travel.edit',['id' => $request->id, 'date'=> $request->departure_date])
-                             ->with('message', 'Nice! A Travel Has been Updated!!');
                         }
                     }
                 }
             }
         }
+        Travel::where('id',$request->id)->update([
+            'destination_id' => $request->destination,
+            'open_until' => $departure_datetime->subHours(12),
+            'departure_date' => $departure_date->format('Y-m-d'),
+            'departure_time' => $request->departure_time,
+            'duration' => $request->duration,
+            'arrival_date' => $arrival_date->format('Y-m-d'),
+            'arrival_time' => $request->arrival_time,
+            'stopover_id' => $request->stopover_id,
+            'flight_category_id' => $request->flight_category,
+            'stopover_departure_datetime' => empty($stopover_departure_datetime) ? null : $stopover_departure_datetime->format('Y-m-d H:i'),
+            'stopover_arrival_datetime' => empty($stopover_arrival_datetime) ? null : $stopover_arrival_datetime->format('Y-m-d H:i'),
+        ]);
+
+        return redirect()->route('admin.travel.edit',['id' => $request->id, 'date'=> $request->departure_date])
+         ->with('message', 'Nice! A Travel Has been Updated!!');
     }
     
 }

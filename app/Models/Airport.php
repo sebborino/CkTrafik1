@@ -15,9 +15,7 @@ class Airport extends Model
         'IATA',
         'location',
         'country_code',
-        'timezone',
-        'airport_tax',
-        'airport_tax_code',
+        'timezone'
     ];
 
     public function currency(){

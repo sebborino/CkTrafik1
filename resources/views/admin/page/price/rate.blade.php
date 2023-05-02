@@ -99,7 +99,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse($rates as $rate)
-                                    $rate
+                                    
                                     <tr>
                                         <td>
                                             {{ $rate->currencyFrom->currency_code }}/{{ $rate->currencyTo->currency_code }}

@@ -61,8 +61,6 @@ class AirportController extends Controller
             'location' => $request->update_location,
             'country_code' => $request->update_country_code,
             'timezone' => $request->update_timezone,
-            'airport_tax' => $request->update_tax,
-            'airport_tax_code' => $request->update_tax_code,
         ]);
         return back()->with('update', 'Nice! The Airport Details is up to date! Great!');
     }
